@@ -11,7 +11,7 @@ dp = Dispatcher()
 main_keyboard = ReplyKeyboardMarkup(
     keyboard=[
         [KeyboardButton(text='⚙️ Подключить VPN')],
-        [KeyboardButton(text='🏠 profile.....'), KeyboardButton(text='ℹ️ Информация')]
+        [KeyboardButton(text='🏠 Профиль'), KeyboardButton(text='ℹ️ Информация')]
     ],
     resize_keyboard=True
 )
