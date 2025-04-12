@@ -12,6 +12,7 @@ class vpnBot():
         self.init_keyboards()
         self.init_handlers()
         self.db = db
+        self.sosa_vpn_banner = FSInputFile("./src/vpn_banner.jpg")
 
 
     def init_keyboards(self):
@@ -41,16 +42,13 @@ class vpnBot():
                     except Exception as e:
                         print(f"Ошибка при уведомлении пользователя: {e}")
 
-
-
-            photo = FSInputFile("vpn_banner.jpg")
             welcome_caption = texts.welcome_text
-            await message.answer_photo(photo=photo, caption=welcome_caption)
+            await message.answer_photo(photo=self.sosa_vpn_banner, caption=welcome_caption)
             await message.answer("Вы перенесены в главное меню.", reply_markup=self.main_keyboard)
 
         @self.dp.message(lambda message: message.text == "⚙️ Подключить VPN")
         async def handle_get_key(message: types.Message):
-            photo = FSInputFile("vpn_banner.jpg")
+            
             caption = (
                 "⚡️ Вы покупаете премиум подписку на Sosa VPN.\n\n"
                 "• До 5 устройств одновременно\n"
@@ -60,7 +58,7 @@ class vpnBot():
                 #[InlineKeyboardButton(text="7 дней — 50₽", callback_data="confirm_vpn_7")],
                 [InlineKeyboardButton(text="1 месяц — 100₽", callback_data="confirm_vpn_30")]
             ])
-            await message.answer_photo(photo=photo, caption=caption, reply_markup=keyboard)
+            await message.answer_photo(photo=self.sosa_vpn_banner, caption=caption, reply_markup=keyboard)
 
         @self.dp.callback_query(lambda c: c.data.startswith("confirm_vpn_"))
         async def confirm_vpn(callback: types.CallbackQuery):
@@ -88,11 +86,11 @@ class vpnBot():
             if callback.data == "vpn_7":
                 days = 7
                 cost = 50
-                key_file = "keys_7.txt"
+                key_file = "./keys/keys_7.txt"
             else:
                 days = 30
                 cost = 100
-                key_file = "keys_30.txt"
+                key_file = "./keys/keys_30.txt"
             
             balance = await self.db.get_balance(user_id)
 
