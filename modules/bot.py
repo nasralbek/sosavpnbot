@@ -1,16 +1,20 @@
 from aiogram import Bot, Dispatcher, types
 from aiogram.enums import ParseMode
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, FSInputFile
-import config
-
+import configs.main_config as config
+import configs.texts.texts as texts
 
 class vpnBot():
-    def __init__(self):
+    def __init__(self,db):
         self.BOT_TOKEN = config.TELERAM_API_KEY
         self.bot = Bot(token=self.BOT_TOKEN)
         self.dp = Dispatcher()
+        self.init_keyboards()
+        self.init_handlers()
+        self.db = db
 
-    def init_keyboards():
+
+    def init_keyboards(self):
         self.main_keyboard = ReplyKeyboardMarkup(
             keyboard=[
                 [KeyboardButton(text='⚙️ Подключить VPN')],
@@ -23,12 +27,12 @@ class vpnBot():
         @self.dp.message(lambda message: message.text.startswith("/start"))
         async def handle_start(message: types.Message):
             ref = message.text.split(" ")[1] if len(message.text.split()) > 1 else None
-            await register_user(message.from_user.id, ref)
+            await self.db.register_user(message.from_user.id, ref)
 
             photo = FSInputFile("vpn_banner.jpg")
             welcome_caption = texts.welcome_text
             await message.answer_photo(photo=photo, caption=welcome_caption)
-            await message.answer("Вы перенесены в главное меню.", reply_markup=main_keyboard)
+            await message.answer("Вы перенесены в главное меню.", reply_markup=self.main_keyboard)
 
         @self.dp.message(lambda message: message.text == "⚙️ Подключить VPN")
         async def handle_get_key(message: types.Message):
@@ -75,33 +79,29 @@ class vpnBot():
                 days = 30
                 cost = 100
                 key_file = "keys_30.txt"
+            
+            balance = await self.db.get_balance(user_id)
 
-            async with aiosqlite.connect("db.sqlite3") as db:
-                user = await db.execute("SELECT balance FROM users WHERE user_id = ?", (user_id,))
-                data = await user.fetchone()
-                balance = data[0] if data else 0
+            if balance < cost:
+                await callback.message.answer("❌ Недостаточно средств на балансе.")
+                return
 
-                if balance < cost:
-                    await callback.message.answer("❌ Недостаточно средств на балансе.")
-                    return
+            try:
+                with open(key_file, "r", encoding="utf-8") as f:
+                    keys = f.readlines()
+            except FileNotFoundError:
+                await callback.message.answer("❌ Файл с ключами не найден.")
+                return
 
-                try:
-                    with open(key_file, "r", encoding="utf-8") as f:
-                        keys = f.readlines()
-                except FileNotFoundError:
-                    await callback.message.answer("❌ Файл с ключами не найден.")
-                    return
+            if not keys:
+                await callback.message.answer("❌ Ключи закончились.")
+                return
 
-                if not keys:
-                    await callback.message.answer("❌ Ключи закончились.")
-                    return
+            key = keys[0].strip()
+            with open(key_file, "w", encoding="utf-8") as f:
+                f.writelines(keys[1:])
 
-                key = keys[0].strip()
-                with open(key_file, "w", encoding="utf-8") as f:
-                    f.writelines(keys[1:])
-
-                await db.execute("UPDATE users SET balance = balance - ? WHERE user_id = ?", (cost, user_id))
-                await db.commit()
+            await self.db.write_off_balance(user_id,cost)
 
             instruction_buttons = InlineKeyboardMarkup(inline_keyboard=[
                 [InlineKeyboardButton(text="📱 iOS", callback_data="how_ios"),
@@ -135,14 +135,9 @@ class vpnBot():
         @self.dp.message(lambda message: message.text == "🏠 Профиль")
         async def handle_profile(message: types.Message):
             user_id = message.from_user.id
-            async with aiosqlite.connect("db.sqlite3") as db:
-                user = await db.execute("SELECT balance, referrals FROM users WHERE user_id = ?", (user_id,))
-                data = await user.fetchone()
-
-            ref_link = f"https://t.me/{(await bot.get_me()).username}?start={user_id}"
-            balance = data[0] if data else 0
-            refs = data[1] if data else 0
-
+            ref_link = f"https://t.me/{(await self.bot.get_me()).username}?start={user_id}"
+            balance = await self.db.get_balance(user_id)
+            refs = await self.db.get_refs(user_id)
             msg = (
                 f"<b>👤 Профиль</b>\n"
                 f"Баланс: {balance}₽\n"
@@ -160,4 +155,5 @@ class vpnBot():
             await message.answer(text, reply_markup=support_button)
 
     async def start(self):
-        await self.dp.start_polling()
+
+        await self.dp.start_polling(self.bot)
