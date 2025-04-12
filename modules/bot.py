@@ -86,11 +86,11 @@ class vpnBot():
             if callback.data == "vpn_7":
                 days = 7
                 cost = 50
-                key_file = "./keys/keys_7.txt"
+                key_file = "../data/keys/keys_7.txt"
             else:
                 days = 30
                 cost = 100
-                key_file = "./keys/keys_30.txt"
+                key_file = "../data/keys/keys_30.txt"
             
             balance = await self.db.get_balance(user_id)
 

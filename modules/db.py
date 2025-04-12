@@ -36,12 +36,6 @@ class DB():
                         await self.add_referal(ref)
                         await self.increase_balance(ref,50)
                         status.register_ok = True
-                        # try:
-                        #     await bot.send_message(ref, "🎉 Новый пользователь зарегистрировался по твоей ссылке! Тебе начислено 50₽.")
-                        # except Exception as e:
-                        #     print(f"Ошибка при уведомлении пригласителя: {e}")
-
-                       
                     else:
                         await self.add_user(user_id,0,None)
                         status.register_ok = True

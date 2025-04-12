@@ -3,7 +3,7 @@ from modules.db import DB
 import asyncio
 
 async def main():
-    db = DB("./databases/db.sqlite3")
+    db = DB("../data/databases/db.sqlite3")
     await db.start()
     bot = vpnBot(db)
     await bot.start()
