@@ -27,7 +27,21 @@ class vpnBot():
         @self.dp.message(lambda message: message.text.startswith("/start"))
         async def handle_start(message: types.Message):
             ref = message.text.split(" ")[1] if len(message.text.split()) > 1 else None
-            await self.db.register_user(message.from_user.id, ref)
+            user_id = message.from_user.id
+            register_status = await self.db.register_user(user_id, ref)
+
+            if register_status.ok():
+                if not (register_status.refferal is None):
+                    try:
+                        await self.bot.send_message(ref, "🎉 Новый пользователь зарегистрировался по твоей ссылке! Тебе начислено 50₽.")
+                    except Exception as e:
+                        print(f"Ошибка при уведомлении пригласителя: {e}")
+                    try:
+                        await self.bot.send_message(user_id, "🎁 Добро пожаловать! Тебе начислено 100₽ за регистрацию по реферальной ссылке.")
+                    except Exception as e:
+                        print(f"Ошибка при уведомлении пользователя: {e}")
+
+
 
             photo = FSInputFile("vpn_banner.jpg")
             welcome_caption = texts.welcome_text
@@ -101,7 +115,7 @@ class vpnBot():
             with open(key_file, "w", encoding="utf-8") as f:
                 f.writelines(keys[1:])
 
-            await self.db.write_off_balance(user_id,cost)
+            await self.db.increase_balance(user_id,-cost)
 
             instruction_buttons = InlineKeyboardMarkup(inline_keyboard=[
                 [InlineKeyboardButton(text="📱 iOS", callback_data="how_ios"),
