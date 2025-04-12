@@ -31,6 +31,10 @@ class vpnBot():
             user_id = message.from_user.id
             register_status = await self.db.register_user(user_id, ref)
 
+
+            welcome_caption = texts.welcome_text
+            await message.answer_photo(photo=self.sosa_vpn_banner, caption=welcome_caption,reply_markup=self.main_keyboard)
+
             if register_status.ok():
                 if not (register_status.refferal is None):
                     try:
@@ -42,9 +46,7 @@ class vpnBot():
                     except Exception as e:
                         print(f"Ошибка при уведомлении пользователя: {e}")
 
-            welcome_caption = texts.welcome_text
-            await message.answer_photo(photo=self.sosa_vpn_banner, caption=welcome_caption)
-            await message.answer("Вы перенесены в главное меню.", reply_markup=self.main_keyboard)
+            # await message.answer("Вы перенесены в главное меню.", reply_markup=self.main_keyboard)
 
         @self.dp.message(lambda message: message.text == "⚙️ Подключить VPN")
         async def handle_get_key(message: types.Message):
@@ -151,10 +153,10 @@ class vpnBot():
             balance = await self.db.get_balance(user_id)
             refs = await self.db.get_refs(user_id)
             msg = (
-                f"<b>👤 Профиль</b>\n"
-                f"Баланс: {balance}₽\n"
-                f"Приглашено: {refs} чел.\n\n"
-                f"🔗 Твоя реферальная ссылка:\n{ref_link}"
+                f"Баланс: <b>{balance}₽</b>₽\n"
+                f"Приглашено: <b>{refs} чел.</b> чел.\n\n"
+                f"🔗 За каждого приглашенного друга ты получаешь 50₽ на баланс, друг получает 100₽.\n\n"
+                f"👥 <b>Твоя реферальная ссылка:</b>\n{ref_link}\n"
             )
             await message.answer(msg, parse_mode=ParseMode.HTML)
 
