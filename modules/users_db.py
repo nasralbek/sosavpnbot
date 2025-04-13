@@ -11,7 +11,7 @@ class Register_user_status():
 
     def ok(self):return self.register_ok
 
-class DB():
+class Users_DB():
     def __init__(self,filename):
         self.db_name = filename
 

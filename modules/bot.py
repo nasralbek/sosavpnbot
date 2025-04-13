@@ -11,7 +11,7 @@ class vpnBot():
         self.dp = Dispatcher()
         self.init_keyboards()
         self.init_handlers()
-        self.db = db
+        self.users_db = db
         self.sosa_vpn_banner = FSInputFile("./src/vpn_banner.jpg")
 
 
@@ -29,7 +29,7 @@ class vpnBot():
         async def handle_start(message: types.Message):
             ref = message.text.split(" ")[1] if len(message.text.split()) > 1 else None
             user_id = message.from_user.id
-            register_status = await self.db.register_user(user_id, ref)
+            register_status = await self.users_db.register_user(user_id, ref)
 
 
             welcome_caption = texts.welcome_text
@@ -94,7 +94,7 @@ class vpnBot():
                 cost = 100
                 key_file = "../data/keys/keys_30.txt"
             
-            balance = await self.db.get_balance(user_id)
+            balance = await self.users_db.get_balance(user_id)
 
             if balance < cost:
                 await callback.message.answer("❌ Недостаточно средств на балансе.")
@@ -115,7 +115,7 @@ class vpnBot():
             with open(key_file, "w", encoding="utf-8") as f:
                 f.writelines(keys[1:])
 
-            await self.db.increase_balance(user_id,-cost)
+            await self.users_db.increase_balance(user_id,-cost)
 
             instruction_buttons = InlineKeyboardMarkup(inline_keyboard=[
                 [InlineKeyboardButton(text="📱 iOS", callback_data="how_ios"),
@@ -150,8 +150,8 @@ class vpnBot():
         async def handle_profile(message: types.Message):
             user_id = message.from_user.id
             ref_link = f"https://t.me/{(await self.bot.get_me()).username}?start={user_id}"
-            balance = await self.db.get_balance(user_id)
-            refs = await self.db.get_refs(user_id)
+            balance = await self.users_db.get_balance(user_id)
+            refs = await self.users_db.get_refs(user_id)
             msg = (
                 f"Баланс: <b>{balance}</b>₽\n"
                 f"Приглашено: <b>{refs} чел.</b>\n\n"
