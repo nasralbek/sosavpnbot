@@ -1,7 +1,7 @@
 import asyncio
 import aiosqlite
 import configs.SQL_queries.SQLs as SQLs
-
+from modules.base_db import BaseDB
 
 #TODO: move this to other file
 class Register_user_status():
@@ -11,17 +11,11 @@ class Register_user_status():
 
     def ok(self):return self.register_ok
 
-class Users_DB():
+class Users_DB(BaseDB):
     def __init__(self,filename):
         self.db_name = filename
+        self.init_command = SQLs.create_users_table
 
-    async def init_db(self):
-        try:
-            async with aiosqlite.connect(self.db_name ) as db:
-                await db.execute(SQLs.create_users_table)
-                await db.commit()
-        except Exception as e:
-            self.connection_failed(e)
 
     async def register_user(self,user_id, ref=None) -> Register_user_status:
         status = Register_user_status()
@@ -100,8 +94,3 @@ class Users_DB():
         new_referrals = current_refs+1
         await self.update_referals(user_id,new_referrals)
 
-    def  connection_failed(self,e):
-        print(f"failed to connect db: {e}")
-
-    async def start(self):
-        await self.init_db()
