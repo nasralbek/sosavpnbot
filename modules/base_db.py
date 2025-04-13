@@ -16,4 +16,6 @@ class BaseDB():
                 await db.execute(self.init_command)
                 await db.commit()
         except Exception as e:
+            
             self.connection_failed(e)
+

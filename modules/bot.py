@@ -1,14 +1,19 @@
 from aiogram import Bot, Dispatcher, types
 from aiogram.enums import ParseMode
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, FSInputFile
+import asyncio 
 import configs.main_config as config
 import configs.texts.texts as texts
+from modules.yookassa_handler import Yookassa_handler
+
 
 class vpnBot():
     def __init__(self,db):
         self.BOT_TOKEN = config.TELERAM_API_KEY
         self.bot = Bot(token=self.BOT_TOKEN)
         self.dp = Dispatcher()
+        self.yookassa_handler = Yookassa_handler()
+        
         self.init_keyboards()
         self.init_handlers()
         self.users_db = db
@@ -58,9 +63,29 @@ class vpnBot():
             )
             keyboard = InlineKeyboardMarkup(inline_keyboard=[
                 #[InlineKeyboardButton(text="7 дней — 50₽", callback_data="confirm_vpn_7")],
-                [InlineKeyboardButton(text="1 месяц — 100₽", callback_data="confirm_vpn_30")]
+                [InlineKeyboardButton(text="1 месяц — 100₽", callback_data="select_vpn_30")]
             ])
             await message.answer_photo(photo=self.sosa_vpn_banner, caption=caption, reply_markup=keyboard)
+
+        @self.dp.callback_query(lambda c: c.data.startswith("select_vpn_"))
+        async def handle_select_vpn(callback: types.CallbackQuery):
+            match callback.data:
+                case "select_vpn_30":
+                    days = 30
+                    cost = 100
+                    purchase_code = "vpn_30"
+                case "select_vpn_7":
+                    days = 7
+                    cost = 50
+                    purchase_code = "vpn_7"    
+            msg_text = "Выберите способо оплаты"
+            
+            keyboard = InlineKeyboardMarkup(inline_keyboard=[
+                [InlineKeyboardButton(text="Оплатить через yoomoney", callback_data="confirm_vpn_yoomoney_{days}")],
+                [InlineKeyboardButton(text="Оплатить бонусами", callback_data="confirm_vpn_bonuses_{days}")]
+            ])
+            await callback.message.edit_caption(caption = msg_text,reply_markup=keyboard)
+
 
         @self.dp.callback_query(lambda c: c.data.startswith("confirm_vpn_"))
         async def confirm_vpn(callback: types.CallbackQuery):
@@ -73,14 +98,20 @@ class vpnBot():
                 cost = 100
                 purchase_code = "vpn_30"
 
-            keyboard = InlineKeyboardMarkup(inline_keyboard=[
+            #print(callback)
+            if "bonuses" in callback.data:
+                msg_text =  f"Вы собираетесь купить VPN на {days} дней.\n"\
+                            f"С вашего баланса будет списано {cost}₽."
+                keyboard = InlineKeyboardMarkup(inline_keyboard=[
                 [InlineKeyboardButton(text="✅ Подтвердить", callback_data=purchase_code)]
-            ])
-            await callback.message.answer(
-                f"Вы собираетесь купить VPN на {days} дней.\n"
-                f"С вашего баланса будет списано {cost}₽.",
-                reply_markup=keyboard
-            )
+                ])
+            elif "yoomoney" in callback.data:
+                url = await self.yookassa_handler.create_payment(callback.from_user.id,cost)
+                msg_text =  f"Стоимость: {cost}\n" \
+                            f"Ссылка для оплаты vpn:\n"\
+                            f"{url}"
+                keyboard = InlineKeyboardMarkup(inline_keyboard = [])
+            await callback.message.edit_caption(caption = msg_text,reply_markup=keyboard)
 
         @self.dp.callback_query(lambda c: c.data.startswith("vpn_"))
         async def handle_vpn_purchase(callback: types.CallbackQuery):
@@ -94,22 +125,21 @@ class vpnBot():
                 cost = 100
                 key_file = "../data/keys/keys_30.txt"
             
-            balance = await self.users_db.get_balance(user_id)
-
-            if balance < cost:
-                await callback.message.answer("❌ Недостаточно средств на балансе.")
-                return
-
-            try:
-                with open(key_file, "r", encoding="utf-8") as f:
-                    keys = f.readlines()
-            except FileNotFoundError:
-                await callback.message.answer("❌ Файл с ключами не найден.")
-                return
-
-            if not keys:
-                await callback.message.answer("❌ Ключи закончились.")
-                return
+            
+            if "balance" in callback.data:
+                balance = await self.users_db.get_balance(user_id)
+                if balance < cost:
+                    await callback.message.answer("❌ Недостаточно средств на балансе.")
+                    return
+                try:
+                    with open(key_file, "r", encoding="utf-8") as f:
+                        keys = f.readlines()
+                except FileNotFoundError:
+                    await callback.message.answer("❌ Файл с ключами не найден.")
+                    return
+                if not keys:
+                    await callback.message.answer("❌ Ключи закончились.")
+                    return
 
             key = keys[0].strip()
             with open(key_file, "w", encoding="utf-8") as f:
@@ -168,6 +198,7 @@ class vpnBot():
             ])
             await message.answer(text, reply_markup=support_button)
 
-    async def start(self):
 
+    async def start(self):
+        task = asyncio.create_task(self.yookassa_handler.start_check_payments())
         await self.dp.start_polling(self.bot)
