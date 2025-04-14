@@ -5,6 +5,7 @@ import asyncio
 import configs.main_config as config
 import configs.texts.texts as texts
 from modules.yookassa_handler import Yookassa_handler
+from modules.keys_handler import Keys_handler
 
 
 class vpnBot():
@@ -13,7 +14,7 @@ class vpnBot():
         self.bot = Bot(token=self.BOT_TOKEN)
         self.dp = Dispatcher()
         self.yookassa_handler = Yookassa_handler()
-        
+        self.keys_handler=  Keys_handler()
         self.init_keyboards()
         self.init_handlers()
         self.users_db = db
@@ -200,5 +201,6 @@ class vpnBot():
 
 
     async def start(self):
-        task = asyncio.create_task(self.yookassa_handler.start_check_payments())
+        yookassa_task = asyncio.create_task(self.yookassa_handler.start_check_payments())
+        keys_task = asyncio.create_task(self.keys_handler.start_keys_pending_polling())
         await self.dp.start_polling(self.bot)

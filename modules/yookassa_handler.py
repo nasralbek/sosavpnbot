@@ -2,7 +2,7 @@ from yookassa import Configuration, Payment,Settings
 from uuid import uuid4
 from var_dump import var_dump
 from modules.transactions_db import Transactions_DB,Transaction_status
-from modules.keys_db import KeysDB
+from modules.keys_db import Keys_DB
 from configs.main_config import db_filename
 import asyncio
 
@@ -10,7 +10,7 @@ class Yookassa_handler():
     def __init__(self):
         Configuration.configure("1068875",'test_K6LTaG09mZM-fkv-cmS9ERZZdXjKq6_5E6YGakN5vjA')
         self.transactions_db = Transactions_DB(db_filename)
-        self.keys_db=KeysDB(db_filename)
+        self.keys_db=Keys_DB(db_filename)
 
 
     async def create_payment(self,user_id,price,):
@@ -56,11 +56,12 @@ class Yookassa_handler():
                     payment_id = await self.transactions_db.get_payment_id(uuid)
                     payment_res = Payment.find_one(payment_id)
                     status = str(payment_res.status)
-                    print(status == "succeeded")
+                    #print(status)
+                    #print(status == "succeeded")
 
                     if status == "succeeded":
                             user_id = await self.transactions_db.get_user_id(uuid)
-                            await self.keys_db.add_key(user_id)
+                            await self.keys_db.add_pending(user_id)
                             await self.transactions_db.set_transaction_status(uuid,Transaction_status.success)
                             await self.transactions_db.set_key_requested(uuid,True)
                     elif status == "canceled":

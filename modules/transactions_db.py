@@ -100,4 +100,5 @@ class Transactions_DB(BaseDB):
                 result = await execute_result.fetchone()
                 return (result[0])
         except Exception as e:
+            print("and there")
             self.connection_failed(e)
