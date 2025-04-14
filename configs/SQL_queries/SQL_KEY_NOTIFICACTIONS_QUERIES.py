@@ -12,12 +12,12 @@ VALUES (?, ?)
 """
 
 set_notified = """
-UPDATE users 
+UPDATE keys_notifications 
 SET notified = ?
 WHERE uuid_in_keys = ?
 """
 
 get_by_notified = """
 SELECT uuid_in_keys
-WHERE notified = ?
-"""
+FROM keys_notifications
+WHERE notified = ?"""

@@ -23,8 +23,8 @@ class Keys_notify_DB(BaseDB):
 
     async def get_by_notified(self,notified_status = False):
         try:
-            async with aiosqlite.connect(self.db_name ,notified_status = False) as db:
-                execute_result = await db.execute(SQLs.select_by_notified,(notified_status,))
+            async with aiosqlite.connect(self.db_name) as db:
+                execute_result = await db.execute(SQLs.get_by_notified,(notified_status,))
                 result = await execute_result.fetchall()
                 result = list(map(lambda x: notify_instance(x,notified_status),result))
                 return result

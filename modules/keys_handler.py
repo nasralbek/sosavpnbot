@@ -68,7 +68,7 @@ class Keys_handler():
                 except Exception as e:
                     print(e)
             
-            await asyncio.sleep(10)
+            await asyncio.sleep(1)
 
     # async def start_keys_notifications_polling(self):
     #     self.isRunning = True

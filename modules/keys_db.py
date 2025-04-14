@@ -50,5 +50,25 @@ class Keys_DB(BaseDB):
             self.connection_failed(e)
             return []
 
+    async def get_key(self,uuid):
+        try:
+            async with aiosqlite.connect(self.db_name ) as db:
+                execute_result = await db.execute(SQLs.get_key,(uuid,))
+                result = await execute_result.fetchone()
+                result = list(result)[0]
+                return result
+        except Exception as e:
+            self.connection_failed(e)
+            return []
 
-    
+
+    async def get_user_id(self,uuid):
+        try:
+            async with aiosqlite.connect(self.db_name ) as db:
+                execute_result = await db.execute(SQLs.get_user_id,(uuid,))
+                result = await execute_result.fetchone()
+                result = list(result)[0]
+                return result
+        except Exception as e:
+            self.connection_failed(e)
+            return []

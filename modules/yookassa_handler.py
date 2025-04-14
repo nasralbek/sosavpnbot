@@ -9,6 +9,7 @@ import asyncio
 class Yookassa_handler():
     def __init__(self):
         Configuration.configure("1068875",'test_K6LTaG09mZM-fkv-cmS9ERZZdXjKq6_5E6YGakN5vjA')
+        
         self.transactions_db = Transactions_DB(db_filename)
         self.keys_db=Keys_DB(db_filename)
 
@@ -55,6 +56,7 @@ class Yookassa_handler():
                 try:
                     payment_id = await self.transactions_db.get_payment_id(uuid)
                     payment_res = Payment.find_one(payment_id)
+                    var_dump(payment_res)
                     status = str(payment_res.status)
                     #print(status)
                     #print(status == "succeeded")
@@ -68,7 +70,7 @@ class Yookassa_handler():
                         await self.transactions_db.set_transaction_status(uuid,Transaction_status.canceled)
                 except Exception as e:
                         print (e)
-            await asyncio.sleep(10)
+            await asyncio.sleep(1)
         
 def test():
     yoo_handler = yookassa_handler()

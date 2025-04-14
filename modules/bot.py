@@ -6,6 +6,8 @@ import configs.main_config as config
 import configs.texts.texts as texts
 from modules.yookassa_handler import Yookassa_handler
 from modules.keys_handler import Keys_handler
+from modules.keys_notify_db import Keys_notify_DB
+from modules.keys_db import Keys_DB
 
 
 class vpnBot():
@@ -18,6 +20,8 @@ class vpnBot():
         self.init_keyboards()
         self.init_handlers()
         self.users_db = db
+        self.keys_notify_db = Keys_notify_DB(config.db_filename)
+        self.keys_db = Keys_DB(config.db_filename)
         self.sosa_vpn_banner = FSInputFile("./src/vpn_banner.jpg")
 
 
@@ -199,8 +203,29 @@ class vpnBot():
             ])
             await message.answer(text, reply_markup=support_button)
 
+    async def start_polling_pending_notifications(self):
+        while True:
+            try:
+                pending_notifies = await self.keys_notify_db.get_by_notified(notified_status = False)
+                for pending_notification in pending_notifies:
+                    uuid = pending_notification.uuid_in_keys
+                    key = await self.keys_db.get_key(uuid)
+                    user_id = await self.keys_db.get_user_id(uuid)
+                    #print(key,user_id)
+                    try:
+                        await self.bot.send_message(chat_id = user_id,text = f"ваш ключ: \n{key}")
+                        await self.keys_notify_db.set_notified(uuid)
+
+                    except Exception as e:
+                        print(e)
+
+                
+            except Exception as e:
+                print(e)
+            await asyncio.sleep(1)
 
     async def start(self):
         yookassa_task = asyncio.create_task(self.yookassa_handler.start_check_payments())
         keys_task = asyncio.create_task(self.keys_handler.start_keys_pending_polling())
+        notifies_task = asyncio.create_task(self.start_polling_pending_notifications())
         await self.dp.start_polling(self.bot)

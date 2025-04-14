@@ -24,5 +24,16 @@ SELECT user_id,uuid FROM keys WHERE issued = ?
 issue_key = """UPDATE keys SET key = ?, issued = ?
 WHERE uuid = ?"""
 
+get_key = """
+SELECT key
+FROM keys
+where uuid = ?"""
+
+get_user_id = """
+SELECT user_id
+FROM keys
+where uuid = ?
+"""
+
 
 
