@@ -1,40 +1,47 @@
 from modules.keys_db import Keys_DB
 from modules.keys_notify_db import Keys_notify_DB
+from modules.reserve_keys_db import Reserve_keys_DB
 import asyncio
 from configs.main_config import db_filename
 
+
 class Key_origin():
-    db_key = 0
-    server_key = 1
+    server_key = 0
+    reserve_db_key = 1
     failed_key = 2
 
 class received_key():
-    succes = True
+    success = True
     failed = False
     def __init__(self,status,origin, key):
-        self.success = status
+        self.success_status = status
         self.origin = origin
         self.key = key
+        
 
 class key_getter():
     def __init__(self):
-        pass
+        self.reserve_keys_db = Reserve_keys_DB(db_filename)
 
-    def get_key(self) -> received_key:
+    async def get_key(self) -> received_key:
+        print("getting")
         key = self.get_from_server()
-        if key.success:
+        print("getted")
+        if key.success_status:
+            print("returned")
             return key
-        key = self.get_from_reserve_db()
-        if key.success:
+        key = await self.get_from_reserve_db()
+        if key.success_status:
+            print("returned_db")
             return key
         key = received_key(received_key.failed,Key_origin.failed_key,None)
         return key
 
-    def get_from_reserve_db(self) ->received_key:
-        return received_key(received_key.succes,Key_origin.server_key,"key_1")
+    async def get_from_reserve_db(self) ->received_key:
+        return received_key(received_key.success,Key_origin.reserve_db_key,await self.reserve_keys_db.get_key())
 
     def get_from_server(self) -> received_key:
-        pass
+        return received_key(received_key.failed,Key_origin.server_key,"key_1")
 
 class Keys_handler():
     def __init__(self):
@@ -51,11 +58,16 @@ class Keys_handler():
         while self.isRunning:
             pending_keys = await self.keys_db.get_by_issued(False)
             for pending_key in pending_keys:
-                key = self.key_getter.get_key()
-                if key.succes:
-                    uuid  = pending_key.uuid
-                    await self.keys_db.issue_key(uuid,key)
-                    await self.keys_notify_db.add_notification(uuid,)
+                try:
+                    key =await  self.key_getter.get_key()
+                    print(key)
+                    if key.success_status:
+                        uuid  = pending_key.uuid
+                        await self.keys_db.issue_key(uuid,key.key)
+                        await self.keys_notify_db.add_notification(uuid,)
+                except Exception as e:
+                    print(e)
+            
             await asyncio.sleep(10)
 
     # async def start_keys_notifications_polling(self):
