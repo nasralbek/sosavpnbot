@@ -1,9 +1,9 @@
 from modules.databases.keys_db import Keys_DB
 from modules.databases.keys_notify_db import Keys_notify_DB
 from modules.databases.reserve_keys_db import Reserve_keys_DB
-import asyncio
 from configs.main_config import db_filename
-
+from modules.xuiAPI.xuiAPI import X_UI_API
+import asyncio
 
 class Key_origin():
     server_key = 0
@@ -22,11 +22,11 @@ class received_key():
 class key_getter():
     def __init__(self):
         self.reserve_keys_db = Reserve_keys_DB(db_filename)
+        self.x_ui_api = X_UI_API()
 
-    async def get_key(self) -> received_key:
-        print("getting")
-        key = self.get_from_server()
-        print("getted")
+
+    async def get_key(self,uuid,user_id) -> received_key:
+        key = await self.get_from_server(uuid,user_id)
         if key.success_status:
             print("returned")
             return key
@@ -40,8 +40,9 @@ class key_getter():
     async def get_from_reserve_db(self) ->received_key:
         return received_key(received_key.success,Key_origin.reserve_db_key,await self.reserve_keys_db.get_key())
 
-    def get_from_server(self) -> received_key:
-        return received_key(received_key.failed,Key_origin.server_key,"key_1")
+    async def get_from_server(self,uuid,user_id) -> received_key:
+        new_key = await self.x_ui_api.get_key(uuid,user_id)
+        return received_key(received_key.success,Key_origin.server_key,new_key)
 
 class Keys_handler():
     def __init__(self):
@@ -59,10 +60,11 @@ class Keys_handler():
             pending_keys = await self.keys_db.get_by_issued(False)
             for pending_key in pending_keys:
                 try:
-                    key =await  self.key_getter.get_key()
+                    uuid  = pending_key.uuid
+                    user_id = pending_key.user_id
+                    key = await self.key_getter.get_key(uuid,user_id)
                     print(key)
                     if key.success_status:
-                        uuid  = pending_key.uuid
                         await self.keys_db.issue_key(uuid,key.key)
                         await self.keys_notify_db.add_notification(uuid,)
                 except Exception as e:
