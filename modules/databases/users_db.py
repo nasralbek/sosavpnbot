@@ -1,7 +1,7 @@
 import asyncio
 import aiosqlite
 import configs.SQL_queries.SQLs as SQLs
-from modules.base_db import BaseDB
+from modules.databases.base_db import BaseDB
 
 #TODO: move this to other file
 class Register_user_status():

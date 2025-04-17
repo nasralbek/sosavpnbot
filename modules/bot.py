@@ -6,8 +6,8 @@ import configs.main_config as config
 import configs.texts.texts as texts
 from modules.yookassa_handler import Yookassa_handler
 from modules.keys_handler import Keys_handler
-from modules.keys_notify_db import Keys_notify_DB
-from modules.keys_db import Keys_DB
+from modules.databases.keys_notify_db import Keys_notify_DB
+from modules.databases.keys_db import Keys_DB
 
 
 class vpnBot():

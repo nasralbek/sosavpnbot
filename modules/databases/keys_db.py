@@ -1,4 +1,4 @@
-from modules.base_db import BaseDB
+from modules.databases.base_db import BaseDB
 import configs.SQL_queries.SQL_KEYS_QUERIES as SQLs
 import aiosqlite
 from uuid import uuid4

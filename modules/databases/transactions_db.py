@@ -1,5 +1,5 @@
 import configs.SQL_queries.SQL_TRANSACTION_QUERIES as SQLs
-from modules.base_db import BaseDB
+from modules.databases.base_db import BaseDB
 import aiosqlite
 
 class Transaction_status():

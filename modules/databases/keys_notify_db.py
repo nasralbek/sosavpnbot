@@ -1,6 +1,6 @@
 import configs.SQL_queries.SQL_KEY_NOTIFICACTIONS_QUERIES as SQLs
 import aiosqlite
-from modules.base_db import BaseDB
+from modules.databases.base_db import BaseDB
 
 
 class notify_instance():

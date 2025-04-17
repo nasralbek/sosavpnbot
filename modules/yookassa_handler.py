@@ -1,8 +1,8 @@
 from yookassa import Configuration, Payment,Settings
 from uuid import uuid4
 from var_dump import var_dump
-from modules.transactions_db import Transactions_DB,Transaction_status
-from modules.keys_db import Keys_DB
+from modules.databases.transactions_db import Transactions_DB,Transaction_status
+from modules.databases.keys_db import Keys_DB
 from configs.main_config import db_filename
 import asyncio
 

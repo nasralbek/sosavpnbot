@@ -1,11 +1,11 @@
 from configs.main_config import db_filename
 from modules.bot import vpnBot
 
-from modules.users_db import Users_DB
-from modules.transactions_db import Transactions_DB
-from modules.keys_db import Keys_DB
-from modules.keys_notify_db import Keys_notify_DB
-from modules.reserve_keys_db import Reserve_keys_DB
+from modules.databases.users_db import Users_DB
+from modules.databases.transactions_db import Transactions_DB
+from modules.databases.keys_db import Keys_DB
+from modules.databases.keys_notify_db import Keys_notify_DB
+from modules.databases.reserve_keys_db import Reserve_keys_DB
 
 from modules.yookassa_handler import Yookassa_handler
 import asyncio 
