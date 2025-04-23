@@ -1,8 +1,6 @@
 import configs.SQL_queries.SQL_KEY_NOTIFICACTIONS_QUERIES as SQLs
 import aiosqlite
 from modules.databases.base_db import BaseDB
-
-
 class notify_instance():
     def __init__(self,list,notified):
         self.uuid_in_keys = list[0]
@@ -11,7 +9,6 @@ class notify_instance():
 class Keys_notify_DB(BaseDB):
     def __init__(self,filename):
         self.db_name = filename
-
         self.init_command = SQLs.create_keys_notifications_table
     async def add_notification(self,uuid,notified = False):
         try:
@@ -31,7 +28,7 @@ class Keys_notify_DB(BaseDB):
         except Exception as e:
             self.connection_failed(e)
             return []
-        
+
     async def set_notified(self,uuid,notified_status = True):
         try:
             async with aiosqlite.connect(self.db_name) as db:

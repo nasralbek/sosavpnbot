@@ -10,9 +10,9 @@ def rand_sub_id(len=20):
 DEFAULT_DEVICES_COUNT = 5
 
 
-def create_key_model(db):
+def create_key_parameters_model(db):
     class Key_paramenters(db.Model):
-        __tablename__ = "keys"
+        __tablename__ = "key_parameters"
 
         user_id = Column(BigInteger,primary_key=True)
         key_uuid = Column(UUID(as_uuid=True), primary_key=True)
