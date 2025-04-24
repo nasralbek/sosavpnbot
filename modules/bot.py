@@ -5,23 +5,21 @@ import asyncio
 import configs.main_config as config
 import configs.texts.texts as texts
 from modules.yookassa_handler import Yookassa_handler
-from modules.keys_handler import Keys_handler
-from modules.databases.keys_notify_db import Keys_notify_DB
-from modules.databases.keys_db import Keys_DB
+
+from modules.databases.gino.DB_GINO_MANAGER import DatabaseManager
+from modules.databases.gino.enums.users_enum import RegisterUserEnum 
 
 
 class vpnBot():
-    def __init__(self,db):
+    def __init__(self,db_manager:DatabaseManager):
         self.BOT_TOKEN = config.TELERAM_API_KEY
         self.bot = Bot(token=self.BOT_TOKEN)
         self.dp = Dispatcher()
         self.yookassa_handler = Yookassa_handler()
-        self.keys_handler=  Keys_handler()
         self.init_keyboards()
         self.init_handlers()
-        self.users_db = db
-        self.keys_notify_db = Keys_notify_DB(config.db_filename)
-        self.keys_db = Keys_DB(config.db_filename)
+        self.db_manager = db_manager
+        
         self.sosa_vpn_banner = FSInputFile("./src/vpn_banner.jpg")
 
 
@@ -37,18 +35,19 @@ class vpnBot():
     def init_handlers(self):
         @self.dp.message(lambda message: message.text.startswith("/start"))
         async def handle_start(message: types.Message):
-            ref = message.text.split(" ")[1] if len(message.text.split()) > 1 else None
+            
+            ref_id = message.text.split(" ")[1] if len(message.text.split()) > 1 else None
             user_id = message.from_user.id
-            register_status = await self.users_db.register_user(user_id, ref)
+            register_status = await self.db_manager.register_user(user_id,ref_id)
 
 
             welcome_caption = texts.welcome_text
             await message.answer_photo(photo=self.sosa_vpn_banner, caption=welcome_caption,reply_markup=self.main_keyboard)
 
-            if register_status.ok():
+            if register_status == RegisterUserEnum.register_success:
                 if not (register_status.refferal is None):
                     try:
-                        await self.bot.send_message(ref, "🎉 Новый пользователь зарегистрировался по твоей ссылке! Тебе начислено 50₽.")
+                        await self.bot.send_message(ref_id, "🎉 Новый пользователь зарегистрировался по твоей ссылке! Тебе начислено 50₽.")
                     except Exception as e:
                         print(f"Ошибка при уведомлении пригласителя: {e}")
                     try:
