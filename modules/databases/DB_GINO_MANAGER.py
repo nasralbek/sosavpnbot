@@ -1,12 +1,12 @@
 from gino import Gino
 from sqlalchemy import exists
 
-from modules.databases.gino.models.User_model import create_user_model
-from modules.databases.gino.models.Key_model import create_key_model
-from modules.databases.gino.models.Key_parameters_model import create_key_parameters_model
-from modules.databases.gino.models.Transaction_model import create_transaction_model
+from modules.databases.models.User_model import create_user_model
+from modules.databases.models.Key_model import create_key_model
+from modules.databases.models.Key_parameters_model import create_key_parameters_model
+from modules.databases.models.Transaction_model import create_transaction_model
 
-from modules.databases.gino.enums.users_enum import RegisterUserEnum
+from modules.databases.enums.users_enum import RegisterUserEnum
 import uuid
 reg_by_ref_bonus = 100
 invite_user_bonus = 50
