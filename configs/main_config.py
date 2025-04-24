@@ -9,6 +9,18 @@ TELERAM_API_KEY = TELERAM_API_KEY
 db_filename = "../data/databases/db.sqlite3"
 default_inbound = 9
 
+class os_attr_not_defined(Exception):
+     def __init__(self, message):            
+        super().__init__(message)
+
+def get_os_attr(attrname=""):
+    result =  os.environ.get(attrname)
+    if not result:
+        raise os_attr_not_defined(f"os variable : {attrname} not defined")
+    return result
+
+
+
 
 os.environ["XUI_HOST"] = x_ui_host
 os.environ["XUI_USERNAME"] = x_ui_username
