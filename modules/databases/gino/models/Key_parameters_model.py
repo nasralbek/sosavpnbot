@@ -15,7 +15,7 @@ def create_key_parameters_model(db):
         __tablename__ = "key_parameters"
 
         user_id = Column(BigInteger,primary_key=True)
-        key_uuid = Column(UUID(as_uuid=True), primary_key=True)
+        key_uuid = Column(UUID(), primary_key=True)
         remaining_days =  Column(Integer, default=0)
         start_time = Column(DateTime,nullable = True)
         expite_time = Column(DateTime,nullable = True)

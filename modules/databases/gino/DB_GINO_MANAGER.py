@@ -7,9 +7,9 @@ from modules.databases.gino.models.Key_parameters_model import create_key_parame
 from modules.databases.gino.models.Transaction_model import create_transaction_model
 
 from modules.databases.gino.enums.users_enum import RegisterUserEnum
-
-reg_by_ref_bonus = 150
-invite_user_bonus = 75
+import uuid
+reg_by_ref_bonus = 100
+invite_user_bonus = 50
 
 class DatabaseManager():
     def __init__(self,db : Gino):
@@ -43,33 +43,23 @@ class DatabaseManager():
     async def register_user(self,user_id,refferral_id=None):
         if await self.is_user_exists(user_id):
             return RegisterUserEnum.user_already_exists
-        new_user = await self.User.Create(user_id = user_id,invited_by = refferral_id)
+        key_uuid = uuid.uuid4()
+        new_user = await self.User.create(user_id = user_id,invited_by = refferral_id,key_uuid = key_uuid)
         if refferral_id:
             referral_user = await self.get_user(refferral_id)
-            await referral_user.update(referrals = referral_user.referrals+1)
-            await self.increase_balance(user_id,reg_by_ref_bonus)
-            await self.increase_balance(refferral_id,)
-        self.create_key(user_id,new_user.key_uuid)
+            await new_user.increase_balance(reg_by_ref_bonus)
+            await referral_user.increase_balance(invite_user_bonus)
+            await referral_user.increase_referrals(1)
+        await self.create_key(user_id,new_user.key_uuid)
         return RegisterUserEnum.register_success
 
     async def create_key(self,user_id,key_uuid):
-        await self.Key.Create(user_id = user_id)
+        await self.Key.create(user_id = user_id,key_uuid = key_uuid)
         await self.Key_paramaters.create(user_id = user_id,key_uuid = key_uuid)
 
     async def get_user(self,user_id):
         return await self.User.query.where(self.User.user_id == user_id ).gino.one()
         
-    async def set_user_balance(self,user_id,new_balance):
-        user = await self.get_user(user_id)
-        user.update(balance = new_balance)
-    
-    async def increase_balance(self,user_id,increase_amount):
-        user = await self.get_user(user_id)
-        await user.update(balance = user.balance+increase_amount)
-
-    async def decrease_balance(self,user_id,decrease_amount):
-        await self.increase_balance(user_id,-decrease_amount)
-
     async def is_user_exists(self,user_id) -> bool:
-        result = await self.db.select([exists().where(self.User.id == user_id)]).gino.scalar()
+        result = await self.db.scalar(exists().where(self.User.user_id == user_id).select())
         return result

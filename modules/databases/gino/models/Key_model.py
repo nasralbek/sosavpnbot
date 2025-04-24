@@ -9,18 +9,17 @@ def rand_sub_id(len=20):
 
 DEFAULT_DEVICES_COUNT = 5
 DEFAULT_PROTOCOL = "https"
-DEFAULT_PORT = null
+DEFAULT_PORT = 0
 DEFAULT_DOMAIN = "sosavpn.tech"
 
 def create_key_model(db):
     class Key(db.Model):
         __tablename__ = "keys"
 
-        user_id  = Column(BigInteger,primary_key=True)
-        key_uuid = Column(UUID(as_uuid=True), primary_key=True)
-        domain   = Column(String,default = DEFAULT_DOMAIN)
-        protocol = Column(String, default = DEFAULT_PORT )
-        port     = Column(Integer,default=DEFAULT_PORT,nullable = True)
-
-
+        user_id  = Column(BigInteger,   primary_key=True)
+        key_uuid = Column(UUID(),       primary_key=True)
+        protocol = Column(String, default   = DEFAULT_PROTOCOL )
+        domain   = Column(String, default   = DEFAULT_DOMAIN)
+        port     = Column(Integer,default   = DEFAULT_PORT,nullable = True)
+        sub_id   = Column(String,default = lambda:rand_sub_id()) 
     return Key

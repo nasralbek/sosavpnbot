@@ -28,8 +28,9 @@ class TestGinoApi:
     @pytest.mark.asyncio
     async def test_register_user_wo_ref(self):
         db_manager = await self.get_db_manager()
-        user_id = 1000
-        await db_manager.register_user(user_id)
+        user_id = random.randint(1000,2000)
+        user = await db_manager.register_user(user_id)
+        assert user == RegisterUserEnum.register_success
 
     @pytest.mark.asyncio
     async def test_reg_user_with_ref(self):
@@ -38,6 +39,7 @@ class TestGinoApi:
         ref_id = random.randint(1000,2000)
         ref_status = await db_manager.register_user(ref_id)
         new_user_status = await db_manager.register_user(user_id,ref_id)
+        
         assert ref_status == RegisterUserEnum.register_success
         assert new_user_status == RegisterUserEnum.register_success
 
