@@ -1,27 +1,25 @@
 from configs.main_config import db_filename
 from modules.bot import vpnBot
-
-from modules.databases.users_db import Users_DB
-from modules.databases.transactions_db import Transactions_DB
-from modules.databases.keys_db import Keys_DB
-from modules.databases.keys_notify_db import Keys_notify_DB
-from modules.databases.reserve_keys_db import Reserve_keys_DB
+from modules.databases.gino.DB_GINO_MANAGER import DatabaseManager
 
 from modules.yookassa_handler import Yookassa_handler
 import asyncio 
 
 
-async def init_databases():
-    databases = (Users_DB,Transactions_DB,Keys_DB,Keys_notify_DB,Reserve_keys_DB)
-    for db in databases:
-        e = db(db_filename)
-        await e.init_db()
 
 async def main():
-    await init_databases()
-    db = Users_DB(db_filename)
-    await db.start()
-    bot = vpnBot(db)    
+    PG_DB_NAME = "postgres"
+    PG_USERNAME = "postgres"
+    PG_PASSWORD = "changeme"
+    PG_HOST = "127.0.0.1"
+    PG_PORT = "5432"
+    db_manager = await DatabaseManager.auth(PG_HOST,
+                                            PG_PORT,
+                                            PG_DB_NAME,
+                                            PG_USERNAME,
+                                            PG_PASSWORD)
+    await db_manager.init_tables()
+    bot = vpnBot(db_manager)    
     await bot.start()
 
 
