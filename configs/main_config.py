@@ -1,38 +1,42 @@
-from configs.TOKENS import TELERAM_API_KEY
-import os
-from configs.xui_creditionals import *
-from configs.pgconfig import *
+from tools.get_os_attr import get_os_attr
+from dotenv import load_dotenv
 
+load_dotenv(override=False)
 
-TELERAM_API_KEY = TELERAM_API_KEY
+TELERAM_API_KEY = get_os_attr("BOT_TELEGRAM_TOKEN")
 
+#deprecated
 db_filename = "../data/databases/db.sqlite3"
-default_inbound = 9
-
-class os_attr_not_defined(Exception):
-     def __init__(self, message):            
-        super().__init__(message)
-
-def get_os_attr(attrname=""):
-    result =  os.environ.get(attrname)
-    if not result:
-        raise os_attr_not_defined(f"os variable : {attrname} not defined")
-    return result
 
 
+#3x-ui
+XUI_HOST            = get_os_attr("XUI_HOST")
+XUI_USERNAME        = get_os_attr("XUI_USERNAME") 
+XUI_PASSWORD        = get_os_attr("XUI_PASSWORD") 
+XUI_TLS_CERT_PATH   = get_os_attr("XUI_TLS_CERT_PATH") 
+DEFAULT_INBOUND     = int(get_os_attr("BOT_DEFAULT_USER_INBOUND"))
+
+#database
+PG_DB_NAME          = get_os_attr("BOT_POSTGRES_DBNAME")
+PG_USERNAME         = get_os_attr("BOT_POSTGRES_USERNAME")
+PG_PASSWORD         = get_os_attr("BOT_POSTGRES_PASSWORD")
+PG_HOST             = get_os_attr("BOT_POSTGRES_HOST")
+PG_PORT             = get_os_attr("BOT_POSTGRES_PORT")
+
+#referral programm
+BONUS_TO_INVITER = 15
+BONUS_TO_INVITED = 30
+
+#plans
+day_price = 3.33
+default_plans = [30,60,90]
 
 
-os.environ["XUI_HOST"] = x_ui_host
-os.environ["XUI_USERNAME"] = x_ui_username
-os.environ["XUI_PASSWORD"] = x_ui_password
-os.environ["TLS_CERT_PATH"] = "../data/certificates/fullchain.cer"
-
-os.environ["PG_DATABASE"] = PG_DB_NAME
-os.environ["PG_USER"] = PG_USERNAME
-os.environ["PG_PASSWORD"] = PG_PASSWORD
-os.environ["PG_HOST"] = PG_HOST
-os.environ["PG_PORT"] = PG_PORT
-
+class XUI_CONFIG():
+    XUI_HOST            = XUI_HOST
+    XUI_USERNAME        = XUI_USERNAME
+    XUI_PASSWORD        = XUI_PASSWORD
+    XUI_TLS_CERT_PATH   = XUI_TLS_CERT_PATH
 
 class PG_CONFIG:
     PG_DB_NAME = PG_DB_NAME
@@ -40,3 +44,20 @@ class PG_CONFIG:
     PG_PASSWORD = PG_PASSWORD
     PG_HOST = PG_HOST
     PG_PORT = PG_PORT
+
+class REFERRAL_PROGRAMM_CONFIG():
+    BONUS_TO_INVITER = BONUS_TO_INVITER 
+    BONUS_TO_INVITED = BONUS_TO_INVITED
+
+
+
+# os.environ["XUI_HOST"] = x_ui_host
+# os.environ["XUI_USERNAME"] = x_ui_username
+# os.environ["XUI_PASSWORD"] = x_ui_password
+# os.environ["TLS_CERT_PATH"] = "../data/certificates/fullchain.cer"
+
+# os.environ["PG_DATABASE"] = PG_DB_NAME
+# os.environ["PG_USER"] = PG_USERNAME
+# os.environ["PG_PASSWORD"] = PG_PASSWORD
+# os.environ["PG_HOST"] = PG_HOST
+# os.environ["PG_PORT"] = PG_PORT

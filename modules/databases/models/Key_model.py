@@ -21,5 +21,17 @@ def create_key_model(db):
         protocol = Column(String, default   = DEFAULT_PROTOCOL )
         domain   = Column(String, default   = DEFAULT_DOMAIN)
         port     = Column(Integer,default   = DEFAULT_PORT,nullable = True)
-        sub_id   = Column(String,default = lambda:rand_sub_id()) 
+        sub_id   = Column(String,default = lambda:rand_sub_id())
+
+
+        def string(self):
+            s=''
+            s+=self.protocol+'://'
+            s+=self.domain
+            if self.port:
+                s+=":"+self.port
+            s+="/"+self.sub_id
+            return s
+
+            
     return Key

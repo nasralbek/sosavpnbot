@@ -1,5 +1,5 @@
 import pytest
-import modules.databases.gino.DB_GINO_MANAGER as DB_GINO_MANAGER
+import modules.databases.DB_GINO_MANAGER as DB_GINO_MANAGER
 from modules.databases.gino.enums.users_enum import RegisterUserEnum 
 
 from gino import Gino

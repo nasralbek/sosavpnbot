@@ -8,6 +8,7 @@
 *TOKENS.py
 *xui_creditionals.py
 *pgconfig.py
+.env
 
 #ide files
 .vscode/

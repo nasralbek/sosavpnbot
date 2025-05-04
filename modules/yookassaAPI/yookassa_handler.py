@@ -1,8 +1,8 @@
 from yookassa import Configuration, Payment,Settings
 from uuid import uuid4
 from var_dump import var_dump
-from modules.databases.transactions_db import Transactions_DB,Transaction_status
-from modules.databases.keys_db import Keys_DB
+#from modules.databases.transactions_db import Transactions_DB,Transaction_status
+#from modules.databases.keys_db import Keys_DB
 from configs.main_config import db_filename
 import asyncio
 
@@ -72,11 +72,11 @@ class Yookassa_handler():
                         print (e)
             await asyncio.sleep(1)
         
-def test():
-    yoo_handler = yookassa_handler()
-    yoo_handler.create_payment(0000,100)
-    yoo_handler.check_payments()
-    print(uuid4())
+# def test():
+#     yoo_handler = yookassa_handler()
+#     yoo_handler.create_payment(0000,100)
+#     yoo_handler.check_payments()
+#     print(uuid4())
 
-if __name__ =="__main__":
-    test()
+# if __name__ =="__main__":
+#     test()
