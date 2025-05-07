@@ -15,6 +15,7 @@ async def main():
 
     bot = vpnBot(db_manager,app_manager)    
     await bot.start()
+    print("started")
 
 
 if __name__=="__main__":

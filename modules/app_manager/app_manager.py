@@ -1,5 +1,7 @@
 from modules.xuiAPI.xuiAPI import X_UI_API
 from modules.databases.DB_GINO_MANAGER import DatabaseManager
+from modules.yookassaAPI.yookassa_new import YookassaManager
+
 from configs.main_config import REFERRAL_PROGRAMM_CONFIG 
 from uuid import uuid4
 
@@ -12,11 +14,36 @@ class App_manager():
         self = App_manager()
         self.xui_api = X_UI_API()
         self.db_manager = await DatabaseManager.auth_from_config()
+        self.yookassa_manager =  YookassaManager()
         return self    
 
-    async def add_days_to_user(self,user_id,amount):
-        self.xui_api.add_days(user_id,amount)
-        self.db_manager.lirili_larila()
+    async def create_transaction(self,user_id,amount,days):
+        payment_data = self.yookassa_manager.create_payment(user_id,amount)
+        print(payment_data)
+        url,payment_id = payment_data.url, payment_data.payment_id
+        await self.db_manager.create_transaction(
+                                    user_id,
+                                    payment_id,
+                                    url, #?
+                                    amount,
+                                    days)
+        return url
+    async def confirm_transaction(self,payment_id):
+        transaction = self.db_manager.get_transaction(payment_id)
+        transaction.set_success()
+
+    async def cancel_transaction(self,payment_id):
+        transaction = self.db_manager.get_transaction(payment_id)
+        transaction.set_canceled()
+
+    async def get_pending_transactions(self): 
+        transactions = await self.db_manager.get_pending_transactions() #TODO: MAKE 
+        return transactions
+
+    def check_transaction(self,payment_id):
+        return self.yookassa_manager.check_transaction_status(payment_id)
+
+
 
 
     async def register_user(self,user_id):
@@ -31,18 +58,18 @@ class App_manager():
         return await self.db_manager.is_user_exists(user_id)
 
     async def new_referral(self,user_id,ref_id):
+        await self.add_days_to_user(user_id,REFERRAL_PROGRAMM_CONFIG.BONUS_TO_INVITED)
+        await self.add_days_to_user(ref_id,REFERRAL_PROGRAMM_CONFIG.BONUS_TO_INVITER)
+
         user        = await self.db_manager.get_user(user_id)
         referral    = await self.db_manager.get_user(ref_id)
-        user_expiry = await self.xui_api.increase_expiry_time(user,
-                                                REFERRAL_PROGRAMM_CONFIG.BONUS_TO_INVITED)
-        ref_expiry  = await self.xui_api.increase_expiry_time(referral,
-                                                REFERRAL_PROGRAMM_CONFIG.BONUS_TO_INVITER)
-        
-        await user.set_expiry_time(user_expiry)
-        await referral.set_expiry_time(ref_expiry)
-
         await user.set_referral(ref_id)
         await referral.increase_referrals(1)
+
+    async def add_days_to_user(self,user_id,days):
+        user = await self.db_manager.get_user(user_id)
+        user_expiry = await self.xui_api.increase_expiry_time(user, days)
+        await user.set_expiry_time(user_expiry)
 
 
     async def register_in_xui(self,user_id,uuid):

@@ -1,18 +1,14 @@
 from aiogram import Bot, Dispatcher, types
-from aiogram.enums import ParseMode
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton, FSInputFile
 import asyncio 
-from magic_filter import F
 from configs.main_config import TELERAM_API_KEY
 
-
 #from modules.yookassa_handler import Yookassa_handler
-
-from modules.databases.DB_GINO_MANAGER import DatabaseManager
 #from modules.databases.enums.users_enum import RegisterUserEnum 
+from modules.yookassaAPI.yookassa_new import TransactionStatus
+from modules.databases.DB_GINO_MANAGER import DatabaseManager
 from modules.bot.handlers import Handlers 
-import modules.bot.callbacks as callbacks
 from modules.bot.keyboard_texts import MainKeyboardTexts
+import modules.bot.callbacks as callbacks
 
 
 class vpnBot():
@@ -59,25 +55,58 @@ class vpnBot():
         async def how_to_handler(callback: types.CallbackQuery):
             await self.handlers.how_to_handler(callback)
 
-        @self.dp.callback_query(lambda callback: callback.data.startswith(callbacks.purshare_method_starter))
-        async def select_method_handler(callback: types.CallbackQuery):
-            await self.handlers.select_method_handler(callback)
-
-
         @self.dp.callback_query(lambda callback: callback.data == callbacks.replenishment_callback )
         async def replenishment_handler(callback: types.CallbackQuery):
             print("replenishment handler")
             await self.handlers.replenishment_handler(callback)
 
         @self.dp.callback_query(callbacks.SelectMethodCallback.filter())
+        async def select_method_handler(query: types.CallbackQuery,callback_data: types.CallbackQuery):
+            print("method handler")
+            await self.handlers.select_method_handler(query,callback_data)
+
+        @self.dp.callback_query(callbacks.SelectDaysCallback.filter())
         async def select_days_handler(query: types.CallbackQuery,callback_data: types.CallbackQuery):
             print("days handler")
             await self.handlers.select_days_handler(query,callback_data)
 
-    
+        @self.dp.callback_query(callbacks.ConfirmCallback.filter())
+        async def confirm_handler(query: types.CallbackQuery,callback_data: types.CallbackQuery):
+            print("confirm handler")
+            await self.handlers.confirm_handler(query,callback_data)
+
+
+
+    async def on_transaction_success(self,transaction):
+        user_id = transaction.user_id
+        days = transaction.days
+        await transaction.set_success()
+        await self.app_manager.add_days_to_user(user_id,days)
+        await self.bot.send_message(user_id, f"пополение на {days} дней успешно")
+
+
+    async def on_transaction_canceled(self,transaction):
+        await transaction.set_canceled()
+
+    async def transaction_checker(self):
+        while True:
+            transactions = await self.app_manager.get_pending_transactions()
+            for transaction in transactions:
+                try:
+                    payment_id = transaction.payment_id
+                    status = self.app_manager.check_transaction(payment_id) #status
+                    if status == TransactionStatus.success:
+                        await self.on_transaction_success(transaction)
+                    elif status == TransactionStatus.canceled:
+                        await self.on_transaction_canceled(transaction)
+                except Exception as e:
+                    print(e)
+            await asyncio.sleep(5)
 
     async def start(self):
+        asyncio.create_task(self.transaction_checker())
         await self.dp.start_polling(self.bot)
+
 
 
 

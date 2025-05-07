@@ -133,3 +133,13 @@ class MainBotKeyboards():
             builder.adjust(1)
             self.keyboard = builder.as_markup()
 
+    class confirm_keyboard():
+        def __init__(self,days,method):
+            builder = InlineKeyboardBuilder()
+            confirm_button = InlineKeyboardButton(text = "confirm",
+                                                  callback_data = callbacks.ConfirmCallback(days=days,
+                                                                                            method=method).pack()
+                                                  )
+            builder.add(confirm_button)
+            builder.adjust(1)
+            self.keyboard = builder.as_markup()

@@ -1,14 +1,14 @@
 from aiogram.types import FSInputFile
 from aiogram import types
-import modules.bot.texts as texts
+from aiogram.enums import ParseMode
+
+from configs.main_config import day_price
 from modules.bot.keyboards import MainBotKeyboards
 from modules.bot.callbacks import purshare_method_starter
 import modules.bot.callbacks as callbacks
+import modules.bot.texts as texts
 
-from modules.databases.enums.users_enum import RegisterUserEnum
-
-from aiogram.enums import ParseMode
-import asyncio
+from math import ceil
 
 class Handlers():
     def __init__(self,db_manager,app_manager):
@@ -94,9 +94,9 @@ class Handlers():
 
     async def replenishment_handler(self,callback: types.CallbackQuery):        
         keyboard = self.keyboards.purshare_method_keyboard.keyboard
-        await callback.message.edit_text(text = "выберите способ оплаты",reply_markup = keyboard)
+        await callback.message.edit_text(text = texts.choose_replenishment_method,reply_markup = keyboard)
 
-    async def select_days_handler(self,
+    async def select_method_handler(self,
                                     query: types.CallbackQuery,
                                     callback_data: callbacks.SelectMethodCallback):
         method = callback_data.method
@@ -104,4 +104,38 @@ class Handlers():
         await query.message.edit_text(text = "выберите кол-во дней",
                                       reply_markup = keyboard)
 
+
+    async def select_days_handler(self,
+                                    query: types.CallbackQuery,
+                                    callback_data: callbacks.SelectDaysCallback):
+        days = callback_data.days
+        method = callback_data.method
+        price = ceil(days*day_price)
+        if method == "yookassa":
+            valute = 'руб.'
+
+        keyboard = self.keyboards.confirm_keyboard(days,method).keyboard
+
+        await query.message.edit_text(text = f"вы собираетесь купить впн на {days} дней за {price} {valute} с помощью {method}",
+                                      reply_markup=keyboard)
+
+
+    async def confirm_handler(self,
+                                query: types.CallbackQuery,
+                                callback_data: callbacks.ConfirmCallback):
+        days = callback_data.days
+        method = callback_data.method
+        amount = ceil(days*day_price)
+        user_id = query.from_user.id
+        if method == "yookassa":
+            valute = 'руб.'
+            pay_url = await self.app_manager.create_transaction(user_id,amount,days)
+
         
+        await query.message.edit_text(text = f"ссылка для оплаты: {pay_url}",)
+
+
+
+
+
+            

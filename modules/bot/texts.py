@@ -3,6 +3,7 @@ from modules.bot.callbacks import how_to_callbacks
 from math import ceil
 import time
 from datetime import date
+
 how_ios = (
 "📱 <b>Инструкция для iOS</b>:\n"
 "1. Установи V2Box из App Store.\n"
@@ -71,9 +72,22 @@ connect_vpn_message = (
 )
 not_enough_money_text = "❌ Недостаточно средств на балансе."
 
+choose_replenishment_method = 'Выберите способ оплаты'
+
+notify_referrer = (
+f"🎉 Новый пользователь зарегистрировался по твоей ссылке!\n"
+f"Тебе начислено {REFERRAL_PROGRAMM_CONFIG.BONUS_TO_INVITER}₽."
+)
+
+notify_invited = (
+    f"🎁 Добро пожаловать!\n"
+    f"Тебе начислено {REFERRAL_PROGRAMM_CONFIG.BONUS_TO_INVITED}₽ за регистрацию по реферальной ссылке."
+)
+
 def gen_balance_text():
     return ("способы оплаты:\n\n\n" \
             "тарифы:\n\n\n")
+
 def gen_connect_text(key,expiry_time):
     price = 3.33
     remaining_days = ceil((expiry_time - time.time()*1000)/1000/24/60/60)
@@ -130,12 +144,3 @@ def gen_want_to_purshare_yokassa(days,cost,url):
         f"{url}"
         )
 
-notify_referrer = (
-f"🎉 Новый пользователь зарегистрировался по твоей ссылке!\n"
-f"Тебе начислено {REFERRAL_PROGRAMM_CONFIG.BONUS_TO_INVITER}₽."
-)
-
-notify_invited = (
-    f"🎁 Добро пожаловать!\n"
-    f"Тебе начислено {REFERRAL_PROGRAMM_CONFIG.BONUS_TO_INVITED}₽ за регистрацию по реферальной ссылке."
-)

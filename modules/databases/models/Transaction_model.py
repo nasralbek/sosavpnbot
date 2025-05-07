@@ -7,9 +7,29 @@ def create_transaction_model(db):
     class Transaction(db.Model):
         __tablename__ = "transactions"
 
-        user_id = Column(BigInteger,primary_key=True)
-        payment_uuid = Column(UUID(as_uuid=True),primary_key=True)
-        created_at = Column(DateTime,default = datetime.now)
-        amount  = Column(Integer)
-        status = Column(String, primary_key=True)
+        user_id         = Column(BigInteger)
+        payment_id      = Column(UUID       ,   primary_key=True)
+        url             = Column(String)
+        amount          = Column(Integer)
+        status          = Column(String     ,   default = "pending")
+        days            = Column(Integer    ,   primary_key=True)
+        #created_at = Column(DateTime,default = datetime.now)
+
+        async def set_status(self,new_status):
+            self.status = new_status
+            print(self.status)
+            await self.update(status = self.status).apply()
+            print(self.status,"after")
+
+        async def set_success(self):
+            print("success")
+            await self.set_status('success')
+
+        async def set_canceled(self):
+            await self.set_status('canceled')
+
+
+
+
     return Transaction
+

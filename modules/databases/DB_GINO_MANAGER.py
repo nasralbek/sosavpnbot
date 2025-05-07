@@ -69,9 +69,9 @@ class DatabaseManager():
         except Exception as e:
             print(e)
 
-    async def create_key(self,user_id,key_uuid):
-        await self.Key.create(user_id = user_id,key_uuid = key_uuid)
-        await self.Key_paramaters.create(user_id = user_id,key_uuid = key_uuid)
+    # async def create_key(self,user_id,key_uuid):
+    #     await self.Key.create(user_id = user_id,key_uuid = key_uuid)
+    #     await self.Key_paramaters.create(user_id = user_id,key_uuid = key_uuid)
 
     async def get_user(self,user_id):
         user =  await self.User.query.where(self.User.user_id == user_id ).gino.one()
@@ -81,9 +81,9 @@ class DatabaseManager():
         user = await self.get_user(user_id)
         return user.balance
     
-    async def get_key(self,user_id):
-        key = await self.Key.query.where(self.Key.user_id == user_id ).gino.one()
-        return key.string()
+    # async def get_key(self,user_id):
+    #     key = await self.Key.query.where(self.Key.user_id == user_id ).gino.one()
+    #     return key.string()
     
     async def get_referrals(self,user_id):
         user = await self.get_user(user_id)
@@ -92,3 +92,21 @@ class DatabaseManager():
     async def is_user_exists(self,user_id) -> bool:
         result = await self.db.scalar(exists().where(self.User.user_id == user_id).select())
         return result
+
+    async def create_transaction(self,
+                                user_id,
+                                payment_id,
+                                url, #?
+                                amount,
+                                days):
+        payment_id = uuid.UUID(payment_id)
+        print(payment_id,type(payment_id))
+        new_transaction = await self.Transaction.create(user_id    = user_id    ,
+                                                        payment_id  = payment_id ,
+                                                        url         = url        ,
+                                                        amount      = amount     ,
+                                                        days = days)
+                
+    async def get_pending_transactions(self):
+        transactions = await self.Transaction.query.where(self.Transaction.status == "pending").gino.all()
+        return transactions
