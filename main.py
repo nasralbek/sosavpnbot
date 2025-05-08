@@ -1,6 +1,6 @@
 from configs.main_config import db_filename
 from modules.bot.bot import vpnBot
-from modules.databases.DB_GINO_MANAGER import DatabaseManager
+from modules.database.DB_GINO_MANAGER import DatabaseManager
 from modules.app_manager.app_manager import App_manager
 
 #from modules.yookassaAPI.yookassa_handler import Yookassa_handler
@@ -13,7 +13,7 @@ async def main():
     await db_manager.init_tables()
     app_manager = await App_manager.get_instance()
 
-    bot = vpnBot(db_manager,app_manager)    
+    bot = vpnBot(app_manager)    
     await bot.start()
     print("started")
 

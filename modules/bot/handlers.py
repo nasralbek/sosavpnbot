@@ -2,7 +2,7 @@ from aiogram.types import FSInputFile
 from aiogram import types
 from aiogram.enums import ParseMode
 
-from configs.main_config import day_price
+from configs import day_price
 from modules.bot.keyboards import MainBotKeyboards
 from modules.bot.callbacks import purshare_method_starter
 import modules.bot.callbacks as callbacks
@@ -11,12 +11,10 @@ import modules.bot.texts as texts
 from math import ceil
 
 class Handlers():
-    def __init__(self,db_manager,app_manager):
+    def __init__(self,app_manager):
         self.sosa_vpn_banner = FSInputFile("./src/vpn_banner.jpg")
         self.keyboards = MainBotKeyboards()
         self.texts = texts
-        self.db_manager = db_manager
-
         self.app_manager = app_manager
             
 
@@ -48,10 +46,10 @@ class Handlers():
 
               
     async def profile_handler(self,message: types.Message ,bot_username):
-        user_id  = message.chat.id
-        user = await self.db_manager.get_user(user_id)
+        user_id     = message.chat.id
+        user        = await self.app_manager.get_user(user_id)
+        refs        = user.referrals
         #balance  = await user.get_balance(user_id)
-        refs     = await user.get_referrals()
 
         msg = self.texts.profile_text(refs,user_id,bot_username)
         keyboard = self.keyboards.profile_keyboard
@@ -61,7 +59,7 @@ class Handlers():
 
     async def information_handler(self,message: types.Message):
         msg = self.texts.info
-        keyboard = self.keyboards.information_keyboard
+        keyboard = self.keyboards.information_keyboard().get()
         await message.reply(text = msg, reply_markup= keyboard)
 
     async def balance_handler(self,message:types.Message):
@@ -70,13 +68,11 @@ class Handlers():
 
     async def connect_vpn_handler(self, message: types.message):
         user_id = message.from_user.id
-        # key = await self.db_manager.get_key(user_id)
-        # balance = await self.db_manager.get_balance(user_id)
-        user            = await self.db_manager.get_user(user_id)
+        user            = await self.app_manager.get_user(user_id)
         key             = await user.get_key()
-        expiry_time     = await user.get_expiry_time()
+        expiry_time     = user.expiry_time
         msg             = self.texts.gen_connect_text(key,expiry_time)
-        keyboard        = self.keyboards.connect_vpn_keyboard
+        keyboard        = self.keyboards.connect_vpn_keyboard().get()
         
         await message.reply(text = msg,reply_markup = keyboard,parse_mode=ParseMode.HTML)
     
@@ -95,6 +91,11 @@ class Handlers():
     async def replenishment_handler(self,callback: types.CallbackQuery):        
         keyboard = self.keyboards.purshare_method_keyboard.keyboard
         await callback.message.edit_text(text = texts.choose_replenishment_method,reply_markup = keyboard)
+
+    async def instructions_handler(self,query: types.CallbackQuery, callback: callbacks.InstructionsCallback):        
+        keyboard = self.keyboards.InstructionsKeyboard(callback.back).get()
+
+        await callback.message.edit_text(text = texts.instructions_text,reply_markup = keyboard)
 
     async def select_method_handler(self,
                                     query: types.CallbackQuery,

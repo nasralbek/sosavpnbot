@@ -5,17 +5,16 @@ from configs.main_config import TELERAM_API_KEY
 #from modules.yookassa_handler import Yookassa_handler
 #from modules.databases.enums.users_enum import RegisterUserEnum 
 from modules.yookassaAPI.yookassa_new import TransactionStatus
-from modules.databases.DB_GINO_MANAGER import DatabaseManager
+from modules.database.DB_GINO_MANAGER import DatabaseManager
 from modules.bot.handlers import Handlers 
 from modules.bot.keyboard_texts import MainKeyboardTexts
 import modules.bot.callbacks as callbacks
 
 
 class vpnBot():
-    def __init__(self,db_manager:DatabaseManager,app_manager):
+    def __init__(self,app_manager):
         self.bot = Bot(TELERAM_API_KEY)
-        self.dp = Dispatcher()
-        self.db_manager = db_manager 
+        self.dp = Dispatcher() 
         self.app_manager = app_manager 
 
         self.init_bot_handlers()
@@ -25,7 +24,7 @@ class vpnBot():
             await self.bot.send_message(ref_id, "some one registered by ref")
     
     def init_bot_handlers(self):
-        self.handlers = Handlers(self.db_manager,self.app_manager)
+        self.handlers = Handlers(self.app_manager)
         @self.dp.message(lambda message: message.text.startswith("/start"))
         async def start_handler(message):
             async def callback(user_id,ref_id):
@@ -75,7 +74,10 @@ class vpnBot():
             print("confirm handler")
             await self.handlers.confirm_handler(query,callback_data)
 
-
+        @self.dp.callback_query(callbacks.InstructionsCallback.filter())
+        async def instructions_handler(query: types.CallbackQuery, callback_data: callbacks.InstructionsCallback):
+            print("instructions")
+            await self.handlers.instructions_handler(query,callback_data)
 
     async def on_transaction_success(self,transaction):
         user_id = transaction.user_id

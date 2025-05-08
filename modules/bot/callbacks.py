@@ -41,3 +41,6 @@ class SelectDaysCallback  (CallbackData,prefix = "days"):
 class ConfirmCallback(CallbackData,prefix = "confirm"):
     method : str
     days   : int
+
+class InstructionsCallback(CallbackData,prefix = 'instructions'):
+    back: str

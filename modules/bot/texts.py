@@ -126,9 +126,12 @@ def profile_text(refs,user_id,botname):
         f"👥 <b>Твоя реферальная ссылка:</b>\n{gen_reflink(botname,user_id)}\n"
     )
 
+instructions_text = 'Выберите ваше устройство'
 
 def gen_reflink(botname,user_id):
     return f"https://t.me/{botname}?start={user_id}"
+
+
     
 def gen_want_to_purshare_balance(days,cost):
     return (

@@ -28,8 +28,24 @@ def create_transaction_model(db):
         async def set_canceled(self):
             await self.set_status('canceled')
 
+        @classmethod
+        async def create_transaction(cls,
+                            user_id,
+                            payment_id,
+                            url, #?
+                            amount,
+                            days):
+            payment_id = uuid.UUID(payment_id)
+            new_transaction = await cls.create(user_id     = user_id    ,
+                                                            payment_id  = payment_id ,
+                                                            url         = url        ,
+                                                            amount      = amount     ,
+                                                            days = days)
 
-
+        @classmethod
+        async def get_pending_transactions(cls):
+            transactions = await cls.query.where(cls.status == "pending").gino.all()
+            return transactions
 
     return Transaction
 
