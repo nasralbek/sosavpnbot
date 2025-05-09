@@ -1,5 +1,6 @@
 from tools.get_os_attr import get_os_attr
 from dotenv import load_dotenv
+from enum import Enum
 
 load_dotenv(override=False)
 
@@ -27,10 +28,20 @@ YOOKASSA_ACCOUNT_ID = get_os_attr('YOOKASSA_ACCOUNT_ID')
 YOOKASSA_SECRET_KEY = get_os_attr('YOOKASSA_SECRET_KEY')
 
 
+
+
+class PurshareMethods(str,Enum):
+    YOOKASSA = 'yookassa'
+    STARS = 'starts'
+    CRYPTO = 'crypto'
+
+enabled_purshare_methods = [
+    PurshareMethods.YOOKASSA,
+    #PurshareMethods.STARTS,
+    #PurshareMethods.CRYPTO
+]
+
 #referral programm
-
-
-
 BONUS_TO_INVITER = 15
 BONUS_TO_INVITED = 30
 

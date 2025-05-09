@@ -43,9 +43,3 @@ purshare_methods = TgPurshareMethodList(
     TgPurshareMethod("crypto")
 )
 
-
-yookassaplans = [
-    TgPurshareYookasssaPlan(15),
-    TgPurshareYookasssaPlan(30),
-    TgPurshareYookasssaPlan(60),
-]

@@ -3,9 +3,8 @@ from sqlalchemy.dialects.postgresql import UUID
 import uuid
 import time
 from math import ceil
-from modules.enums.users_enum import RegisterUserEnum
+from tools.users_enum import RegisterUserEnum
 from sqlalchemy import exists
-from gino import Gino
 
 def ms_to_days(ms):
     return ceil(ms/1000/60/60/24)
@@ -22,7 +21,7 @@ def create_user_model(db):
         sub_id      = Column(String             ,)
 
         async def get_key(self):
-            return f"https://sosavpn.tech:2096/sub/{self.sub_id}"
+            return f"https://add.sosavpn.tech/sub/{self.sub_id}"
 
         async def get_remaining_days(self):
             now         = int(time.time())*1000
@@ -80,8 +79,8 @@ def create_user_model(db):
 
         @classmethod
         async def is_exists(cls,user_id) -> bool:
-            result = await cls.db.scalar(exists().where(cls.User.user_id == user_id).select()) #?
-            return result
+            result = await cls.query.where(cls.user_id == user_id).gino.first()
+            return result is not None
 
     return User
 

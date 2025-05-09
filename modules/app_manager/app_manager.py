@@ -50,13 +50,13 @@ class App_manager():
         return self.yookassa_manager.check_transaction_status(payment_id)
 
     async def register_user(self,user_id):
-        if self.db_manager.User.is_exists(user_id):
+        if await self.db_manager.User.is_exists(user_id):
             return
         uuid        = uuid4()
         user_in_xui = await self.register_in_xui(user_id,uuid)
         sub_id      = user_in_xui.sub_id
         expiry_time = user_in_xui.expiry_time
-        await self.db_manager.register_user(user_id,uuid,sub_id,expiry_time)
+        await self.db_manager.User.register(user_id,uuid,sub_id,expiry_time)
 
     async def is_user_exists(self,user_id):
         await self.xui_api.get_user(user_id)
@@ -69,8 +69,8 @@ class App_manager():
         await self.add_days_to_user(user_id,REFERRAL_PROGRAMM_CONFIG.BONUS_TO_INVITED)
         await self.add_days_to_user(ref_id,REFERRAL_PROGRAMM_CONFIG.BONUS_TO_INVITER)
 
-        user        = await self.db_manager.get_user(user_id)
-        referral    = await self.db_manager.get_user(ref_id)
+        user        = await self.db_manager.User.get(user_id)
+        referral    = await self.db_manager.User.get(ref_id)
         await user.set_referral(ref_id)
         await referral.increase_referrals(1)
 
