@@ -24,6 +24,7 @@ def create_user_model(db):
 
         async def get_key(self):
             return f"https://add.sosavpn.tech/sub/{self.sub_id}"
+        
 
         async def get_remaining_days(self):
             now         = int(time.time())*1000
@@ -53,6 +54,12 @@ def create_user_model(db):
         async def decrease_referrals(self,amount):
             await self.increase_referrals(-amount)
         
+        @classmethod
+        async def get_key_by_id(cls,user_id):
+            user = await cls.get(user_id)
+            return await user.get_key()
+
+
         @classmethod
         async def register(cls,user_id,uuid,sub_id,expiry_time):
             if await cls.is_exists(user_id):
