@@ -13,11 +13,13 @@ from modules.bot.utils.navigation import NavInstruction
 ios     = InlineKeyboardButton(text='IOS',callback_data=NavInstruction.IOS)
 android = InlineKeyboardButton(text='Android',callback_data=NavInstruction.ANDROID)
 windows = InlineKeyboardButton(text='Windows',callback_data=NavInstruction.WIDNOWS)
-mac     = InlineKeyboardButton(text='Mac Os',callback_data=NavInstruction.MAC)
+mac     = InlineKeyboardButton(text='Mac OS',callback_data=NavInstruction.MAC)
+linux   = InlineKeyboardButton(text='Linux',callback_data=NavInstruction.LINUX)
 
 instruction_keyboard = InlineKeyboardMarkup(inline_keyboard=[
     [ios,android],
-    [windows,mac],])
+    [windows,mac],
+    [linux]])
 
 
 def how_to_keyboard(app,deeplink,download_url):

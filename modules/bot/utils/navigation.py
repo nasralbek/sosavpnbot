@@ -13,6 +13,7 @@ class NavInstruction(str,Enum):
     MAC     = f'{MAIN}_mac'
     WIDNOWS = f'{MAIN}_windows'
     ANDROID = f'{MAIN}_andorid'
+    LINUX   = F'{MAIN}_linux'
 
 class NavConnect(str,Enum):
     MAIN = '⚙️ Подключить VPN'

@@ -32,6 +32,7 @@ class Handler():
             NavInstruction.MAC     : 'https://github.com/hiddify/hiddify-next/releases/latest/download/Hiddify-MacOS.dmg',
             NavInstruction.IOS     : 'https://apps.apple.com/us/app/v2raytun/id6476628951',
             NavInstruction.WIDNOWS : 'https://github.com/hiddify/hiddify-next/releases/latest/download/Hiddify-Windows-Setup-x64.exe',
+            NavInstruction.LINUX   : 'https://github.com/hiddify/hiddify-app/releases/latest/download/Hiddify-Linux-x64.AppImage'
         }
         return download_links[callback_data]
 

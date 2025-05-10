@@ -19,8 +19,12 @@ class Handler():
 
 
     async def register_user_notify(self,user_id,ref_id):
-        await self.bot.send_message(user_id,"🎉 Вы зарегистрировались по реферальной ссылке! Вам начислено 100₽.")
-        await self.bot.send_message(ref_id, "🎉 Ваш друг зарегистрировался по реферальной ссылке! Вам начислено 50₽.")
+        await self.bot.send_message(user_id,
+                                    "🎉 Вы зарегистрировались по реферальной ссылке! <b>Вам начислено 100₽.</b>",
+                                    parse_mode=ParseMode.HTML)
+        await self.bot.send_message(ref_id, 
+                                    "🎉 Ваш друг зарегистрировался по реферальной ссылке! <b>Вам начислено 50₽.</b>",
+                                    parse_mode=ParseMode.HTML)
 
     async def start(self,message: types.Message):
         #TODO fix error when ref register multiple times

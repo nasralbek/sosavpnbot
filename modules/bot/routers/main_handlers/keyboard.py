@@ -16,7 +16,8 @@ class connect_vpn_keyboard:
     def __init__(self):
         builder = InlineKeyboardBuilder()
         
-        instructions_button = InlineKeyboardButton(text = "⚙️ Установить VPN",
+        instructions_button = InlineKeyboardButton(
+                        text = "⚙️ Установить VPN",
                         callback_data = NavConnect.INSTRUCTIONS )
         replenishment_button = InlineKeyboardButton(
                         text = "💸 Пополнить баланс",
