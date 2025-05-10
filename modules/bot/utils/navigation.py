@@ -3,9 +3,9 @@ from aiogram.filters.callback_data import CallbackData
 
 class NavMain(str,Enum):
     MAIN        = 'start'
-    INVITE      = 'invite'
-    CONNECT     = 'connect'
-    INFORMATION = 'information'
+    INVITE      = '👥 Пригласить друга'
+    CONNECT     = '⚙️ Подключить VPN'
+    INFORMATION = 'ℹ️ Информация'
 
 class NavInstruction(str,Enum):
     MAIN    = 'how_to'
@@ -15,12 +15,12 @@ class NavInstruction(str,Enum):
     ANDROID = f'{MAIN}_andorid'
 
 class NavConnect(str,Enum):
-    MAIN = 'connect'
+    MAIN = '⚙️ Подключить VPN'
     INSTRUCTIONS = f'{MAIN}_instructions'
     TOPUP = '{MAIN}_topup'
 
 class NavInformation(str,Enum):
-    MAIN = 'information'
+    MAIN = 'ℹ️ Информация'
     INSTRUCTIONS = f'{MAIN}_instructions'
 
 class NavConfirm(CallbackData,prefix = 'confirm'):

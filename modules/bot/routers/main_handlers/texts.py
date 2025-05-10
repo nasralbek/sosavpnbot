@@ -12,10 +12,10 @@ def profile_text(user,botname):
     refilnk = gen_reflink(botname,user_id)
 
     return (
-        f"Ваш id: <b>{user_id}</b>\n"
+        #f"Ваш id: <b>{user_id}</b>\n"
         f"Приглашено: <b>{refs} чел.</b>\n\n"
-        f"🔗 За каждого приглашенного друга ты получаешь 50₽ на баланс, друг получает 100₽.\n\n"
-        f"👥 <b>Твоя реферальная ссылка:</b>\n{refilnk}\n"
+        f"👥 За каждого приглашенного друга по реферальной ссылке ты получишь <b>50₽ (15 дней)</b> на баланс, друг получит <b>100₽ (30 дней)</b>.\n\n"
+        f"🔗 <b>Твоя реферальная ссылка:</b>\n{refilnk}\n"
     )
 
 def connect_text(key,expiry_time):
@@ -27,7 +27,7 @@ def connect_text(key,expiry_time):
     day = expiry_date.day
     month = expiry_date.month
     year = expiry_date.year
-    expiry_date_text = f"{day}.{0 if month <10 else ""}{month}.{year}"
+    expiry_date_text = f"{day}.{0 if month <10 else ''}{month}.{year}"
     #TODO FIX CRINGE
     #TODO FIX CRINGE
     #TODO FIX CRINGE
@@ -40,13 +40,19 @@ def connect_text(key,expiry_time):
 
     result_text =""
     if remaining_days>0:
-        result_text+=f"баланс <b>{balance}</b> рубелей\n"
-        result_text+=f"осталось <b>{remaining_days}</b> дней\n"
-        result_text+=f"действует до <b>{expiry_date_text}</b>\n\n"
+        result_text+=f"⚙️ <b>Ваша подписка Sosa VPN:</b>\n"
+        result_text+=f"├ Статус: <b>Активна ✅</b>\n"
+        result_text+=f"├ Тариф: <b>3.3₽/день</b>\n"
+        result_text+=f"└ Баланс: <b>{balance}₽ ({remaining_days} дней)</b>\n\n"
+        result_text+=f"🗝 <b>Ваш ключ:</b> <blockquote><code>{key}</code></blockquote>\n\n"
+        result_text+=f"<b>Для подключения к VPN используйте кнопку снизу.</b>"
     else:
-        result_text+="не поднлючено, пополните баланс или пригласите друга\n\n"
-
-    result_text += f"ваш ключ:\n<code>{key}</code>\n"
+        result_text+=f"⚙️ <b>Ваша подписка Sosa VPN:</b>\n"
+        result_text+=f"├ Статус: <b>Неактивна ⚠️</b>\n"
+        result_text+=f"├ Тариф: <b>3.3₽/день</b>\n"
+        result_text+=f"└ Баланс: <b>0₽ (0 дней)</b>\n\n"
+        result_text+=f"🗝 <b>Ваш ключ:</b> <blockquote><code>{key}</code></blockquote>\n\n"
+        result_text+="<b>Для активации подписки пополните баланс или пригласите друга.</b>"
     return result_text
 
 information_text = (

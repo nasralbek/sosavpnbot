@@ -30,7 +30,7 @@ def topup_keyboard()-> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     for plan in default_plans:
         price = Converter.days2price(plan)
-        button_text = f'{plan} days - {price} '
+        button_text = f'{price}₽'
         builder.add(
             InlineKeyboardButton(text = button_text ,
                                 callback_data = NavDaysCount(days=plan,price=price).pack()
@@ -40,16 +40,11 @@ def topup_keyboard()-> InlineKeyboardMarkup:
     return builder.as_markup()
 
 
-def method_selected_keyboard(days,price,method) -> InlineKeyboardMarkup:
-    confirm_button = InlineKeyboardButton(text = 'Подтвердить',
-                                          callback_data=NavConfirm(days=days,price=price,method=method).pack())
-    return InlineKeyboardMarkup(inline_keyboard=[[confirm_button]])
-
-
-
-def confirmed_keyboard(url) -> InlineKeyboardMarkup:
-    purshare_button = InlineKeyboardButton(text = 'Перейти к оплате',
+def method_selected_keyboard(days,price,method,url) -> InlineKeyboardMarkup:
+    confirm_button = InlineKeyboardButton(text = '🔗 Перейти к оплате',
                                           url = url)
-    
-    instructions_button = InlineKeyboardButton(text = 'support',url = "t.me/sosasupport" )
-    return InlineKeyboardMarkup(inline_keyboard=[[purshare_button],[instructions_button]])
+    instructions_button = InlineKeyboardButton(text = '👨🏼‍💻 Техническая поддержка',url = "t.me/sosasupport" )
+    return InlineKeyboardMarkup(inline_keyboard=[[confirm_button],[instructions_button]])
+
+
+

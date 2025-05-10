@@ -31,7 +31,7 @@ YOOKASSA_SECRET_KEY = get_os_attr('YOOKASSA_SECRET_KEY')
 
 
 class PurshareMethods(str,Enum):
-    YOOKASSA = 'yookassa'
+    YOOKASSA = '💳 Банковской картой'
     STARS = 'starts'
     CRYPTO = 'crypto'
 

@@ -1,6 +1,7 @@
 from aiogram import Router,types
 from aiogram.filters import Command
 from aiogram.types import FSInputFile
+from aiogram.enums.parse_mode import ParseMode
 
 from modules.bot.utils.navigation import NavMain
 
@@ -18,8 +19,8 @@ class Handler():
 
 
     async def register_user_notify(self,user_id,ref_id):
-        await self.bot.send_message(user_id,"you have been registered by ref")
-        await self.bot.send_message(ref_id, "some one registered by ref")
+        await self.bot.send_message(user_id,"🎉 Вы зарегистрировались по реферальной ссылке! Вам начислено 100₽.")
+        await self.bot.send_message(ref_id, "🎉 Ваш друг зарегистрировался по реферальной ссылке! Вам начислено 50₽.")
 
     async def start(self,message: types.Message):
         #TODO fix error when ref register multiple times
@@ -33,7 +34,8 @@ class Handler():
         welcome_caption = welcome_text
         await message.answer_photo(photo=self.sosa_vpn_banner,
                                     caption=welcome_caption,
-                                    reply_markup=main_keyboard)
+                                    reply_markup=main_keyboard,
+                                    parse_mode=ParseMode.HTML)
         
         #check is user already exists
         if await self.app_manager.is_user_exists(user_id):

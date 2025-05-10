@@ -24,7 +24,7 @@ class Handler():
     async def instructions(self,callback: types.CallbackQuery):
         keyboard = instruction_keyboard
         text = instructions_text
-        await callback.message.edit_text(text = text,reply_markup = keyboard)
+        await callback.message.edit_text(text = text,parse_mode=ParseMode.HTML,reply_markup = keyboard)
 
     def get_download_url(self,callback_data):
         download_links = {
@@ -41,13 +41,13 @@ class Handler():
         sub_id = await self.get_sub_id(user_id)
         href_start = 'https://add.sosavpn.tech/import'
         if callback.data == NavInstruction.IOS:
-            app_name = 'v2raytun'
+            app_name = 'V2RayTun'
         else:
-            app_name = 'hiddify'
+            app_name = 'Hiddify'
         href = f'{href_start}/{app_name}/{sub_id}'
         download_url = self.get_download_url(callback.data)
         try:
-            msg = how_to_dict[callback.data] % (href,app_name)
+            msg = how_to_dict[callback.data] 
         except:
             msg = 'not_found'
         

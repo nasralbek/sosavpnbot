@@ -1,6 +1,8 @@
 from aiogram import Bot, Dispatcher, types
 import asyncio 
 from configs.main_config import TELERAM_API_KEY
+from aiogram.enums.parse_mode import ParseMode
+import math
 
 #from modules.yookassa_handler import Yookassa_handler
 #from modules.databases.enums.users_enum import RegisterUserEnum 
@@ -23,9 +25,10 @@ class vpnBot():
     async def on_transaction_success(self,transaction):
         user_id = transaction.user_id
         days = transaction.days
+        amount = transaction.amount
         await transaction.set_success()
         await self.app_manager.add_days_to_user(user_id,days)
-        await self.bot.send_message(user_id, f"пополение на {days} дней успешно")
+        await self.bot.send_message(user_id, f"⚡️ Ваш баланс пополнен на <b>{amount}₽</b>.",parse_mode=ParseMode.HTML)
 
 
     async def on_transaction_canceled(self,transaction):

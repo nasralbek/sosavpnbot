@@ -33,7 +33,7 @@ class YookassaManager():
             },
             "confirmation": {
                 "type": "redirect",
-                "return_url": "https://t.me/dsaopdasdopsadsopasosavpntestbot"
+                "return_url": "https://t.me/sosavpnbot"
             },
             "capture": True,
             "description": f"Заказ от пользователя : {user_id} ",

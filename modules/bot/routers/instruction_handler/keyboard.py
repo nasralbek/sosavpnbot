@@ -10,10 +10,10 @@ from modules.bot.utils.navigation import NavInstruction
 # information_button  = KeyboardButton(text=NavMain.INFORMATION,  )
 # invite_button       = KeyboardButton(text=NavMain.INVITE,       )  
 
-ios     = InlineKeyboardButton(text='ios',callback_data=NavInstruction.IOS)
-android = InlineKeyboardButton(text='android',callback_data=NavInstruction.ANDROID)
-windows = InlineKeyboardButton(text='windows',callback_data=NavInstruction.WIDNOWS)
-mac     = InlineKeyboardButton(text='macos',callback_data=NavInstruction.MAC)
+ios     = InlineKeyboardButton(text='IOS',callback_data=NavInstruction.IOS)
+android = InlineKeyboardButton(text='Android',callback_data=NavInstruction.ANDROID)
+windows = InlineKeyboardButton(text='Windows',callback_data=NavInstruction.WIDNOWS)
+mac     = InlineKeyboardButton(text='Mac Os',callback_data=NavInstruction.MAC)
 
 instruction_keyboard = InlineKeyboardMarkup(inline_keyboard=[
     [ios,android],
@@ -21,8 +21,8 @@ instruction_keyboard = InlineKeyboardMarkup(inline_keyboard=[
 
 
 def how_to_keyboard(app,deeplink,download_url):
-    download_button = InlineKeyboardButton(text=f'скачать {app}',url=download_url)
-    add_button      = InlineKeyboardButton(text=f'Добавить в {app}',url=deeplink) 
+    download_button = InlineKeyboardButton(text=f'☁️ Скачать {app}',url=download_url)
+    add_button      = InlineKeyboardButton(text=f'⚙️ Добавить в {app}',url=deeplink) 
     return InlineKeyboardMarkup(inline_keyboard=[
         [
             download_button

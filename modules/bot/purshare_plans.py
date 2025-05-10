@@ -38,7 +38,7 @@ class TgPurshareMethodList():
         return InlineKeyboardMarkup(keyboard)
 
 purshare_methods = TgPurshareMethodList(
-    TgPurshareMethod("yookassa"),
+    TgPurshareMethod("💳 Банковской картой"),
     TgPurshareMethod("stars"),
     TgPurshareMethod("crypto")
 )
