@@ -48,8 +48,9 @@ class Handler():
         href = f'{href_start}/{app_name}/{sub_id}'
         download_url = self.get_download_url(callback.data)
         try:
-            msg = how_to_dict[callback.data] 
-        except:
+            msg = how_to_dict[callback.data]
+        except Exception as e:
+            print(e)
             msg = 'not_found'
         
         keyboard = how_to_keyboard(app_name,deeplink=href,download_url=download_url)
