@@ -1,13 +1,24 @@
-from modules.bot import vpnBot
-from modules.db import DB
-import asyncio
+from configs.main_config import db_filename
+from modules.bot.bot import vpnBot
+from modules.database.DB_GINO_MANAGER import DatabaseManager
+from modules.app_manager.app_manager import App_manager
+
+#from modules.yookassaAPI.yookassa_handler import Yookassa_handler
+import asyncio 
+
+
 
 async def main():
-    db = DB("../data/databases/db.sqlite3")
-    await db.start()
-    bot = vpnBot(db)
+    db_manager = await DatabaseManager.auth_from_config()
+    await db_manager.init_tables()
+    app_manager = await App_manager.get_instance()
+
+    bot = vpnBot(app_manager)    
     await bot.start()
+    print("started")
+
 
 if __name__=="__main__":
     print("starting")
     asyncio.run(main())
+    print("stopped")

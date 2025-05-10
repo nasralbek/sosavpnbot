@@ -1,0 +1,18 @@
+BOT_TELEGRAM_TOKEN      = ""
+
+BOT_XUI_HOST            = ""
+BOT_XUI_USERNAME        = ""  
+BOT_XUI_PASSWORD        = ""  
+BOT_XUI_TLS_CERT_PATH   = ""       
+BOT_DEFAULT_USER_INBOUND = #INT
+
+BOT_POSTGRES_DBNAME     = ""
+BOT_POSTGRES_USERNAME   = ""
+BOT_POSTGRES_PASSWORD   = ""
+BOT_POSTGRES_HOST       = ""
+BOT_POSTGRES_PORT       = ""
+
+
+
+
+

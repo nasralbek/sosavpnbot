@@ -1,3 +1,14 @@
+#virutal enviroment dir
 /venv
-*TOKENS.py
+
+#build files
 *__pycache__
+
+#secure information files
+*TOKENS.py
+*xui_creditionals.py
+*pgconfig.py
+.env
+
+#ide files
+.vscode/
