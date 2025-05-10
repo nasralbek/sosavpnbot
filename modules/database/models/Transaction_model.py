@@ -13,7 +13,7 @@ def create_transaction_model(db):
         amount          = Column(Integer)
         status          = Column(String     ,   default = "pending")
         days            = Column(Integer    ,   primary_key=True)
-        #created_at = Column(DateTime,default = datetime.now)
+        created_at = db.Column(db.DateTime(), default=datetime.now)
 
         async def set_status(self,new_status):
             self.status = new_status

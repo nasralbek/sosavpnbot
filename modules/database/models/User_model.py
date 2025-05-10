@@ -5,6 +5,7 @@ import time
 from math import ceil
 from tools.users_enum import RegisterUserEnum
 from sqlalchemy import exists
+import datetime
 
 def ms_to_days(ms):
     return ceil(ms/1000/60/60/24)
@@ -19,6 +20,7 @@ def create_user_model(db):
         referrals   = Column(Integer            ,default     = 0   )
         expiry_time = Column(BigInteger         ,) 
         sub_id      = Column(String             ,)
+        registered_at = db.Column(db.DateTime(), default=datetime.datetime.now)
 
         async def get_key(self):
             return f"https://add.sosavpn.tech/sub/{self.sub_id}"
