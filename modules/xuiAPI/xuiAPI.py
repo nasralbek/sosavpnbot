@@ -1,6 +1,6 @@
 from py3xui import AsyncApi, Client
 import asyncio
-from configs.main_config import DEFAULT_INBOUND
+from configs.main_config import DEFAULT_INBOUND,BOT_IS_TEST_MODE
 from datetime import datetime
 import time
 import random
@@ -22,7 +22,9 @@ class X_UI_API():
                             uuid,):
          
         #required fields 
-        email       = user_id
+        email       = str(user_id)
+        if BOT_IS_TEST_MODE:
+            email+=' test'
         id          = uuid
         enable      = True
         #Optional_fields
@@ -31,7 +33,7 @@ class X_UI_API():
         expiry_time = int(time.time()*1000)
         sub_id = get_rand_sub()
         new_client  = Client(id = str(uuid),
-                                email=str(user_id),
+                                email=email,
                                 enable=True,
                                 tg_id = user_id,
                                 expiry_time = expiry_time,
@@ -44,20 +46,24 @@ class X_UI_API():
             return await self.get_user(user_id)
 
     async def get_user(self,user_id):
+        user_id = str(user_id)
+        if BOT_IS_TEST_MODE:
+            user_id +=' test'
         result = await self.api.client.get_by_email(str(user_id))
         return result
     
-    async def add_days(self,user_id,amount):
-        seconds = days_to_mseconds(amount)
-        user = await self.get_user(user_id)
-        now_time = int(time.time())*1000
-        base = max(user.expiry_time,now_time)
-        user.expiry_time = base + seconds
-        self.api.client.update(user.id,user)
+    # async def add_days(self,user_id,amount):
+    #     seconds = days_to_mseconds(amount)
+    #     user = await self.get_user(user_id)
+    #     now_time = int(time.time())*1000
+    #     base = max(user.expiry_time,now_time)
+    #     user.expiry_time = base + seconds
+    #     self.api.client.update(user.id,user)
 
     async def increase_expiry_time(self,user,days_amount):
-        tg_id = user.user_id
-        client = await self.get_user(str(tg_id))
+        tg_id = str(user.user_id)
+
+        client = await self.get_user(tg_id)
         seconds = days_to_mseconds(days_amount)
         client.expiry_time = max(time.time(),client.expiry_time) + seconds
         client.id = str(user.uuid)

@@ -27,7 +27,7 @@ PG_PORT             = get_os_attr("BOT_POSTGRES_PORT")
 YOOKASSA_ACCOUNT_ID = get_os_attr('YOOKASSA_ACCOUNT_ID')
 YOOKASSA_SECRET_KEY = get_os_attr('YOOKASSA_SECRET_KEY')
 
-
+BOT_IS_TEST_MODE = True
 
 
 class PurshareMethods(str,Enum):
