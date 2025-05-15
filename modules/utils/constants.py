@@ -1,0 +1,5 @@
+
+
+
+LOG_ZIP_ARCHIVE_FORMAT = "zip"
+LOG_GZ_ARCHIVE_FORMAT = "gz"
