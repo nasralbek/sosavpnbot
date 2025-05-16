@@ -59,7 +59,7 @@ class X_UI_API():
         tg_id = user.user_id
         client = await self.get_user(str(tg_id))
         seconds = days_to_mseconds(days_amount)
-        client.expiry_time = max(time.time()*1000,client.expiry_time) + seconds
+        client.expiry_time = max(int(time.time()*1000),client.expiry_time) + seconds
         client.id = str(user.uuid)
         client.sub_id = user.sub_id 
         client.enable = True
