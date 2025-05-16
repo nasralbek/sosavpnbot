@@ -1,0 +1,39 @@
+2025-05-15 18:32:26,208 - INFO - Начинаем рассылку для 2 пользователей...
+2025-05-15 18:32:26,212 - ERROR - [1/2] Ошибка для 495527160: 2 validation errors for SendPhoto
+photo.str
+  Input should be a valid string [type=string_type, input_value=<_io.BufferedReader name=...odules/bot/image1.jpeg'>, input_type=BufferedReader]
+    For further information visit https://errors.pydantic.dev/2.11/v/string_type
+photo.is-instance[InputFile]
+  Input should be an instance of InputFile [type=is_instance_of, input_value=<_io.BufferedReader name=...odules/bot/image1.jpeg'>, input_type=BufferedReader]
+    For further information visit https://errors.pydantic.dev/2.11/v/is_instance_of
+2025-05-15 18:32:26,212 - ERROR - [2/2] Ошибка для 87654678: 2 validation errors for SendPhoto
+photo.str
+  Input should be a valid string [type=string_type, input_value=<_io.BufferedReader name=...odules/bot/image1.jpeg'>, input_type=BufferedReader]
+    For further information visit https://errors.pydantic.dev/2.11/v/string_type
+photo.is-instance[InputFile]
+  Input should be an instance of InputFile [type=is_instance_of, input_value=<_io.BufferedReader name=...odules/bot/image1.jpeg'>, input_type=BufferedReader]
+    For further information visit https://errors.pydantic.dev/2.11/v/is_instance_of
+2025-05-15 18:32:26,213 - INFO - Рассылка завершена. Успешно: 0/2
+2025-05-15 18:32:26,423 - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x1130bc510>
+2025-05-15 18:32:26,424 - ERROR - Unclosed connector
+connections: ['deque([(<aiohttp.client_proto.ResponseHandler object at 0x1130b0d00>, 8910.231586902)])']
+connector: <aiohttp.connector.TCPConnector object at 0x112ce43d0>
+2025-05-15 18:34:46,151 - INFO - Начинаем рассылку для 2 пользователей...
+2025-05-15 18:34:47,716 - INFO - [1/2] Отправлено 495527160
+2025-05-15 18:34:49,907 - ERROR - [2/2] Ошибка для 87654678: Telegram server says - Bad Request: chat not found
+2025-05-15 18:34:49,908 - INFO - Рассылка завершена. Успешно: 1/2
+2025-05-15 18:34:50,088 - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x10a41be50>
+2025-05-15 18:34:50,088 - ERROR - Unclosed connector
+connections: ['deque([(<aiohttp.client_proto.ResponseHandler object at 0x10a420d00>, 9053.763310511)])']
+connector: <aiohttp.connector.TCPConnector object at 0x109e57250>
+2025-05-15 18:35:22,225 - INFO - Начинаем рассылку для 2 пользователей...
+2025-05-15 18:35:22,556 - INFO - [1/2] Отправлено 495527160
+2025-05-15 18:35:24,676 - ERROR - [2/2] Ошибка для 87654678: Telegram server says - Bad Request: chat not found
+2025-05-15 18:35:24,677 - INFO - Рассылка завершена. Успешно: 1/2
+2025-05-15 18:35:24,828 - ERROR - Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x10cb8d290>
+2025-05-15 18:35:24,829 - ERROR - Unclosed connector
+connections: ['deque([(<aiohttp.client_proto.ResponseHandler object at 0x10d184d00>, 9088.529485285)])']
+connector: <aiohttp.connector.TCPConnector object at 0x10d18c090>

@@ -42,8 +42,8 @@ enabled_purshare_methods = [
 ]
 
 #referral programm
-BONUS_TO_INVITER = 15
-BONUS_TO_INVITED = 30
+BONUS_TO_INVITER = 7
+BONUS_TO_INVITED = 15
 
 #plans
 day_price = 3.33
