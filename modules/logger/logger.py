@@ -10,7 +10,7 @@ import os
 
 logger = logging.getLogger(__name__)
 
-LOG_DIR = "app/logs"
+LOG_DIR = "logs"
 LOG_FILENAME = "app.log"
 LOG_WHEN = "midnight"
 LOG_INTERVAL = 1

@@ -12,3 +12,7 @@
 
 #ide files
 .vscode/
+
+
+#logs dir
+/logs
