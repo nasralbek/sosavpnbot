@@ -9,10 +9,10 @@ from .texts import profile_text, connect_text,information_text
 
 
 class Handler():
-    def __init__(self,app_manager,bot_username):
+    def __init__(self,app_manager):
             self.router = Router(name=__name__)
-            self.bot_username = bot_username
-            self.app_manager = app_manager
+            self.bot_username = "bot_username"
+            self.app_manager = 'app_manager'
 
             self._register_handlers()
 

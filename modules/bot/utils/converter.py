@@ -1,9 +1,9 @@
 from math import ceil
-from configs.main_config import day_price
+from config import Config
 
 class Converter:
     def days2price(days):
-        price = ceil(days*day_price)
+        price = ceil(days*3.33) #TODO : FIX THAT
         return price
 
     def days2seconds():

@@ -1,57 +1,57 @@
 from aiogram import Bot, Dispatcher, types
 import asyncio 
-from configs.main_config import TELERAM_API_KEY
+# from configs.main_config import TELERAM_API_KEY
 from aiogram.enums.parse_mode import ParseMode
 import math
 
 #from modules.yookassa_handler import Yookassa_handler
 #from modules.databases.enums.users_enum import RegisterUserEnum 
 from modules.yookassaAPI.yookassa_new import TransactionStatus
-from modules.database.DB_GINO_MANAGER import DatabaseManager
+from modules.database.database import DatabaseManager
 
 import modules.bot.callbacks as callbacks
-from .routers import include_routers
+# from .routers import include
 
 
-class vpnBot():
-    def __init__(self,app_manager):
-        self.bot = Bot(TELERAM_API_KEY)
-        self.dp = Dispatcher() 
-        self.app_manager = app_manager 
+# class vpnBot():
+#     def __init__(self,app_manager):
+#         self.bot = Bot(TELERAM_API_KEY)
+#         self.dp = Dispatcher() 
+#         self.app_manager = app_manager 
 
-        asyncio.create_task(include_routers(self.bot,self.dp,self.app_manager))
-
-
-    async def on_transaction_success(self,transaction):
-        user_id = transaction.user_id
-        days = transaction.days
-        amount = transaction.amount
-        await transaction.set_success()
-        await self.app_manager.add_days_to_user(user_id,days)
-        await self.bot.send_message(user_id, f"⚡️ Ваш баланс пополнен на <b>{amount}₽</b>.",parse_mode=ParseMode.HTML)
+#         # asyncio.create_task(include(self.bot,self.dp,self.app_manager))
 
 
-    async def on_transaction_canceled(self,transaction):
-        await transaction.set_canceled()
+#     async def on_transaction_success(self,transaction):
+#         user_id = transaction.user_id
+#         days = transaction.days
+#         amount = transaction.amount
+#         await transaction.set_success()
+#         await self.app_manager.add_days_to_user(user_id,days)
+#         await self.bot.send_message(user_id, f"⚡️ Ваш баланс пополнен на <b>{amount}₽</b>.",parse_mode=ParseMode.HTML)
 
-    async def transaction_checker(self):
-        while True:
-            transactions = await self.app_manager.get_pending_transactions()
-            for transaction in transactions:
-                try:
-                    payment_id = transaction.payment_id
-                    status = self.app_manager.check_transaction(payment_id) #status
-                    if status == TransactionStatus.success:
-                        await self.on_transaction_success(transaction)
-                    elif status == TransactionStatus.canceled:
-                        await self.on_transaction_canceled(transaction)
-                except Exception as e:
-                    print(e)
-            await asyncio.sleep(5)
 
-    async def start(self):
-        asyncio.create_task(self.transaction_checker())
-        await self.dp.start_polling(self.bot)
+#     async def on_transaction_canceled(self,transaction):
+#         await transaction.set_canceled()
+
+#     async def transaction_checker(self):
+#         while True:
+#             transactions = await self.app_manager.get_pending_transactions()
+#             for transaction in transactions:
+#                 try:
+#                     payment_id = transaction.payment_id
+#                     status = self.app_manager.check_transaction(payment_id) #status
+#                     if status == TransactionStatus.success:
+#                         await self.on_transaction_success(transaction)
+#                     elif status == TransactionStatus.canceled:
+#                         await self.on_transaction_canceled(transaction)
+#                 except Exception as e:
+#                     print(e)
+#             await asyncio.sleep(5)
+
+#     async def start(self):
+#         asyncio.create_task(self.transaction_checker())
+#         await self.dp.start_polling(self.bot)
 
 
 

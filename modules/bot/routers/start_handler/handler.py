@@ -10,9 +10,9 @@ from .keyboard import main_keyboard
 
 
 class Handler():
-    def __init__(self,app_manager,bot):
+    def __init__(self,bot):
             self.router = Router(name=__name__)
-            self.app_manager = app_manager
+            self.app_manager = 'app_manager'
             self.bot = bot
             self.sosa_vpn_banner = FSInputFile("./src/vpn_banner.jpg")
             self._register_handlers()
