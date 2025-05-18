@@ -2,27 +2,19 @@ from dotenv import load_dotenv
 from environs import Env
 from dataclasses import dataclass
 
+import logging
+from logging.handlers import MemoryHandler
 
 DEFAULT_BOT_HOST = "0.0.0.0"
-DEFAULT_BOT_PORT = 8080
+DEFAULT_BOT_PORT = 2000
 
-class Logger():
-    def message(self,level,message):
-        prefix = f"{level}:"
-        file = __name__
-        print(prefix + message + f"in {file}")
+DEFAULT_LOG_FORMAT = "%(asctime)s | %(name)s | %(levelname)s | %(message)s"
 
-    def warning(self,message):
-        self.message("warn",message)
-
-    def info(self,message):
-        self.message("info",message)
-
-    def error(self,message):
-        self.message("error",message)
-
-logger = Logger()
-
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+memory_handler = MemoryHandler(capacity=100, flushLevel=logging.ERROR)
+memory_handler.setFormatter(logging.Formatter(DEFAULT_LOG_FORMAT))
+logger.addHandler(memory_handler)
 
 @dataclass
 class BotConfig:
@@ -36,7 +28,7 @@ class BotConfig:
 @dataclass
 class ShopConfig:
     #CURRENCY: str
-    
+    DAY_PRICE                : float
     DEVICES_COUNT            : int
 
     TRIAL_ENABLED            : bool
@@ -79,10 +71,10 @@ class DatabaseConfig:
     USERNAME: str | None
     PASSWORD: str | None
 
-    # def url(self, driver: str = "sqlite+aiosqlite") -> str:
-    #     if driver.startswith("sqlite"):
-    #         return f"{driver}:////{DEFAULT_DATA_DIR}/{self.NAME}.{DB_FORMAT}"
-    #     return f"{driver}://{self.USERNAME}:{self.PASSWORD}@{self.HOST}:{self.PORT}/{self.NAME}"
+    def url(self, driver: str = "postgresql+asyncpg") -> str:
+        # if driver.startswith("sqlite"):
+        #     return f"{driver}:////{DEFAULT_DATA_DIR}/{self.NAME}.{DB_FORMAT}"
+        return f"{driver}://{self.USERNAME}:{self.PASSWORD}@{self.HOST}:{self.PORT}/{self.NAME}"
 
 @dataclass
 class RedisConfig:
@@ -118,13 +110,14 @@ def load_bot_config(env: Env):
     if True: # load
         TOKEN       = env.str ("BOT_TOKEN")
         ADMINS      = env.list("BOT_ADMINS", subcast=int, default=[], required=False)
+        DEV_ID      = env.int ("BOT_DEV_ID")
         SUPPORT_ID  = env.int ("BOT_SUPPORT_ID")
         DOMAIN      = env.str ("BOT_DOMAIN")
         PORT        = env.int ("BOT_PORT")
 
     if True: # warn
         if not TOKEN:
-            logger.warn("BOT_TOKEN is not set")
+            logger.warning("BOT_TOKEN is not set")
         if not ADMINS:
             logger.warning("BOT_ADMINS list is empty.")
         if not SUPPORT_ID:
@@ -133,6 +126,8 @@ def load_bot_config(env: Env):
             logger.warning("BOT_DOMAIN is not set")
         if not PORT:
             logger.warning("BOT_PORT is not set")
+        if not DEV_ID:
+            logger.warning("DEV_ID is not set")
 
     return BotConfig(
         TOKEN       = TOKEN,
@@ -140,6 +135,7 @@ def load_bot_config(env: Env):
         SUPPORT_ID  = SUPPORT_ID,
         DOMAIN      = DOMAIN,
         PORT        = PORT,
+        DEV_ID      = DEV_ID
         )
 
 def load_shop_config(env: Env):
@@ -159,7 +155,7 @@ def load_shop_config(env: Env):
         PAYMENT_CRYPTOMUS_ENABLED = env.bool    ("SHOP_PAYMENT_CRYPTOMUS_ENABLED")
         PAYMENT_HELEKET_ENABLED   = env.bool    ("SHOP_PAYMENT_HELEKET_ENABLED")
         PAYMENT_YOOKASSA_ENABLED  = env.bool    ("SHOP_PAYMENT_YOOKASSA_ENABLED")
-    
+        DAY_PRICE                 = 3.33
     if True: #warn if not set
         if not DEVICES_COUNT:
             logger.warning("SHOP_DEVICES_COUNT is not set.")
@@ -185,7 +181,7 @@ def load_shop_config(env: Env):
             logger.warning("SHOP_PAYMENT_YOOKASSA_ENABLED is not set.")
 
     return ShopConfig(  
-                        DEVICES_COUNT       = DEVICES_COUNT,
+                        DEVICES_COUNT             = DEVICES_COUNT,
                         TRIAL_ENABLED             = TRIAL_ENABLED,
                         TRIAL_PERIOD              = TRIAL_PERIOD,
                         REFERRED_TRIAL_ENABLED    = REFERRED_TRIAL_ENABLED,
@@ -196,6 +192,7 @@ def load_shop_config(env: Env):
                         PAYMENT_CRYPTOMUS_ENABLED = PAYMENT_CRYPTOMUS_ENABLED,
                         PAYMENT_HELEKET_ENABLED   = PAYMENT_HELEKET_ENABLED,
                         PAYMENT_YOOKASSA_ENABLED  = PAYMENT_YOOKASSA_ENABLED,
+                        DAY_PRICE                 = DAY_PRICE
                 )
 
 def load_remnawave_config(env: Env):
@@ -304,7 +301,8 @@ def load_logging_config(env: Env):
     if not ARCHIVE_FORMAT:
         logger.warning("LOG_ARCHIVE_FORMAT is not set")
     return LoggingConfig(LEVEL = LEVEL,
-                         FORMAT = FORMAT,)
+                         FORMAT = FORMAT,
+                         ARCHIVE_FORMAT=ARCHIVE_FORMAT)
 
 def load_config()-> Config:
     env = Env()
