@@ -1,5 +1,5 @@
 from modules.xuiAPI.xuiAPI import X_UI_API
-from modules.database.DB_GINO_MANAGER import DatabaseManager
+from modules.database.database import DatabaseManager
 from modules.yookassaAPI.yookassa_new import YookassaManager
 
 from configs.main_config import REFERRAL_PROGRAMM_CONFIG 
