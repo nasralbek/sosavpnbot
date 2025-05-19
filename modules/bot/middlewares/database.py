@@ -8,6 +8,7 @@ from aiogram.types import User as TelegramUser
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from modules.database.models import User
+from modules.utils import generate_sub_id
 
 logger = logging.getLogger(__name__)
 
@@ -34,11 +35,12 @@ class DBSessionMiddleware(BaseMiddleware):
                 if not user:
                     is_new_user = True
                     user = await User.create(
-                        session=session,
-                        tg_id=tg_user.id,
+                        session         = session,
+                        tg_id           = tg_user.id,
+                        sub_id          = generate_sub_id(),
                         # vpn_id=str(uuid.uuid4()),
-                        first_name=tg_user.first_name,
                         username=tg_user.username,
+                        #first_name=tg_user.first_name,
                         # language_code=tg_user.language_code,
                     )
                     logger.info(f"New user {user.tg_id} created.")
@@ -49,4 +51,6 @@ class DBSessionMiddleware(BaseMiddleware):
             else:
                 logger.debug("No user found in event data.")
 
+
+            logger.debug("db session going to handler")
             return await handler(event, data)

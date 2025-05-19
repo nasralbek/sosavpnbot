@@ -27,7 +27,7 @@ class GarbageMiddleware(BaseMiddleware):
                 logger.debug(f"Message from bot {event.bot.id} skipped.")
             elif (
                 event.message.text
-                and not event.message.text.endswith(NavMain.START)
+                and not event.message.text.endswith(NavMain.MAIN)
                 or event.message.forward_from
             ):
                 try:

@@ -13,15 +13,15 @@ def include(app: Bot, dispatcher: Dispatcher):
     bot_username = 'dsadsa'
     bot = ''
 
-    main = main_handlers.handler.Handler(bot_username)
-    start = start_handler.handler.Handler(bot) 
+    #main = main_handlers.handler.Handler(bot_username)
+    start = start_handler.handler.Handler() 
     instructions = instruction_handler.handler.Handler()
     topup = top_up_handler.handler.Handler()
 
 
     dispatcher.include_routers(
-        main.router,
+     #   main.router,
         start.router,
         instructions.router,
-        topup.router
+        topup.router,
     )

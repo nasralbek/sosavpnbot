@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 from environs import Env
 from dataclasses import dataclass
+from pathlib import Path
 
 import logging
 from logging.handlers import MemoryHandler
@@ -10,6 +11,9 @@ DEFAULT_BOT_PORT = 2000
 
 DEFAULT_LOG_FORMAT = "%(asctime)s | %(name)s | %(levelname)s | %(message)s"
 
+BASE_DIR = Path(__file__).resolve().parent
+DEFAULT_LOCALES_DIR = BASE_DIR / "locales"
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 memory_handler = MemoryHandler(capacity=100, flushLevel=logging.ERROR)
@@ -18,12 +22,15 @@ logger.addHandler(memory_handler)
 
 @dataclass
 class BotConfig:
-    TOKEN: str
-    ADMINS: list[int]
-    DEV_ID: int
-    SUPPORT_ID: int
-    DOMAIN: str
-    PORT: int
+    TOKEN       : str
+    BOT_VPN_NAME: str
+    ADMINS      : list[int]
+    DEV_ID      : int
+    SUPPORT_ID  : int
+    DOMAIN      : str
+    PORT        : int
+    CHANNEL_TAG : str
+    CHAT_TAG    : str
 
 @dataclass
 class ShopConfig:
@@ -102,14 +109,17 @@ class Config:
     remnawave   : RemnaWaveConfig
     yookassa    : YooKassaConfig
     database    : DatabaseConfig
-    redis       :RedisConfig
+    redis       : RedisConfig
     logging     : LoggingConfig
 
 
 def load_bot_config(env: Env):
     if True: # load
         TOKEN       = env.str ("BOT_TOKEN")
+        BOT_VPN_NAME= env.str ("BOT_VPN_NAME") 
         ADMINS      = env.list("BOT_ADMINS", subcast=int, default=[], required=False)
+        CHANNEL_TAG = env.str ("BOT_CHANNEL_TAG")
+        CHAT_TAG    = env.str ("BOT_CHAT_TAG")
         DEV_ID      = env.int ("BOT_DEV_ID")
         SUPPORT_ID  = env.int ("BOT_SUPPORT_ID")
         DOMAIN      = env.str ("BOT_DOMAIN")
@@ -128,14 +138,24 @@ def load_bot_config(env: Env):
             logger.warning("BOT_PORT is not set")
         if not DEV_ID:
             logger.warning("DEV_ID is not set")
+        if not BOT_VPN_NAME:
+            logger.warning("BOT_NAME is not set")
+        if not CHANNEL_TAG:
+            logger.warning("CHANNEL_TAG is not set")
+        if not CHAT_TAG:
+            logger.warning("CHAT_TAG is not set")
+
 
     return BotConfig(
         TOKEN       = TOKEN,
         ADMINS      = ADMINS,
-        SUPPORT_ID  = SUPPORT_ID,
+        SUPPORT_ID  = SUPPORT_ID, 
         DOMAIN      = DOMAIN,
         PORT        = PORT,
-        DEV_ID      = DEV_ID
+        DEV_ID      = DEV_ID,
+        BOT_VPN_NAME= BOT_VPN_NAME,     #TODO: MOVE THAT TO SHOP_CONFIG
+        CHANNEL_TAG = CHANNEL_TAG,      #TODO: MOVE THAT TO SHOP_CONFIG
+        CHAT_TAG    = CHAT_TAG,         #TODO: MOVE THAT TO SHOP_CONFIG
         )
 
 def load_shop_config(env: Env):

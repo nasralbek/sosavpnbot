@@ -31,7 +31,7 @@ class LogMiddleware(BaseMiddleware):
         event: TelegramObject,
         data: dict[str, Any],
     ) -> Any:
-        data = {
+        log_data = {
             "user_id"   : event.event.from_user.id,
             "username"  : event.event.from_user.username,
             # "firstname" : event.event.from_user.first_name,
@@ -39,7 +39,7 @@ class LogMiddleware(BaseMiddleware):
             "callback"  : None,
             "text"      : event.event.text 
         }
-        log = EventLogSchema(**data)
+        log = EventLogSchema(**log_data)
         logger.info(repr(log))
 
         return await handler(event, data)

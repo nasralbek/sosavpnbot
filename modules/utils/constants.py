@@ -13,3 +13,11 @@ class TransactionStatus(Enum):
     COMPLETED = "completed"
     CANCELED = "canceled"
     REFUNDED = "refunded"
+
+
+
+MAIN_MESSAGE_ID_KEY = 'main_message_id'
+PREVIOUS_CALLBACK_KEY = "previous_callback"
+
+DEFAULT_LANGUAGE    = "ru"
+I18N_DOMAIN         = "bot"

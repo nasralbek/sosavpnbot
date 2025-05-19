@@ -22,7 +22,7 @@ class User(Base):
     id              : Mapped[int]       = mapped_column(primary_key=True,autoincrement=True)
     tg_id           : Mapped[int]       = mapped_column(unique     =True,nullable=False)
     sub_id          : Mapped[str]       = mapped_column(String(36), unique = True,nullable=False)
-    invited_by      : Mapped[int]       = mapped_column(default    =Null )
+    invited_by      : Mapped[int | None]       = mapped_column(nullable=True )
     referrals       : Mapped[int]       = mapped_column(default = 0)
     username        : Mapped[str]       = mapped_column(String(length=32))
     expiry_time     : Mapped[datetime]  = mapped_column(default=func.now(), nullable=False)

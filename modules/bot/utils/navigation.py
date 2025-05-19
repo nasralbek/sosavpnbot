@@ -2,10 +2,11 @@ from enum import Enum
 from aiogram.filters.callback_data import CallbackData
 
 class NavMain(str,Enum):
-    MAIN        = 'start'
-    INVITE      = '👥 Пригласить друга'
-    CONNECT     = '⚙️ Подключить VPN'
-    INFORMATION = 'ℹ️ Информация'
+    MAIN                = 'start'
+    INVITE              = '👥 Пригласить друга'
+    CONNECT             = '⚙️ Подключить VPN'
+    INFORMATION         = 'ℹ️ Информация'
+    CLOSE_NOTIFICATION  =  'close_notification'
 
 class NavInstruction(str,Enum):
     MAIN    = 'how_to'
