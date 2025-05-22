@@ -10,6 +10,7 @@ from sqlalchemy.types import Enum
 from sqlalchemy import select,update, func
 from sqlalchemy.orm import Mapped, mapped_column ,relationship,selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.dialects import postgresql
 
 from modules.utils.constants import TransactionStatus
 from . import Base
@@ -20,7 +21,7 @@ class Transaction(Base):
     __tablename__ = "transactions"
 
     id          : Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    tg_id       : Mapped[int] = mapped_column(ForeignKey("users.tg_id"), nullable=False)
+    tg_id       : Mapped[int] = mapped_column(postgresql.BIGINT(),ForeignKey("users.tg_id"), nullable=False)
     payment_id  : Mapped[str] = mapped_column(String(length=64), unique=True, nullable=False)
     days        : Mapped[int] = mapped_column(nullable=False)
 

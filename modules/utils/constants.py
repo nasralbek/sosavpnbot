@@ -16,8 +16,10 @@ class TransactionStatus(Enum):
 
 
 
-MAIN_MESSAGE_ID_KEY = 'main_message_id'
-PREVIOUS_CALLBACK_KEY = "previous_callback"
+MAIN_MESSAGE_ID_KEY     = 'main_message_id'
+PREVIOUS_CALLBACK_KEY   = "previous_callback"
+PREVIOUS_MESSAGE_ID_KEY = 'previous_message_id' 
+
 
 DEFAULT_LANGUAGE    = "ru"
 I18N_DOMAIN         = "bot"

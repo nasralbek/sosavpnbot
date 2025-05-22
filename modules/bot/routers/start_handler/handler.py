@@ -10,11 +10,12 @@ from aiogram.utils.i18n import gettext as _
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from modules.bot.utils.navigation import NavMain
-from modules.utils.constants import MAIN_MESSAGE_ID_KEY
+from modules.utils.constants import MAIN_MESSAGE_ID_KEY, PREVIOUS_MESSAGE_ID_KEY
 from modules.database.models import  User
+from modules.bot.filters import IsAdmin
 
 from .texts import welcome_text
-from .keyboard import main_keyboard 
+from .keyboard import main_menu_keyboard 
 from config import Config
 
 logger = logging.getLogger(__name__)
@@ -48,15 +49,17 @@ class Handler():
         #TODO fix error when ref register multiple times
         #getting ids
         logger.info(f"User {user.tg_id} opened main menu page.")
-        previous_message_id = await state.get_value(MAIN_MESSAGE_ID_KEY)
-        if previous_message_id:
-            try:
-                await message.bot.delete_message(chat_id=user.tg_id, message_id=previous_message_id)
-                logger.debug(f"Main message for user {user.tg_id} deleted.")
-            except Exception as exception:
-                logger.error(f"Failed to delete main message for user {user.tg_id}: {exception}")
-            finally:
-                await state.clear()
+        previsous_message_id     = await state.get_value(PREVIOUS_MESSAGE_ID_KEY)
+        previous_main_message_id = await state.get_value(MAIN_MESSAGE_ID_KEY)
+        
+        try:
+            if previous_main_message_id: await message.bot.delete_message(chat_id=user.tg_id, message_id = previous_main_message_id)
+            if previsous_message_id: await message.bot.delete_message(chat_id=user.tg_id, message_id = previsous_message_id )
+            logger.debug(f"previous messages for user {user.tg_id} deleted.")
+        except Exception as exception:
+            logger.error(f"Failed to delete main message for user {user.tg_id}: {exception}")
+        finally:
+            await state.clear()
 
         received_referrer_id = int(command.args) if command.args and command.args.isdigit() else None
         if received_referrer_id and is_new_user:
@@ -66,6 +69,7 @@ class Handler():
             user_id = message.from_user.id
             print(f"{user_id} invited by {ref_id}")
 
+        is_admin = await IsAdmin()(user_id=user.tg_id)
         
         main_menu = await message.answer_photo(
                                     photo=self.sosa_vpn_banner,
@@ -75,9 +79,9 @@ class Handler():
                                         chat_tag        = config.bot.CHAT_TAG,
                                         devices_count   = config.shop.DEVICES_COUNT 
                                     ),
-                                    reply_markup=main_keyboard,
+                                    reply_markup=main_menu_keyboard(is_admin=is_admin,
+                                                                    is_referral_avaible=config.shop.REFERRER_REWARD_ENABLED),
                                     parse_mode=ParseMode.HTML)
-        
         await state.update_data({MAIN_MESSAGE_ID_KEY: main_menu.message_id})
         
         #check is user already exists

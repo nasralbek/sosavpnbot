@@ -3,14 +3,13 @@ from datetime import datetime
 
 from typing import Any, Self
 
-
-
 from sqlalchemy import func 
 from sqlalchemy import String,Null
 from sqlalchemy import select,update
 from sqlalchemy.orm import Mapped, mapped_column ,relationship,selectinload
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.dialects import postgresql
 
 from . import Base
 
@@ -20,11 +19,11 @@ class User(Base):
     __tablename__ = "users"
     
     id              : Mapped[int]       = mapped_column(primary_key=True,autoincrement=True)
-    tg_id           : Mapped[int]       = mapped_column(unique     =True,nullable=False)
+    tg_id           : Mapped[int]       = mapped_column(postgresql.BIGINT(),unique     =True,nullable=False)
     sub_id          : Mapped[str]       = mapped_column(String(36), unique = True,nullable=False)
-    invited_by      : Mapped[int | None]       = mapped_column(nullable=True )
+    invited_by      : Mapped[int | None]       = mapped_column(postgresql.BIGINT(),nullable=True )
     referrals       : Mapped[int]       = mapped_column(default = 0)
-    username        : Mapped[str]       = mapped_column(String(length=32))
+    username        : Mapped[str]       = mapped_column(String(length=32), nullable = True)
     expiry_time     : Mapped[datetime]  = mapped_column(default=func.now(), nullable=False)
     registered_at   : Mapped[datetime]  = mapped_column(default=func.now(), nullable=False)
     is_trial_used   : Mapped[bool]      = mapped_column(default=False, nullable=False)

@@ -95,7 +95,7 @@ async def main():
     dispatcher.startup.register(on_startup)
     dispatcher.shutdown.register(on_shutdown)
 
-    middlewares.MaintenanceMiddleware.set_mode(False)
+    middlewares.MaintenanceMiddleware.set_mode(True)
 
     middlewares.register(dispatcher=dispatcher,
                          i18n=i18n,
@@ -104,7 +104,7 @@ async def main():
     filters.register(
         dispatcher=dispatcher,
         developer_id = config.bot.DEV_ID,
-        admins_ids   = [] 
+        admins_ids   = config.bot.ADMINS 
     )
 
     routers.include(app=app, dispatcher=dispatcher)

@@ -4,7 +4,10 @@ from . import (
     main_handlers,
     start_handler,
     instruction_handler,
-    top_up_handler
+    top_up_handler,
+    connect,
+    information,
+    invite
 )
 
 def include(app: Bot, dispatcher: Dispatcher): 
@@ -24,4 +27,7 @@ def include(app: Bot, dispatcher: Dispatcher):
         start.router,
         instructions.router,
         topup.router,
+        connect.handler.router,
+        information.handler.router,
+        invite.handler.router
     )

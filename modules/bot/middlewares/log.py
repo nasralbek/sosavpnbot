@@ -43,3 +43,4 @@ class LogMiddleware(BaseMiddleware):
         logger.info(repr(log))
 
         return await handler(event, data)
+
