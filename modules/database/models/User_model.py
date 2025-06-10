@@ -20,11 +20,10 @@ def create_user_model(db):
         referrals         = Column(Integer            ,default     = 0   )
         expiry_time       = Column(BigInteger         ,) 
         sub_id            = Column(String             ,)
+        registered_at     = db.Column(db.DateTime(), default=datetime.datetime.now)
         notify_day_before = Column(Boolean, default=False)  
         notify_day        = Column(Boolean, default=False)        
-        notify_day_after  = Column(Integer, default=0)
-        registered_at     = db.Column(db.DateTime(), default=datetime.datetime.now)
-       
+        notify_day_after  = Column(Integer, default=0)       
 
         async def get_key(self):
             return f"https://add.sosavpn.tech/sub/{self.sub_id}"
