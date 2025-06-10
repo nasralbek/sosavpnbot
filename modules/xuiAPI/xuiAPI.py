@@ -25,6 +25,7 @@ class X_UI_API():
         email       = user_id
         id          = uuid
         enable      = True
+        flow        = "xtls-rprx-vision"
         #Optional_fields
         inbound_id  = self.get_defult_inbound_id()
         tg_id       = user_id
@@ -35,7 +36,8 @@ class X_UI_API():
                                 enable=True,
                                 tg_id = user_id,
                                 expiry_time = expiry_time,
-                                sub_id = sub_id  )
+                                sub_id = sub_id,
+                                flow = "xtls-rprx-vision"  )
         try:
             result = await self.api.client.add(inbound_id,[new_client])
             return new_client
