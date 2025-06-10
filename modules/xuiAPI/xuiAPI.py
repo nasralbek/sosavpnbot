@@ -28,10 +28,10 @@ class X_UI_API():
         #Optional_fields
         inbound_id  = self.get_defult_inbound_id()
         tg_id       = user_id
-        expiry_time = int(time.time()*1000)
+        expiry_time = int((time.time() + 7 * 24 * 60 * 60) * 1000)
         sub_id = get_rand_sub()
         new_client  = Client(id = str(uuid),
-                                email=str(user_id),
+                                email=str(user_id)+'test',
                                 enable=True,
                                 tg_id = user_id,
                                 expiry_time = expiry_time,
@@ -44,7 +44,7 @@ class X_UI_API():
             return await self.get_user(user_id)
 
     async def get_user(self,user_id):
-        result = await self.api.client.get_by_email(str(user_id))
+        result = await self.api.client.get_by_email(str(user_id)+'test')
         return result
     
     async def add_days(self,user_id,amount):

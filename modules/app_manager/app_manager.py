@@ -4,6 +4,9 @@ from modules.yookassaAPI.yookassa_new import YookassaManager
 
 from configs.main_config import REFERRAL_PROGRAMM_CONFIG 
 from uuid import uuid4
+import datetime 
+import time
+from math import ceil
 
 
 class App_manager():
@@ -65,9 +68,21 @@ class App_manager():
     async def get_user(self,user_id):
         return await self.db_manager.User.get(user_id)
 
+    async def get_users_for_notifications(self):
+        return await self.db_manager.User.query.gino.all()
+    
+    async def mark_notification_sent(self, user_id, notification_type, value=None):
+        user = await self.db_manager.User.get(user_id)
+        if notification_type == 'day_before':
+            await user.update(notify_day_before=True).apply()
+        elif notification_type == 'day':
+            await user.update(notify_day=True).apply()
+        elif notification_type == 'day_after':
+            await user.update(notify_day_after=value).apply()
+
     async def new_referral(self,user_id,ref_id):
-        await self.add_days_to_user(user_id,REFERRAL_PROGRAMM_CONFIG.BONUS_TO_INVITED)
-        await self.add_days_to_user(ref_id,REFERRAL_PROGRAMM_CONFIG.BONUS_TO_INVITER)
+        #await self.add_days_to_user(user_id,REFERRAL_PROGRAMM_CONFIG.BONUS_TO_INVITED)
+        #await self.add_days_to_user(ref_id,REFERRAL_PROGRAMM_CONFIG.BONUS_TO_INVITER)
 
         user        = await self.db_manager.User.get(user_id)
         referral    = await self.db_manager.User.get(ref_id)
@@ -88,6 +103,8 @@ class App_manager():
                                    uuid,
                                    sub_id):
         self.db_manager.register_user(user_id,uuid,sub_id)
+
+    
         
 
 

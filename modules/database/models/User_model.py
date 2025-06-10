@@ -1,4 +1,4 @@
-from sqlalchemy import Column,BigInteger,Integer,String, DateTime
+from sqlalchemy import Column,BigInteger,Integer,String, DateTime, Boolean
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
 import time
@@ -14,13 +14,17 @@ def create_user_model(db):
     class User(db.Model):
         __tablename__ = "users"
 
-        user_id     = Column(BigInteger         ,primary_key = True)
-        uuid        = Column(UUID ,primary_key = True)        
-        invited_by  = Column(BigInteger         ,nullable    = True) 
-        referrals   = Column(Integer            ,default     = 0   )
-        expiry_time = Column(BigInteger         ,) 
-        sub_id      = Column(String             ,)
-        registered_at = db.Column(db.DateTime(), default=datetime.datetime.now)
+        user_id           = Column(BigInteger         ,primary_key = True)
+        uuid              = Column(UUID ,primary_key = True)        
+        invited_by        = Column(BigInteger         ,nullable    = True) 
+        referrals         = Column(Integer            ,default     = 0   )
+        expiry_time       = Column(BigInteger         ,) 
+        sub_id            = Column(String             ,)
+        notify_day_before = Column(Boolean, default=False)  
+        notify_day        = Column(Boolean, default=False)        
+        notify_day_after  = Column(Integer, default=0)
+        registered_at     = db.Column(db.DateTime(), default=datetime.datetime.now)
+       
 
         async def get_key(self):
             return f"https://add.sosavpn.tech/sub/{self.sub_id}"
@@ -35,7 +39,16 @@ def create_user_model(db):
 
         async def set_expiry_time(self,new_expiry_time):
             self.expiry_time = new_expiry_time
-            await self.update(expiry_time = self.expiry_time).apply()     
+
+            self.notify_day_before = False
+            self.notify_day = False
+            self.notify_day_after = 0
+            await self.update(
+                expiry_time=self.expiry_time,
+                notify_day_before=False,
+                notify_day=False,
+                notify_day_after=0
+            ).apply()   
 
         async def set_referral(self,referral_id):
             self.invited_by = referral_id

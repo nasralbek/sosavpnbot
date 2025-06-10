@@ -18,12 +18,9 @@ class Handler():
             self._register_handlers()
 
 
-    async def register_user_notify(self,user_id,ref_id):
-        await self.bot.send_message(user_id,
-                                    "🎉 Вы зарегистрировались по реферальной ссылке! <b>Вам начислено 50₽.</b>",
-                                    parse_mode=ParseMode.HTML)
+    async def register_user_notify(self,ref_id):
         await self.bot.send_message(ref_id, 
-                                    "🎉 Ваш друг зарегистрировался по реферальной ссылке! <b>Вам начислено 24₽.</b>",
+                                    "⚡️ Ваш друг зарегистрировался по вашей ссылке!",
                                     parse_mode=ParseMode.HTML)
 
     async def start(self,message: types.Message):
@@ -46,11 +43,12 @@ class Handler():
             return
         
         await self.app_manager.register_user(user_id)
+        await self.bot.send_message(user_id, "⚡️ <b>Вам начислено 7 дней пробного периода!</b>", parse_mode=ParseMode.HTML)
 
         #register user
         # referral program
         if ref_id:
-            await self.register_user_notify(user_id,ref_id)
+            await self.register_user_notify(ref_id)
             await self.app_manager.new_referral(user_id,ref_id)
 
     def _register_handlers(self):
