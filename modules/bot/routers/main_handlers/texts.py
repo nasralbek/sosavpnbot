@@ -42,14 +42,14 @@ def connect_text(key,expiry_time):
 
     result_text =""
     if remaining_days>0:
-        result_text+=f"⚙️ <b>Ваша подписка Sosa VPN:</b>\n"
+        result_text+=f"⚙️ <b>Ваша подписка Sosa VPN</b>\n"
         result_text+=f"├ Статус: <b>Активна ✅</b>\n"
         result_text+=f"├ Тариф: <b>3.33₽ в день</b>\n"
         result_text+=f"└ Баланс: <b>{balance}₽ ({remaining_days} дней)</b>\n\n"
         #result_text+=f"🗝 <b>Ваш ключ:</b> <blockquote><code>{key}</code></blockquote>\n\n"
         result_text+=f"⚡️ <b>Для подключения к VPN используйте кнопку снизу.</b>"
     else:
-        result_text+=f"⚙️ <b>Ваша подписка Sosa VPN:</b>\n"
+        result_text+=f"⚙️ <b>Ваша подписка Sosa VPN</b>\n"
         result_text+=f"├ Статус: <b>Неактивна ⚠️</b>\n"
         result_text+=f"├ Тариф: <b>3.33₽ в день</b>\n"
         result_text+=f"└ Баланс: <b>0₽ (0 дней)</b>\n\n"

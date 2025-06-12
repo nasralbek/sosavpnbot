@@ -80,7 +80,7 @@ class vpnBot():
                         elif remaining_days == 0 and not user.notify_day:
                             keyboard = InlineKeyboardMarkup(inline_keyboard=[
                             [InlineKeyboardButton(text="💸 Пополнить баланс",callback_data=NavConnect.TOPUP)]])
-                            await self.bot.send_message(user.user_id,"⚠️ <b>Ваш баланс исчерпан!</b>\n\nПополните баланс, чтобы восстановить доступ к Sosa VPN",parse_mode=ParseMode.HTML,reply_markup=keyboard)
+                            await self.bot.send_message(user.user_id,"⚠️ <b>Ваш баланс исчерпан!</b>\n\nПополните баланс, чтобы восстановить доступ к Sosa VPN.",parse_mode=ParseMode.HTML,reply_markup=keyboard)
                             await self.app_manager.mark_notification_sent(user.user_id, 'day')
 
                         elif remaining_days < 0:
@@ -88,7 +88,7 @@ class vpnBot():
                             if days_passed in [3, 6, 9, 12] and user.notify_day_after < (days_passed // 3):
                                 keyboard = InlineKeyboardMarkup(inline_keyboard=[
                                 [InlineKeyboardButton(text="💸 Пополнить баланс",callback_data=NavConnect.TOPUP)]])
-                                await self.bot.send_message(user.user_id,f"⚡️ <b>Вы не заходили к нам уже {days_passed} дней.</b>\n\nПополните баланс, чтобы восстановить доступ к Sosa VPN",parse_mode=ParseMode.HTML,reply_markup=keyboard)
+                                await self.bot.send_message(user.user_id,f"⚡️ <b>Вы не заходили к нам уже {days_passed} дней.</b>\n\nПополните баланс, чтобы восстановить доступ к Sosa VPN.",parse_mode=ParseMode.HTML,reply_markup=keyboard)
                                 await self.app_manager.mark_notification_sent(user.user_id, 'day_after', days_passed // 3)
                     
                     except Exception as e:
