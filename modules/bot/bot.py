@@ -31,17 +31,17 @@ class vpnBot():
         amount = transaction.amount
         await transaction.set_success()
         await self.app_manager.add_days_to_user(user_id,days)
-        await self.bot.send_message(user_id, f"⚡️ Ваш баланс пополнен на <b>{amount}₽</b>.",parse_mode=ParseMode.HTML)
+        await self.bot.send_message(user_id, f"⚡️ Ваш баланс пополнен на <b>{days} дней</b>.",parse_mode=ParseMode.HTML)
 
 
         user = await self.app_manager.get_user(user_id)
 
         if user.invited_by:
             referrer_id = user.invited_by
-            bonus_days = int((days * 3)/10)
-            amount_ref = int((amount * 3)/10)
+            bonus_days = int(10)
+            #amount_ref = int((amount * 3)/10)
             await self.app_manager.add_days_to_user(referrer_id, bonus_days)
-            await self.bot.send_message(referrer_id, f"⚡️ Вам начислено <b>{amount_ref}₽</b> за пополнение вашего друга.", parse_mode=ParseMode.HTML)
+            await self.bot.send_message(referrer_id, f"⚡️ Ваш баланс пополнен на <b>{bonus_days} дней</b> за пополнение вашего друга.", parse_mode=ParseMode.HTML)
 
 
     async def on_transaction_canceled(self,transaction):

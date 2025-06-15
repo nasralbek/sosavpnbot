@@ -5,7 +5,7 @@ from aiogram.enums.parse_mode import ParseMode
 
 from modules.bot.utils.navigation import NavMain
 
-from .texts import welcome_text
+from .texts import welcome_text, trial_text
 from .keyboard import main_keyboard 
 
 
@@ -33,17 +33,20 @@ class Handler():
         print(f"{user_id} invited by {ref_id}")
 
         welcome_caption = welcome_text
-        await message.answer_photo(photo=self.sosa_vpn_banner,
-                                    caption=welcome_caption,
-                                    reply_markup=main_keyboard,
-                                    parse_mode=ParseMode.HTML)
         
         #check is user already exists
         if await self.app_manager.is_user_exists(user_id):
-            return
-        
-        await self.app_manager.register_user(user_id)
-        await self.bot.send_message(user_id, "⚡️ <b>Вам начислено 7 дней пробного периода!</b>", parse_mode=ParseMode.HTML)
+            await message.answer(
+                                    text=welcome_caption,
+                                    reply_markup=main_keyboard,
+                                    parse_mode=ParseMode.HTML)
+        else:
+            await self.app_manager.register_user(user_id)
+            text=trial_text
+            await self.bot.send_message(user_id, 
+                                        text=text, 
+                                        reply_markup=main_keyboard,
+                                        parse_mode=ParseMode.HTML)
 
         #register user
         # referral program

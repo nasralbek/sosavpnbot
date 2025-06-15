@@ -4,8 +4,8 @@ from aiogram.filters.callback_data import CallbackData
 class NavMain(str,Enum):
     MAIN        = 'start'
     INVITE      = '👥 Пригласить друга'
-    CONNECT     = '⚙️ Подключить VPN'
-    INFORMATION = 'ℹ️ Информация'
+    CONNECT     = '🏠 Личный кабинет'
+    INFORMATION = '🧑‍💻 Поддержка'
 
 class NavInstruction(str,Enum):
     MAIN    = 'how_to'

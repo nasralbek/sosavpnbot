@@ -28,12 +28,12 @@ def select_method_keyboard(days,price) -> InlineKeyboardMarkup:
         
 def topup_keyboard()-> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
-    for plan in default_plans:
-        price = Converter.days2price(plan)
-        button_text = f'{price}₽'
+    for days in default_plans:
+        price = Converter.days2price(days)
+        button_text = f'{days} дней - {price}₽'
         builder.add(
             InlineKeyboardButton(text = button_text ,
-                                callback_data = NavDaysCount(days=plan,price=price).pack()
+                                callback_data = NavDaysCount(days=days,price=price).pack()
                                  )
         )
         builder.adjust(1)

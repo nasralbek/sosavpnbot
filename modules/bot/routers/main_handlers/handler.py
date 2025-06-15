@@ -64,7 +64,7 @@ class Handler():
             await callback.message.delete()
             msg = information_text
             keyboard = information_keyboard().get()
-            await callback.message.answer(text=msg, reply_markup=keyboard)
+            await callback.message.answer(text=msg, reply_markup=keyboard, parse_mode=ParseMode.HTML)
         else:
             await callback.answer("❌ Ну ты врушка!", show_alert=True)
 
@@ -126,7 +126,7 @@ class Handler():
 
         msg = information_text
         keyboard = information_keyboard().get()
-        await message.answer(text=msg, reply_markup=keyboard)
+        await message.answer(text=msg, reply_markup=keyboard, parse_mode=ParseMode.HTML)
 
     async def connect(self, message: types.Message, bot: Bot):
         user_id = message.from_user.id

@@ -23,8 +23,8 @@ instruction_keyboard = InlineKeyboardMarkup(inline_keyboard=[
 
 
 def how_to_keyboard(app,deeplink,download_url):
-    download_button = InlineKeyboardButton(text=f'☁️ Скачать {app}',url=download_url)
-    add_button      = InlineKeyboardButton(text=f'⚙️ Добавить в {app}',url=deeplink) 
+    download_button = InlineKeyboardButton(text=f'☁️ Скачать',url=download_url)
+    add_button      = InlineKeyboardButton(text=f'⚙️ Добавить',url=deeplink) 
     return InlineKeyboardMarkup(inline_keyboard=[
         [
             download_button

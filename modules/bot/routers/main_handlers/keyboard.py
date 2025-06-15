@@ -17,7 +17,7 @@ class connect_vpn_keyboard:
         builder = InlineKeyboardBuilder()
         
         instructions_button = InlineKeyboardButton(
-                        text = "⚙️ Установить VPN",
+                        text = "⚙️ Подключить VPN",
                         callback_data = NavConnect.INSTRUCTIONS )
         replenishment_button = InlineKeyboardButton(
                         text = "💸 Пополнить баланс",
@@ -36,9 +36,9 @@ class information_keyboard:
     def __init__(self):
         builder = InlineKeyboardBuilder()
         
-        support_button = InlineKeyboardButton(text = '📖 Инструкция по установке',callback_data = NavInformation.INSTRUCTIONS )
-        instructions_button = InlineKeyboardButton(text = '👨🏼‍💻 Техническая поддержка',url = "t.me/sosasupport" )
-        builder.add(instructions_button)
+        #instructions_button = InlineKeyboardButton(text = '📖 Инструкция',callback_data = NavInformation.INSTRUCTIONS )
+        support_button = InlineKeyboardButton(text = '👋 Написать поддержке',url = "t.me/sosasupport" )
+        #builder.add(instructions_button)
         builder.add(support_button)
         builder.adjust(1)
 
