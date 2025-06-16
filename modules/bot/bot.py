@@ -97,7 +97,7 @@ class vpnBot():
             except Exception as e:
                 print(f"Notification checker error: {e}")
             
-            await asyncio.sleep(5)
+            await asyncio.sleep(300)
 
     async def start(self):
         asyncio.create_task(self.transaction_checker())

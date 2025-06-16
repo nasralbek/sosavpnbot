@@ -23,36 +23,43 @@ class Handler():
                                     "⚡️ Ваш друг зарегистрировался по вашей ссылке!",
                                     parse_mode=ParseMode.HTML)
 
-    async def start(self,message: types.Message):
-        #TODO fix error when ref register multiple times
-        #getting ids
-        
-        ref_id = message.text.split(" ")[1] if len(message.text.split()) > 1 else 0
-        ref_id=int(ref_id)
-        user_id = message.from_user.id
-        print(f"{user_id} invited by {ref_id}")
+    async def start(self, message: types.Message):
+        try:
+            ref_id = 0
+            if len(message.text.split()) > 1:
+                try:
+                    ref_id = int(message.text.split()[1])
+                    if ref_id == message.from_user.id:
+                        ref_id = 0
+                except ValueError:
+                    ref_id = 0
 
-        welcome_caption = welcome_text
-        
-        #check is user already exists
-        if await self.app_manager.is_user_exists(user_id):
-            await message.answer(
-                                    text=welcome_caption,
-                                    reply_markup=main_keyboard,
-                                    parse_mode=ParseMode.HTML)
-        else:
-            await self.app_manager.register_user(user_id)
-            text=trial_text
-            await self.bot.send_message(user_id, 
-                                        text=text, 
-                                        reply_markup=main_keyboard,
-                                        parse_mode=ParseMode.HTML)
+            user_id = message.from_user.id
+            user_exists = await self.app_manager.is_user_exists(user_id)
+            ref_exists = await self.app_manager.is_user_exists(ref_id)
 
-        #register user
-        # referral program
-        if ref_id:
-            await self.register_user_notify(ref_id)
-            await self.app_manager.new_referral(user_id,ref_id)
+            if user_exists:
+                await message.answer(
+                    text=welcome_text,
+                    reply_markup=main_keyboard,
+                    parse_mode=ParseMode.HTML
+                )
+            else:
+                await self.app_manager.register_user(user_id)
+                await message.answer(
+                    text=trial_text,
+                    reply_markup=main_keyboard,
+                    parse_mode=ParseMode.HTML
+                )
+                if ref_id and ref_exists:
+                    await self.register_user_notify(ref_id)
+                    await self.app_manager.new_referral(user_id, ref_id)
+                    print(f"{user_id} invited by {ref_id}")
+
+
+        except Exception as e:
+            print(f"Error in start handler: {e}")
+            await message.answer("⚠️ Произошла ошибка, попробуйте позже")
 
     def _register_handlers(self):
         print("initializing start handler")

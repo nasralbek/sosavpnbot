@@ -52,7 +52,7 @@ class Handler():
             user = await self.app_manager.get_user(callback.from_user.id)
             key = await user.get_key()
             expiry_time = user.expiry_time
-            msg = connect_text(key, expiry_time)
+            msg = connect_text(key, expiry_time, user)
             keyboard = connect_vpn_keyboard().get()
             
             await callback.message.answer(text=msg, reply_markup=keyboard, parse_mode=ParseMode.HTML)
@@ -152,7 +152,7 @@ class Handler():
         user = await self.app_manager.get_user(user_id)
         key = await user.get_key()
         expiry_time = user.expiry_time
-        msg = connect_text(key, expiry_time)
+        msg = connect_text(key, expiry_time, user)
         keyboard = connect_vpn_keyboard().get()
         
         await message.answer(text=msg, reply_markup=keyboard, parse_mode=ParseMode.HTML)
