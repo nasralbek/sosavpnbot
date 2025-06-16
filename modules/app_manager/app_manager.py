@@ -78,7 +78,7 @@ class App_manager():
         elif notification_type == 'day':
             await user.update(notify_day=True).apply()
         elif notification_type == 'day_after':
-            await user.update(notify_day_after=value).apply()
+            await user.update(notify_day_after=1).apply()
 
     async def new_referral(self,user_id,ref_id):
         #await self.add_days_to_user(user_id,REFERRAL_PROGRAMM_CONFIG.BONUS_TO_INVITED)

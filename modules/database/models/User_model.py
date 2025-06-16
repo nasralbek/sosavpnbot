@@ -38,15 +38,13 @@ def create_user_model(db):
 
         async def set_expiry_time(self,new_expiry_time):
             self.expiry_time = new_expiry_time
-
             self.notify_day_before = False
             self.notify_day = False
-            self.notify_day_after = 0
+
             await self.update(
                 expiry_time=self.expiry_time,
                 notify_day_before=False,
-                notify_day=False,
-                notify_day_after=0
+                notify_day=False
             ).apply()   
 
         async def set_referral(self,referral_id):

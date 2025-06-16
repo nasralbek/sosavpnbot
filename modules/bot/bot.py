@@ -31,7 +31,10 @@ class vpnBot():
         amount = transaction.amount
         await transaction.set_success()
         await self.app_manager.add_days_to_user(user_id,days)
-        await self.bot.send_message(user_id, f"⚡️ Ваш баланс пополнен на <b>{days} дней</b>.",parse_mode=ParseMode.HTML)
+        await self.bot.send_message(user_id, f"⚡️ <b>Ваш баланс пополнен на {days} дней.</b>\n\n"
+                                            "⚙️ <b>Для подключения VPN и управления балансом перейдите в личный кабинет по кнопке в главном меню.</b>\n\n"
+                                            "• Открыть главное меню: /start",
+                                    parse_mode=ParseMode.HTML)
 
 
         user = await self.app_manager.get_user(user_id)
@@ -41,7 +44,10 @@ class vpnBot():
             bonus_days = int(10)
             #amount_ref = int((amount * 3)/10)
             await self.app_manager.add_days_to_user(referrer_id, bonus_days)
-            await self.bot.send_message(referrer_id, f"⚡️ Ваш баланс пополнен на <b>{bonus_days} дней</b> за пополнение вашего друга.", parse_mode=ParseMode.HTML)
+            await self.bot.send_message(referrer_id, f"⚡️ <b>Ваш баланс пополнен на {bonus_days} дней за пополнение вашего друга.</b>\n\n"
+                                        "⚙️ <b>Для подключения VPN и управления балансом перейдите в личный кабинет по кнопке в главном меню.</b>\n\n"
+                                            "• Открыть главное меню: /start",
+                                        parse_mode=ParseMode.HTML)
 
 
     async def on_transaction_canceled(self,transaction):
@@ -80,16 +86,16 @@ class vpnBot():
                         elif remaining_days == 0 and not user.notify_day:
                             keyboard = InlineKeyboardMarkup(inline_keyboard=[
                             [InlineKeyboardButton(text="💸 Пополнить баланс",callback_data=NavConnect.TOPUP)]])
-                            await self.bot.send_message(user.user_id,"⚠️ <b>Ваш баланс исчерпан, на вашем балансе 0 дней!</b>\n\nЧтобы VPN снова заработал, пополните баланс по кнопке ниже или в личном кабинете.",parse_mode=ParseMode.HTML,reply_markup=keyboard)
+                            await self.bot.send_message(user.user_id,"⚠️ <b>На вашем балансе 0 дней, VPN больше не работает!</b>\n\nЧтобы VPN снова заработал, пополните баланс по кнопке ниже или в личном кабинете.",parse_mode=ParseMode.HTML,reply_markup=keyboard)
                             await self.app_manager.mark_notification_sent(user.user_id, 'day')
 
-                        elif remaining_days < 0:
-                            days_passed = abs(remaining_days)
-                            if days_passed in [3, 6, 9, 12] and user.notify_day_after < (days_passed // 3):
-                                keyboard = InlineKeyboardMarkup(inline_keyboard=[
-                                [InlineKeyboardButton(text="💸 Пополнить баланс",callback_data=NavConnect.TOPUP)]])
-                                await self.bot.send_message(user.user_id,f"⚡️ <b>Вы не заходили к нам уже {days_passed} дней. У вас 0 дней на балансе.</b>\n\nПополните баланс по кнопке ниже или в личном кабинете, чтобы восстановить доступ к VPN.",parse_mode=ParseMode.HTML,reply_markup=keyboard)
-                                await self.app_manager.mark_notification_sent(user.user_id, 'day_after', days_passed // 3)
+                        elif remaining_days <= -2 and user.notify_day_after == 0:
+                            await self.app_manager.add_days_to_user(user.user_id, 5)
+                            await self.bot.send_message(user.user_id,   "🎁 <b>Ваш баланс пополнен на 5 дней! Это единоразовая акция.</b>\n\n"
+                                                                        "⚙️ <b>Для подключения VPN и управления балансом перейдите в личный кабинет по кнопке в главном меню.</b>\n\n" 
+                                                                        "• Открыть главное меню: /start",
+                                                                        parse_mode=ParseMode.HTML)
+                            await self.app_manager.mark_notification_sent(user.user_id, 'day_after')
                     
                     except Exception as e:
                         print(f"Error sending notification to user {user.user_id}: {e}")
