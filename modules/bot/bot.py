@@ -92,8 +92,9 @@ class vpnBot():
                             await self.app_manager.mark_notification_sent(user.user_id, 'day')
 
                         elif remaining_days <= -2 and user.notify_day_after == 0:
-                            await self.app_manager.add_days_to_user(user.user_id, 5)
-                            await self.bot.send_message(user.user_id,   "🎁 <b>Ваш баланс пополнен на 5 дней! Это единоразовая акция.</b>\n\n"
+                            await self.app_manager.add_days_to_user(user.user_id, 3)
+                            await self.bot.send_message(user.user_id,   "🎁 <b>Ваш баланс пополнен на 3 дня!</b>\n\n"
+                                                                        "Используйте это время, чтобы пополнить баланс и не потерять доступ к VPN cнова. Если в следующий раз не пополнить баланс вовремя, то мы не начислим вам бонус."
                                                                         "⚙️ <b>Для подключения VPN и управления балансом перейдите в личный кабинет по кнопке в главном меню.</b>\n\n" 
                                                                         "• Открыть главное меню: /start",
                                                                         parse_mode=ParseMode.HTML)
@@ -118,7 +119,7 @@ class vpnBot():
                         expiry_seconds = user.expiry_time / 1000 if user.expiry_time > 1e12 else user.expiry_time
                         remaining_days = ceil((expiry_seconds - current_time) / 86400)
                         total = await self.app_manager.get_user_total(user.user_id)
-                        if total == 0 and user.notify_no_total == 0 and current_time - reg_time > 1800:
+                        if total == 0 and user.notify_no_total == 0 and current_time - reg_time > 3600:
                             keyboard = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="⚙️ Подключить VPN", callback_data=NavConnect.INSTRUCTIONS)]])
                             await self.bot.send_message(
                                     user.user_id,
@@ -135,7 +136,7 @@ class vpnBot():
             except Exception as e:
                 print(f"Notification checker error: {e}")
 
-            await asyncio.sleep(5)
+            await asyncio.sleep(1800)
 
 
 
