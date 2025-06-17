@@ -68,9 +68,8 @@ class App_manager():
     async def get_user(self,user_id):
         return await self.db_manager.User.get(user_id)
     
-    async def get_total(self,user_id):
-        total = await self.xui_api.get_total(user_id)
-        return total
+    async def get_user_total(self, user_id):
+        return await self.xui_api.get_total(user_id)
 
     async def get_users_for_notifications(self):
         return await self.db_manager.User.query.gino.all()
