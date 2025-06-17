@@ -50,9 +50,16 @@ class X_UI_API():
         return result
     
     async def get_total(self, user_id):
-        await self.api.login()
-        client = await self.get_user(user_id)
-        return client.up + client.down
+        try:
+            if not hasattr(self.api, 'is_logged_in') or not self.api.is_logged_in:
+                await self.api.login()
+                
+            client = await self.api.client.get_by_email(str(user_id))
+            return client.up + client.down
+            
+        except Exception as e:
+            print(f"Ошибка в get_total для {user_id}: {str(e)}")
+            return 0  # Возвращаем 0 при ошибке чтобы не ломать логику работы бота
 
     
     async def add_days(self,user_id,amount):
