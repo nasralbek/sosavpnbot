@@ -109,25 +109,32 @@ class vpnBot():
 
     async def total_notify(self):
         while True:
-            users = await self.app_manager.get_users_for_notifications()
-            current_time = time.time()
-            for user in users:
-                reg_time = user.registered_at.timestamp()
-                expiry_seconds = user.expiry_time / 1000 if user.expiry_time > 1e12 else user.expiry_time
-                remaining_days = ceil((expiry_seconds - current_time) / 86400)
-                total = await self.app_manager.get_user_total(user.user_id)
-                if total == 0 and user.notify_no_total == 0 and current_time - reg_time > 1800:
-                    keyboard = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="⚙️ Подключить VPN", callback_data=NavConnect.INSTRUCTIONS)]])
-                    await self.bot.send_message(
-                            user.user_id,
-                            "⚠️ <b>Вы еще не подключили VPN!</b>\n\n"
-                            "Sosa VPN - это бесперебойная работа, до 5 устройств одновременно, стоимость меньше чашечки кофе!\n\n"
-                            f"💸 <b>Ваш баланс: {remaining_days} дней</b>\n\n"
-                            "⚙️ Подключите VPN, используя кнопку ниже или в личном кабинете по кнопке в главном меню.",
-                            parse_mode=ParseMode.HTML,
-                            reply_markup=keyboard
-                        )
-                    await self.app_manager.mark_notification_sent(user.user_id, 'no_total')
+            try:
+                users = await self.app_manager.get_users_for_notifications()
+                current_time = time.time()
+                for user in users:
+                    try:
+                        reg_time = user.registered_at.timestamp()
+                        expiry_seconds = user.expiry_time / 1000 if user.expiry_time > 1e12 else user.expiry_time
+                        remaining_days = ceil((expiry_seconds - current_time) / 86400)
+                        total = await self.app_manager.get_user_total(user.user_id)
+                        if total == 0 and user.notify_no_total == 0 and current_time - reg_time > 1800:
+                            keyboard = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="⚙️ Подключить VPN", callback_data=NavConnect.INSTRUCTIONS)]])
+                            await self.bot.send_message(
+                                    user.user_id,
+                                    "⚠️ <b>Вы еще не подключили VPN!</b>\n\n"
+                                    "Sosa VPN - это бесперебойная работа, до 5 устройств одновременно, стоимость меньше чашечки кофе!\n\n"
+                                    f"💸 <b>Ваш баланс: {remaining_days} дней</b>\n\n"
+                                    "⚙️ Подключите VPN, используя кнопку ниже или в личном кабинете по кнопке в главном меню.",
+                                    parse_mode=ParseMode.HTML,
+                                    reply_markup=keyboard
+                                )
+                            await self.app_manager.mark_notification_sent(user.user_id, 'no_total')
+                    except Exception as e:
+                        print(f"Error sending notification to user {user.user_id}: {e}")
+            except Exception as e:
+                print(f"Notification checker error: {e}")
+
             await asyncio.sleep(5)
 
 
