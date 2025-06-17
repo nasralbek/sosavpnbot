@@ -50,6 +50,7 @@ class X_UI_API():
         return result
     
     async def get_total(self,user_id):
+        await self.api.login()
         client = await self.api.client.get_by_email(str(user_id))
         if client.email == str(user_id):
             total = client.up + client.down
