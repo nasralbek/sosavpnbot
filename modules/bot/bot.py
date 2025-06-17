@@ -115,8 +115,8 @@ class vpnBot():
                 reg_time = user.registered_at.timestamp()
                 expiry_seconds = user.expiry_time / 1000 if user.expiry_time > 1e12 else user.expiry_time
                 remaining_days = ceil((expiry_seconds - current_time) / 86400)
-                total = await self.app_manager.get_total(user.user_id)
-                if total == 0 and user.notify_no_total == 0 and current_time - reg_time > 1800:
+                total = await self.app_manager.get_total(str(user.user_id))
+                if total == 0 and user.notify_no_total == 0 and current_time - reg_time > 30:
                     keyboard = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="⚙️ Подключить VPN", callback_data=NavConnect.INSTRUCTIONS)]])
                     await self.bot.send_message(
                             user.user_id,
