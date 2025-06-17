@@ -4,12 +4,14 @@ from configs.main_config import TELERAM_API_KEY
 from aiogram.enums.parse_mode import ParseMode
 from math import ceil
 import time
+from datetime import datetime
 
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 #from modules.yookassa_handler import Yookassa_handler
 #from modules.databases.enums.users_enum import RegisterUserEnum 
 from modules.yookassaAPI.yookassa_new import TransactionStatus
 from modules.database.DB_GINO_MANAGER import DatabaseManager
+from modules.xuiAPI.xuiAPI import X_UI_API
 
 from modules.bot.utils.navigation import NavConnect
 import modules.bot.callbacks as callbacks
@@ -32,7 +34,7 @@ class vpnBot():
         await transaction.set_success()
         await self.app_manager.add_days_to_user(user_id,days)
         await self.bot.send_message(user_id, f"⚡️ <b>Ваш баланс пополнен на {days} дней.</b>\n\n"
-                                            "⚙️ <b>Для подключения VPN и управления балансом перейдите в личный кабинет по кнопке в главном меню.</b>\n\n"
+                                            "⚙️ <b>Для управления балансом перейдите в личный кабинет по кнопке в главном меню.</b>\n\n"
                                             "• Открыть главное меню: /start",
                                     parse_mode=ParseMode.HTML)
 
@@ -45,7 +47,7 @@ class vpnBot():
             #amount_ref = int((amount * 3)/10)
             await self.app_manager.add_days_to_user(referrer_id, bonus_days)
             await self.bot.send_message(referrer_id, f"⚡️ <b>Ваш баланс пополнен на {bonus_days} дней за пополнение вашего друга.</b>\n\n"
-                                        "⚙️ <b>Для подключения VPN и управления балансом перейдите в личный кабинет по кнопке в главном меню.</b>\n\n"
+                                        "⚙️ <b>Для управления балансом перейдите в личный кабинет по кнопке в главном меню.</b>\n\n"
                                             "• Открыть главное меню: /start",
                                         parse_mode=ParseMode.HTML)
 
@@ -105,9 +107,35 @@ class vpnBot():
             
             await asyncio.sleep(60)
 
+    async def total_notify(self):
+        while True:
+            users = await self.app_manager.get_users_for_notifications()
+            current_time = time.time()
+            for user in users:
+                reg_time = user.registered_at.timestamp()
+                expiry_seconds = user.expiry_time / 1000 if user.expiry_time > 1e12 else user.expiry_time
+                remaining_days = ceil((expiry_seconds - current_time) / 86400)
+                total = await self.app_manager.get_total(user.user_id)
+                if total == 0 and user.notify_no_total == 0 and current_time - reg_time > 1800:
+                    keyboard = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="⚙️ Подключить VPN", callback_data=NavConnect.INSTRUCTIONS)]])
+                    await self.bot.send_message(
+                            user.user_id,
+                            "⚠️ <b>Вы еще не подключили VPN!</b>\n\n"
+                            "Sosa VPN - это бесперебойная работа, до 5 устройств одновременно, стоимость меньше чашечки кофе!\n\n"
+                            f"💸 <b>Ваш баланс: {remaining_days} дней</b>\n\n"
+                            "⚙️ Подключите VPN, используя кнопку ниже или в личном кабинете по кнопке в главном меню.",
+                            parse_mode=ParseMode.HTML,
+                            reply_markup=keyboard
+                        )
+                    await self.app_manager.mark_notification_sent(user.user_id, 'no_total')
+            await asyncio.sleep(5)
+
+
+
     async def start(self):
         asyncio.create_task(self.transaction_checker())
         asyncio.create_task(self.notification_checker())
+        asyncio.create_task(self.total_notify())
         #asyncio.create_task(self.set_notifys())
 
         await self.dp.start_polling(self.bot)

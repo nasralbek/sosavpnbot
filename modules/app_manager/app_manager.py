@@ -67,6 +67,10 @@ class App_manager():
     
     async def get_user(self,user_id):
         return await self.db_manager.User.get(user_id)
+    
+    async def get_total(self,user_id):
+        total = await self.xui_api.get_total(user_id)
+        return total
 
     async def get_users_for_notifications(self):
         return await self.db_manager.User.query.gino.all()
@@ -79,6 +83,8 @@ class App_manager():
             await user.update(notify_day=True).apply()
         elif notification_type == 'day_after':
             await user.update(notify_day_after=1).apply()
+        elif notification_type == 'no_total':
+            await user.update(notify_no_total=1).apply()
 
     async def new_referral(self,user_id,ref_id):
         #await self.add_days_to_user(user_id,REFERRAL_PROGRAMM_CONFIG.BONUS_TO_INVITED)

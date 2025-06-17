@@ -49,6 +49,12 @@ class X_UI_API():
         result = await self.api.client.get_by_email(str(user_id))
         return result
     
+    async def get_total(self,user_id):
+        client = await self.get_user(user_id)
+        total = client.up + client.down
+        return total
+
+    
     async def add_days(self,user_id,amount):
         seconds = days_to_mseconds(amount)
         user = await self.get_user(user_id)

@@ -23,7 +23,8 @@ def create_user_model(db):
         registered_at     = db.Column(db.DateTime(), default=datetime.datetime.now)
         notify_day_before = Column(Boolean, default=False)  
         notify_day        = Column(Boolean, default=False)        
-        notify_day_after  = Column(Integer, default=0)       
+        notify_day_after  = Column(Integer, default=0)
+        notify_no_total   = Column(Integer, default=0)          
 
         async def get_key(self):
             return f"https://add.sosavpn.tech/sub/{self.sub_id}"
