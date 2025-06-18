@@ -92,12 +92,12 @@ class vpnBot():
                             await self.app_manager.mark_notification_sent(user.user_id, 'day')
 
                         elif remaining_days <= -1 and user.notify_day_after == 0:
-                            await self.app_manager.add_days_to_user(user.user_id, 3)
-                            await self.bot.send_message(user.user_id,   "🎁 <b>Ваш баланс пополнен на 3 дня!</b>\n\n"
+                            await self.bot.send_message(user.user_id,   "🎁 <b>Ваш баланс пополнен на 2 дня!</b>\n\n"
                                                                         "Используйте это время, чтобы пополнить баланс и не потерять доступ к VPN cнова. Если в следующий раз не пополнить баланс вовремя, то мы не начислим вам бонус.\n\n"
                                                                         "⚙️ <b>Для подключения VPN и управления балансом перейдите в личный кабинет по кнопке в главном меню.</b>\n\n" 
                                                                         "• Открыть главное меню: /start",
                                                                         parse_mode=ParseMode.HTML)
+                            await self.app_manager.add_days_to_user(user.user_id, 2)
                             await self.app_manager.mark_notification_sent(user.user_id, 'day_after')
                     
                     except Exception as e:
@@ -124,15 +124,15 @@ class vpnBot():
                                 [InlineKeyboardButton(text="⚙️ Подключить VPN", callback_data=NavConnect.INSTRUCTIONS)],
                                 [InlineKeyboardButton(text="👋 Связаться", url="t.me/sosasupport")]  
                             ])
-                            await self.app_manager.add_days_to_user(user.user_id, 5)
                             await self.bot.send_message(
                                     user.user_id,
-                                    "🎁 <b>Ваш баланс пополнен на 5 дней!</b>\n\n"
+                                    "🎁 <b>Ваш баланс пополнен на 3 дня!</b>\n\n"
                                     "Если еще не подключили VPN или он не работает, то напишите нам по кнопке ниже. А пока, ловите подарок на баланс!\n\n"
-                                    f"💸 <b>Ваш баланс: {remaining_days+5} дней</b>\n\n",
+                                    f"💸 <b>Ваш баланс: {remaining_days+3} дней</b>\n\n",
                                     parse_mode=ParseMode.HTML,
                                     reply_markup=keyboard
                                 )
+                            await self.app_manager.add_days_to_user(user.user_id, 3)
                             await self.app_manager.mark_notification_sent(user.user_id, 'no_total')
                     except Exception as e:
                         print(f"Error sending notification to user {user.user_id}: {e}")
