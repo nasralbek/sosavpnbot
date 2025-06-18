@@ -43,12 +43,12 @@ def connect_text(key,expiry_time, user):
 
     result_text =""
     if remaining_days>0:
-        result_text+=f"<b>🏠 Личный кабинет</b>\n"
+        result_text+=f"<b>👤 Профиль</b>\n"
         result_text+=f"├ Ваш ID: <b>{user_id}</b>\n"
         result_text+=f"└ Ваш баланс: <b>{remaining_days} дней</b>\n\n"
         #result_text+=f"🗝 <b>Ваш ключ:</b> <blockquote><code>{key}</code></blockquote>\n\n"
     else:
-        result_text+=f"<b>🏠 Личный кабинет</b>\n"
+        result_text+=f"<b>👤 Профиль</b>\n"
         result_text+=f"├ Ваш ID: <b>{user_id}</b>\n"
         result_text+=f"└ Ваш баланс: <b>0 дней</b>\n\n"
         #result_text+=f"🗝 <b>Ваш ключ:</b> <blockquote><code>{key}</code></blockquote>\n\n"

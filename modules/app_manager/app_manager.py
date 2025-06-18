@@ -48,6 +48,9 @@ class App_manager():
     async def get_pending_transactions(self): 
         transactions = await self.db_manager.Transaction.get_pending_transactions() #TODO: MAKE 
         return transactions
+    
+    async def get_user_successful_transactions(self, user_id: int):
+        return await self.db_manager.Transaction.get_user_successful_transactions(user_id)
 
     def check_transaction(self,payment_id):
         return self.yookassa_manager.check_transaction_status(payment_id)

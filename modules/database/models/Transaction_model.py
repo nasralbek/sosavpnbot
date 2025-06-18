@@ -1,4 +1,4 @@
-from sqlalchemy import Column,BigInteger,Integer,String,DateTime
+from sqlalchemy import Column,BigInteger,Integer,String,DateTime, func
 from sqlalchemy.dialects.postgresql import UUID
 from datetime import datetime
 import uuid
@@ -46,6 +46,14 @@ def create_transaction_model(db):
         async def get_pending_transactions(cls):
             transactions = await cls.query.where(cls.status == "pending").gino.all()
             return transactions
+        
+        @classmethod
+        async def get_user_successful_transactions(cls, user_id: int):
+            result = await cls.select('amount').where(
+                            (cls.user_id == user_id) & 
+                            (cls.status == "success")
+                            ).gino.scalar() or 0
+            return result
 
     return Transaction
 
