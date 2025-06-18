@@ -119,7 +119,7 @@ class vpnBot():
                         expiry_time = user.expiry_time
                         remaining_days = ceil((expiry_time - time.time()*1000)/1000/24/60/60)
                         total = (await self.app_manager.get_user_total(user.user_id))/(1024*1024)
-                        if total >= 0 and total <= 150 and user.notify_no_total == 0 and current_time - reg_time > 3600:
+                        if total >= 0 and total <= 100 and user.notify_no_total == 0 and current_time - reg_time > 3600:
                             keyboard = InlineKeyboardMarkup(inline_keyboard=[
                                 [InlineKeyboardButton(text="⚙️ Подключить VPN", callback_data=NavConnect.INSTRUCTIONS)],
                                 [InlineKeyboardButton(text="👋 Связаться", url="t.me/sosasupport")]  
