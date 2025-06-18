@@ -28,7 +28,7 @@ class Handler():
 
     def get_download_url(self,callback_data):
         download_links = {
-            NavInstruction.ANDROID : 'https://play.google.com/store/apps/details?id=app.hiddify.com',
+            NavInstruction.ANDROID : 'https://play.google.com/store/apps/details?id=com.v2raytun.android',
             NavInstruction.MAC     : 'https://github.com/hiddify/hiddify-next/releases/latest/download/Hiddify-MacOS.dmg',
             NavInstruction.IOS     : 'https://apps.apple.com/us/app/v2raytun/id6476628951',
             NavInstruction.WIDNOWS : 'https://github.com/hiddify/hiddify-next/releases/latest/download/Hiddify-Windows-Setup-x64.exe',
@@ -41,7 +41,7 @@ class Handler():
         user_id = callback.from_user.id
         sub_id = await self.get_sub_id(user_id)
         href_start = 'https://add.sosavpn.tech/import'
-        if callback.data == NavInstruction.IOS:
+        if callback.data == NavInstruction.IOS or callback.data == NavInstruction.ANDROID:
             app_name = 'V2RayTun'
         else:
             app_name = 'Hiddify'
