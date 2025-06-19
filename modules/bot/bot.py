@@ -87,7 +87,6 @@ class vpnBot():
                         elif remaining_days == 0 and not user.notify_day:
                             keyboard = InlineKeyboardMarkup(inline_keyboard=[
                             [InlineKeyboardButton(text="💸 Пополнить баланс",callback_data=NavConnect.TOPUP)]])
-                            await self.app_manager.get_disable_user(user.user_id)
                             await self.bot.send_message(user.user_id,"⚠️ <b>На вашем балансе 0 дней, VPN больше не работает!</b>\n\nЧтобы VPN снова заработал, пополните баланс по кнопке ниже или в личном кабинете.",parse_mode=ParseMode.HTML,reply_markup=keyboard)
                             await self.app_manager.mark_notification_sent(user.user_id, 'day')
 
