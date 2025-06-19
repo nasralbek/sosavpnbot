@@ -74,11 +74,10 @@ class vpnBot():
         while True:
             try:
                 users = await self.app_manager.get_users_for_notifications()
-                current_time = time.time() 
                 for user in users:
                     try:
-                        expiry_seconds = user.expiry_time / 1000 if user.expiry_time > 1e12 else user.expiry_time
-                        remaining_days = ceil((expiry_seconds - current_time) / 86400)
+                        expiry_time = user.expiry_time
+                        remaining_days = ceil((expiry_time - time.time()*1000)/1000/24/60/60)
                         if remaining_days == 1 and not user.notify_day_before:
                             keyboard = InlineKeyboardMarkup(inline_keyboard=[
                             [InlineKeyboardButton(text="💸 Пополнить баланс",callback_data=NavConnect.TOPUP)]])
@@ -88,6 +87,7 @@ class vpnBot():
                         elif remaining_days == 0 and not user.notify_day:
                             keyboard = InlineKeyboardMarkup(inline_keyboard=[
                             [InlineKeyboardButton(text="💸 Пополнить баланс",callback_data=NavConnect.TOPUP)]])
+                            await self.app_manager.get_disable_user(user.user_id)
                             await self.bot.send_message(user.user_id,"⚠️ <b>На вашем балансе 0 дней, VPN больше не работает!</b>\n\nЧтобы VPN снова заработал, пополните баланс по кнопке ниже или в личном кабинете.",parse_mode=ParseMode.HTML,reply_markup=keyboard)
                             await self.app_manager.mark_notification_sent(user.user_id, 'day')
 
@@ -106,7 +106,7 @@ class vpnBot():
             except Exception as e:
                 print(f"Notification checker error: {e}")
             
-            await asyncio.sleep(60)
+            await asyncio.sleep(30)
 
     async def total_notify(self):
         while True:
@@ -119,7 +119,7 @@ class vpnBot():
                         expiry_time = user.expiry_time
                         remaining_days = ceil((expiry_time - time.time()*1000)/1000/24/60/60)
                         total = (await self.app_manager.get_user_total(user.user_id))/(1024*1024)
-                        if total >= 0 and total <= 100 and user.notify_no_total == 0 and current_time - reg_time > 3600:
+                        if total >= 0 and total <= 100 and user.notify_no_total == 0 and current_time - reg_time > 5400:
                             keyboard = InlineKeyboardMarkup(inline_keyboard=[
                                 [InlineKeyboardButton(text="⚙️ Подключить VPN", callback_data=NavConnect.INSTRUCTIONS)],
                                 [InlineKeyboardButton(text="👋 Связаться", url="t.me/sosasupport")]  

@@ -75,7 +75,13 @@ class X_UI_API():
         client.flow = "xtls-rprx-vision"
         await self.api.client.update(client.id,client)        
         return client.expiry_time 
-
+    
+    async def disable_user(self,user):
+        tg_id = user.user_id
+        client = await self.get_user(str(tg_id))
+        client.id = str(user.uuid)
+        client.enable = False
+        await self.api.client.update(client.id,client)  
 
     def get_defult_inbound_id(self):
         return DEFAULT_INBOUND
