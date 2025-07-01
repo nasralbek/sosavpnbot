@@ -237,7 +237,7 @@ def load_remnawave_config(env: Env):
         if not SUBSCRIPTION_PATH:
             logger.warning("REMNAWAVE_SUBSCRIPTION_PATH is not set.")
 
-    RemnaWaveConfig(
+    return RemnaWaveConfig(
                     PANEL_URL           = PANEL_URL,
                     USERNAME            = USERNAME,
                     PASSWORD            = PASSWORD,

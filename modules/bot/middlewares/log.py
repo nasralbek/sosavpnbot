@@ -31,16 +31,29 @@ class LogMiddleware(BaseMiddleware):
         event: TelegramObject,
         data: dict[str, Any],
     ) -> Any:
+        try:
+            logging.info(f"message_id: {event.event.message_id}")
+        except:
+            pass
+        try:
+            callback = event.event.data
+        except Exception as e:
+            #logger.info(event.event)
+            callback = None
+        try:
+            text= event.event.text
+        except:
+            text = None
         log_data = {
             "user_id"   : event.event.from_user.id,
             "username"  : event.event.from_user.username,
             # "firstname" : event.event.from_user.first_name,
             # "lastname"  : event.event.from_user.last_name,
-            "callback"  : None,
-            "text"      : event.event.text 
+            "callback"  : callback,
+            "text"      : text
         }
         log = EventLogSchema(**log_data)
         logger.info(repr(log))
-
+        #logger.info(event)
         return await handler(event, data)
 

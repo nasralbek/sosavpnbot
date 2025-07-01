@@ -2,8 +2,7 @@ import logging
 
 from typing import Any, Awaitable, Callable, Optional
 
-
-from aiogram import BaseMiddleware
+from aiogram import BaseMiddleware,Bot
 from aiogram.types import TelegramObject, Update, Message
 
 from pydantic import BaseModel
@@ -24,11 +23,20 @@ class RemoveMiddleware(BaseMiddleware):
         event: TelegramObject,
         data: dict[str, Any],
     ) -> Any:
-        response =  await handler(event, data)
- 
+        response =  await handler(event,data)
 
+        state = data['state']
+        bot : Bot = data['bot']
+        previous_message_id = await state.get_value(PREVIOUS_MESSAGE_ID_KEY)
+        try:
+            await bot.delete_message(response.chat.id,previous_message_id)
+        except:
+            pass
+        await state.update_data({PREVIOUS_MESSAGE_ID_KEY: response.message_id})
+
+        return response 
         if not isinstance(response, Message): return response
-        bot = data['bot']
+        bot : Bot = data['bot']
         state = data['state']
         previous_message_id = await state.get_value(PREVIOUS_MESSAGE_ID_KEY)
         new_message_id      = response.message_id

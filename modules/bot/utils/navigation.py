@@ -5,8 +5,17 @@ class NavMain(str,Enum):
     MAIN                = 'start'
     INVITE              = '👥 Пригласить друга'
     CONNECT             = '⚙️ Подключить VPN'
-    INFORMATION         = 'ℹ️ Информация'
+    SUPPORT             = 'ℹ️ Информация'
     CLOSE_NOTIFICATION  =  'close_notification'
+
+class NavSupport(str,Enum):
+    MAIN = NavMain.SUPPORT 
+
+class NavInvite(str,Enum):
+    MAIN = NavMain.INVITE
+
+class NavAdmin(str,Enum):
+    MAIN = "admin"
 
 class NavInstruction(str,Enum):
     MAIN    = 'how_to'
@@ -17,7 +26,7 @@ class NavInstruction(str,Enum):
     LINUX   = F'{MAIN}_linux'
 
 class NavConnect(str,Enum):
-    MAIN = '⚙️ Подключить VPN'
+    MAIN = NavMain.CONNECT
     INSTRUCTIONS = f'{MAIN}_instructions'
     TOPUP = '{MAIN}_topup'
 
