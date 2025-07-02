@@ -37,6 +37,7 @@ class how_to_callbacks:
 class SelectPlanCallback (CallbackData, prefix = "select_plan"):
     days    : int
     price   : int
+    name    : str
 
 class SelectMethodCallback(CallbackData, prefix = "select_method"):
     method_key : str

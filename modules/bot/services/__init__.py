@@ -1,15 +1,22 @@
+from __future__ import annotations
+
 from aiogram import Bot
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
-from modules.bot.models import ServicesContainer
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from modules.bot.models import ServicesContainer
+
 from config import Config
+
 from .plan import PlanService
 
 async def initialize(
     config: Config,
     session: async_sessionmaker,
     bot: Bot,
-) -> ServicesContainer:
+) -> "ServicesContainer":
+    from modules.bot.models import ServicesContainer
     # server_pool = ServerPoolService(config=config,
     #                                  session=session)
     

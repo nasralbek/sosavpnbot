@@ -24,6 +24,7 @@ class NavAdmin(str,Enum):
 class NavPurshare:
     MAIN = NavProfile.PURSHARE
     CONFIRM = "confirm_purshare"
+    PAY_YOOKASSA = "pay_yookassa"
 
 class NavInstruction(str,Enum):
     MAIN    = 'how_to'

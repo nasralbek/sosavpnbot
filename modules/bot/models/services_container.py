@@ -1,14 +1,29 @@
 
+
+from modules.bot.services import (
+        #NotificationService,
+        PlanService,
+        #ServerPoolService,
+        #VPNService,
+        #ReferralService,
+        #SubscriptionService,
+        #PaymentStatsService,
+        #InviteStatsService,
+)
+
 from dataclasses import dataclass
 
-from modules.bot.services.plan import PlanService
+
 
 @dataclass
 class ServicesContainer:
-    # server_pool: ServerPoolService
+    #server_pool: ServerPoolService
     plan: PlanService
-    # vpn: VPNService
-    # notification: NotificationService
-    # referral: ReferralService
-    # subscription: SubscriptionService
-    pass
+    #vpn: VPNService
+    #notification: NotificationService
+    #referral: ReferralService
+    #subscription: SubscriptionService
+    #payment_stats: PaymentStatsService
+    #invite_stats: InviteStatsService
+
+

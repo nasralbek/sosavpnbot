@@ -6,8 +6,8 @@ from aiogram.utils.i18n import gettext as _
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message
 
-from modules.bot.services import ServicesContainer
-from modules.database.models import User
+from modules.bot.models import ServicesContainer
+from modules.database.models import User 
 from modules.bot.utils.navigation import NavProfile, NavMain
 from modules.utils.constants import PREVIOUS_CALLBACK_KEY
 from modules.bot.filters import ReplyButtonFilter

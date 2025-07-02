@@ -14,6 +14,7 @@ from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_applicati
 from aiogram.fsm.storage.redis import RedisStorage
 from aiogram.utils.i18n import I18n
 
+from modules.bot.payment_gateways.gateway_factory import GatewayFactory
 from modules.logger import logger,get_start_log_message
 
 import modules.bot.middlewares as middlewares
@@ -80,7 +81,16 @@ async def main():
 
     services_container = await services.initialize(config=config, session=db.session, bot=bot)
     # await services_container.server_pool.sync_servers()
-
+    gateway_factory = GatewayFactory()
+    gateway_factory.register_gateways(
+        app=app,
+        config=config,
+        session=db.session,
+        storage=storage,
+        bot=bot,
+        i18n=i18n,
+        services=services_container,
+    )
     
     # Create the dispatcher
     dispatcher = Dispatcher(
@@ -89,7 +99,7 @@ async def main():
         config=config,
         bot=bot,
         services=services_container,
-        # gateway_factory=gateway_factory,
+        gateway_factory=gateway_factory,
     )
 
     dispatcher.startup.register(on_startup)

@@ -7,7 +7,7 @@ from aiogram.types import CallbackQuery, Message
 from aiogram.filters import Command, CommandObject
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from modules.bot.services import ServicesContainer
+from modules.bot.models import ServicesContainer
 from modules.database.models import User
 from modules.bot.utils.navigation import NavMain
 from modules.utils.constants import PREVIOUS_CALLBACK_KEY,MAIN_MESSAGE_ID_KEY,PREVIOUS_MESSAGE_ID_KEY

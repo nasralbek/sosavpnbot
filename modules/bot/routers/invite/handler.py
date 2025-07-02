@@ -7,7 +7,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message, callback_query
 
 from modules.bot.routers.invite import keyboard
-from modules.bot.services import ServicesContainer
+from modules.bot.models import ServicesContainer
 from modules.database.models import User
 from modules.bot.utils.navigation import NavInvite, NavMain
 from modules.utils.constants import PREVIOUS_CALLBACK_KEY

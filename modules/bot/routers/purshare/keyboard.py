@@ -14,7 +14,9 @@ def purshare_keyboard(plans : list[Plan])-> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
 
     for p in plans:
-        callback_data = SelectPlanCallback(days=p.days,price=p.price).pack()
+        callback_data = SelectPlanCallback(days     = p.days,
+                                           price    = p.price,
+                                           name     = p.name).pack()
         builder.row(
             InlineKeyboardButton(text=p.name,callback_data = callback_data)
         )

@@ -6,7 +6,7 @@ from modules.bot.models.services_container import ServicesContainer
 from modules.bot.routers.select_plan.keyboard import select_method_keyboard
 from modules.bot.utils.navigation import NavPurshare
 from modules.database.models import User
-from modules.utils.constants import PREVIOUS_CALLBACK_KEY,SELECTED_DAYS_KEY,SELECTED_PRICE_KEY
+from modules.utils.constants import PREVIOUS_CALLBACK_KEY,SELECTED_DAYS_KEY, SELECTED_PLAN_KEY,SELECTED_PRICE_KEY
 from modules.bot.callbacks import SelectPlanCallback
 from config import Config
 
@@ -33,12 +33,14 @@ async def select_method(   callback    : CallbackQuery,
                     session     : AsyncSession):
     logger.info(f"User {user.tg_id} opened invite page.")
 
-    days = callback_data.days
-    price = callback_data.price
+    days        = callback_data.days
+    price       = callback_data.price
+    plan_name   = callback_data.name
 
 
     await state.update_data({SELECTED_DAYS_KEY  : days})
     await state.update_data({SELECTED_PRICE_KEY : price})
+    await state.update_data({SELECTED_PLAN_KEY  : plan_name })
 
 
     await state.update_data({PREVIOUS_CALLBACK_KEY: NavPurshare.MAIN})
