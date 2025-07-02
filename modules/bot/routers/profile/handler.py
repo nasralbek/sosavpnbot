@@ -8,7 +8,7 @@ from aiogram.types import CallbackQuery, Message
 
 from modules.bot.services import ServicesContainer
 from modules.database.models import User
-from modules.bot.utils.navigation import NavConnect, NavMain
+from modules.bot.utils.navigation import NavProfile, NavMain
 from modules.utils.constants import PREVIOUS_CALLBACK_KEY
 from modules.bot.filters import ReplyButtonFilter
 
@@ -34,7 +34,7 @@ async def prepare_message(user: User, client_data,config: Config) ->str:
         remaining_days  = remaining_days 
     )
 
-@router.callback_query(F.data == NavConnect.MAIN)
+@router.callback_query(F.data == NavProfile.MAIN)
 async def profile(
     callback: CallbackQuery,
     user: User,

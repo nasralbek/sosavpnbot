@@ -12,7 +12,10 @@ DEFAULT_BOT_PORT = 2000
 DEFAULT_LOG_FORMAT = "%(asctime)s | %(name)s | %(levelname)s | %(message)s"
 
 BASE_DIR = Path(__file__).resolve().parent
+DEFAULT_DATA_DIR    = BASE_DIR / "data"
 DEFAULT_LOCALES_DIR = BASE_DIR / "locales"
+DEFAULT_PLANS_DIR   = DEFAULT_DATA_DIR / "plans.json"
+
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)

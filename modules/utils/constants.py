@@ -9,16 +9,20 @@ LOG_GZ_ARCHIVE_FORMAT = "gz"
 
 
 class TransactionStatus(Enum):
-    PENDING = "pending"
-    COMPLETED = "completed"
-    CANCELED = "canceled"
-    REFUNDED = "refunded"
+    PENDING     = "pending"
+    COMPLETED   = "completed"
+    CANCELED    = "canceled"
+    REFUNDED    = "refunded"
 
 
 
 MAIN_MESSAGE_ID_KEY     = 'main_message_id'
 PREVIOUS_CALLBACK_KEY   = "previous_callback"
 PREVIOUS_MESSAGE_ID_KEY = 'previous_message_id' 
+
+SELECTED_DAYS_KEY       = "selected_days"
+SELECTED_PRICE_KEY      = "selected_price"
+SELECTED_METHOD_KEY     = "selected_method"
 
 
 DEFAULT_LANGUAGE    = "ru"

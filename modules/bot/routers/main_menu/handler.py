@@ -28,20 +28,6 @@ def create_refferral(session: AsyncSession,
         return
     logger.info(f"creating reffered {inviter_id} for refferer {inviter_id}") 
 
-async def send_main_menu(bot        : Bot,
-                         chat_id    : int,
-                         config     : Config,
-                         is_admin   : bool,
-                         ):
-    text            = "main_menu"
-    reply_markup    = main_menu_keyboard(is_admin,config.shop.REFERRER_REWARD_ENABLED)
-
-    return await bot.send_message(chat_id,text,reply_markup=reply_markup)
-
-
-
-    
-
 @router.message(Command(NavMain.MAIN))
 async def command_main_menu(
                     message     : Message,

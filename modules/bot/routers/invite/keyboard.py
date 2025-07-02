@@ -4,8 +4,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from modules.bot.utils.navigation import (NavMain)
 
-def invite_keyboard(   is_admin : bool = False,
-                       is_refferal_avaible: bool = False) -> InlineKeyboardMarkup:
+def invite_keyboard() -> InlineKeyboardMarkup:
 
     builder = InlineKeyboardBuilder()
 

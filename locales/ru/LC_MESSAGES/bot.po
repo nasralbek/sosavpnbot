@@ -72,3 +72,12 @@ msgstr "👤 support"
 msgid "main_menu:button:admin"
 msgstr "админка228"
 
+msgid "main_menu:button:purshare"
+msgstr "купить"
+
+msgid "purshare:message:main"
+msgstr "Выберите кол-во"
+
+msgid "confirm:button:main"
+msgstr "Подтвердить"
+

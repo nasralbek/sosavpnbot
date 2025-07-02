@@ -7,7 +7,11 @@ from . import (
     #top_up_handler,
     profile,
     support,
-    invite
+    invite,
+    purshare,
+    select_plan,
+    select_method,
+    purshare_final
 )
 
 def include(app: Application, dispatcher: Dispatcher): 
@@ -25,6 +29,10 @@ def include(app: Application, dispatcher: Dispatcher):
         main_menu.handler.router,
         profile.handler.router,
         invite.handler.router,
+        purshare.handler.router,
+        select_plan.handler.router,
+        select_method.handler.router,
+        purshare_final.handler.router,
         #instructions.router,
         #topup.router,
         support.handler.router,

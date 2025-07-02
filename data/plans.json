@@ -1,0 +1,19 @@
+{
+    "plans":[
+        {
+            "name":"30 days",
+            "days":30,
+            "price":100
+        },
+        {
+            "name":"60 days",
+            "days":60,
+            "price":200
+        },
+        {
+            "name":"90 days",
+            "days":90,
+            "price":300
+        }
+    ]
+}

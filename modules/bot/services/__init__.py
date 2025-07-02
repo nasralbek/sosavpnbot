@@ -1,9 +1,9 @@
 from aiogram import Bot
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
-from config import Config
 from modules.bot.models import ServicesContainer
-
+from config import Config
+from .plan import PlanService
 
 async def initialize(
     config: Config,
@@ -13,7 +13,7 @@ async def initialize(
     # server_pool = ServerPoolService(config=config,
     #                                  session=session)
     
-    # plan = PlanService()
+    plan = PlanService()
 
     # vpn = VPNService(config=config,
     #                   session=session,
@@ -32,7 +32,7 @@ async def initialize(
 
     return ServicesContainer(
         # server_pool=server_pool,
-        # plan=plan,
+        plan=plan,
         # vpn=vpn,
         # notification=notification,
         # referral=referral,

@@ -1,4 +1,5 @@
 from aiogram.filters.callback_data import CallbackData
+from sqlalchemy.util.typing import de_optionalize_union_types
 
 purshare_method_starter = "method_"
 replenishment_callback = "replenishment"
@@ -30,17 +31,15 @@ class how_to_callbacks:
 #   actions : select_method,select_method
 #   method  : yookassa, stars,crypto, etc.
 #   days    : days_count
-#   price   :
-class SelectMethodCallback(CallbackData,prefix = "method"):
+#   price   :class SelectMethodCallback(CallbackData,prefix = "method"):
     method  : str
 
-class SelectDaysCallback  (CallbackData,prefix = "days"):
-    method : str
-    days   : int
+class SelectPlanCallback (CallbackData, prefix = "select_plan"):
+    days    : int
+    price   : int
 
-class ConfirmCallback(CallbackData,prefix = "confirm"):
-    method : str
-    days   : int
+class SelectMethodCallback(CallbackData, prefix = "select_method"):
+    method_key : str
 
 class InstructionsCallback(CallbackData,prefix = 'instructions'):
     back: str
