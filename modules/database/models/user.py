@@ -34,7 +34,7 @@ class User(Base):
     sub_id          : Mapped[str]       = mapped_column(String(36), unique = True,nullable=False)
     invited_by      : Mapped[int | None]= mapped_column(postgresql.BIGINT(),nullable=True )
     referrals       : Mapped[int]       = mapped_column(default = 0)
-    username        : Mapped[str]       = mapped_column(String(length=32), nullable = True)
+    username        : Mapped[str]       = mapped_column(String(length=32),default="", nullable = True)
     #expiry_time     : Mapped[datetime]  = mapped_column(default=func.now(), nullable=False)
     registered_at   : Mapped[datetime]  = mapped_column(default=func.now(), nullable=False)
     is_trial_used   : Mapped[bool]      = mapped_column(default=False, nullable=False)

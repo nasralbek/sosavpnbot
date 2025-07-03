@@ -29,6 +29,7 @@ async def prepare_message(user: User,vpn_service:VPNService,config: Config) ->st
     status = "not active"
     
     remaining_delta = await vpn_service.get_remaining_time(user)
+    logger.info(remaining_delta)
     expiry          = await vpn_service.get_expire_at(user) 
 
     if remaining_delta is None:

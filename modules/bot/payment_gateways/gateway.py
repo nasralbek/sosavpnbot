@@ -1,3 +1,4 @@
+from datetime import timedelta
 import logging
 from abc import ABC, abstractmethod
 
@@ -12,6 +13,7 @@ from config import Config
 from modules.bot.models.purchase_data import PurchaseData
 from modules.bot.models.services_container import ServicesContainer
 from modules.database.models.transaction import Transaction
+from modules.database.models.user import User
 from modules.utils.constants import TransactionStatus
 
 logger = logging.getLogger(__name__)
@@ -59,7 +61,7 @@ class PaymentGateway(ABC):
         async with self.session() as session:
             transaction = await Transaction.get_by_id(session = session,payment_id = payment_id)
             days = transaction.days
-
+            user = await User.get(session = session,tg_id =transaction.tg_id)
             await Transaction.update(
                 session = session,
                 payment_id=payment_id,
@@ -71,9 +73,8 @@ class PaymentGateway(ABC):
 
 
         #TODO: notify dev
-
-
-        #TODO: topup balance
+        
+        await self.services.vpn.add_days(user,timedelta(days = days))
 
 
     async def _on_payment_canceled(self,payment_id : str):

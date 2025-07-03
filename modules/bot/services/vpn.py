@@ -1,5 +1,5 @@
 
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 import logging
 from remnawave_api.exceptions import NotFoundError
 from sqlalchemy.ext.asyncio import async_sessionmaker
@@ -60,7 +60,7 @@ class VPNService:
 
     async def add_days(self,user: User, delta: timedelta) -> UsersResponseDto | None:
         client = await self.get_client(user)
-        now = datetime.now()
+        now = datetime.now(tz=UTC)
         if not isinstance(client,UserResponseDto):
             logger.error(f"failed to get user {user.tg_id} while updating expiry time")
             return
@@ -81,6 +81,7 @@ class VPNService:
         )
         if not isinstance(response,UsersResponseDto):
             logger.error("failed to send request, response not UsersResponseDto")
+            logger.error(response)
             return None
         logger.info(f"added delta to user: {user.tg_id}: {delta}")
         return response
@@ -93,8 +94,8 @@ class VPNService:
         return str(client.subscription_uuid)
 
     async def get_remaining_time(self,user: User) -> timedelta | None:
-        now = datetime.now()
-        expiry = self.get_expire_at(user)
+        now = datetime.now(tz=UTC)
+        expiry = await self.get_expire_at(user)
         if not isinstance(expiry,datetime):
             return
         remaining_time = expiry - now

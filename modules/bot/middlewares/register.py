@@ -23,7 +23,7 @@ class RemnawaveRegistrateMiddleware(BaseMiddleware):
         session: AsyncSession = data['session']
         user : User = data['user']
 
-        if is_new_user or not await services.vpn.is_client_exists(user):
+        if is_new_user:
             logger.info(f"user: {user.tg_id} not registered: Registrating")
             resp = await services.vpn.register_user(user)
             await user.update(session,tg_id = user.tg_id,uuid = resp.uuid )

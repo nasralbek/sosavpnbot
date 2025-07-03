@@ -39,7 +39,7 @@ class DBSessionMiddleware(BaseMiddleware):
                         tg_id           = tg_user.id,
                         sub_id          = generate_sub_id(),
                         # vpn_id=str(uuid.uuid4()),
-                        # username=tg_user.username,
+                        username=tg_user.username,
                         #first_name=tg_user.first_name,
                         # language_code=tg_user.language_code,
                     )
