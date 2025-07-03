@@ -10,6 +10,7 @@ if TYPE_CHECKING:
 from config import Config
 
 from .plan import PlanService
+from .vpn import VPNService
 
 async def initialize(
     config: Config,
@@ -22,9 +23,8 @@ async def initialize(
     
     plan = PlanService()
 
-    # vpn = VPNService(config=config,
-    #                   session=session,
-    #                   server_pool_service=server_pool)
+    vpn = VPNService(config=config,
+                      session=session,)
     
     # notification = NotificationService(config=config, 
     #                                    bot=bot)
@@ -40,7 +40,7 @@ async def initialize(
     return ServicesContainer(
         # server_pool=server_pool,
         plan=plan,
-        # vpn=vpn,
+        vpn=vpn,
         # notification=notification,
         # referral=referral,
         # subscription=subscription,

@@ -1,6 +1,7 @@
 
 from datetime import datetime, timedelta
 import logging
+from remnawave_api.exceptions import NotFoundError
 from sqlalchemy.ext.asyncio import async_sessionmaker
 from config import Config
 from modules.database.models.user import User
@@ -24,26 +25,29 @@ class VPNService:
         #self.server_pool_service = server_pool_service
         logger.info("VPN Service initialized.")
 
-    async def is_client_exists(self,user: User) -> bool:
-        client = await self.r_sdk.users.get_user_by_uuid(str(user.tg_id))
-        if not isinstance(client,UserResponseDto):
-            logger.info(f"Client {user.tg_id} not found")
-            return False
-        logger.info(f"Client {user.tg_id} found")
-        return True
-
     async def get_client(self,user: User) -> UserResponseDto | None:
-        client = await self.r_sdk.users.get_user_by_uuid(str(user.tg_id))
+        client = await self.r_sdk.users.get_user_by_uuid(uuid = str(user.uuid))
         if not isinstance(client,UserResponseDto):
             logger.info(f"Client {user.tg_id} not found")
             return None
         logger.info(f"Client {user.tg_id} found")
         return client
 
+
+    async def is_client_exists(self,user: User) -> bool:
+        try:
+            client = await self.get_client(user) 
+        except NotFoundError:
+            return False
+        except Exception as e:
+            logger.error("unpredictet response error in is_client_exists : {e}")
+            return False
+        return True
+
     async def register_user(self,user: User) -> UserResponseDto | None:
         
         client = await self.r_sdk.users.create_user(
-           CreateUserRequestDto(username=user.username,
+           CreateUserRequestDto(username=str(user.tg_id),
                                 expire_at=datetime.now(),
                                 telegram_id=user.tg_id,
                                 activate_all_inbounds=True,

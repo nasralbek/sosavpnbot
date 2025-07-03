@@ -3,6 +3,7 @@ from datetime import datetime
 
 from typing import Any, Self
 
+from pydantic_core.core_schema import uuid_schema
 from sqlalchemy import func 
 from sqlalchemy import String,Null
 from sqlalchemy import select,update
@@ -10,16 +11,26 @@ from sqlalchemy.orm import Mapped, mapped_column ,relationship,selectinload
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.dialects import postgresql
+import uuid
+
+from sqlalchemy.types import UUID
+
+from modules.database.models.transaction import Transaction
+
 
 from . import Base
 
 logger = logging.getLogger(__name__)
+
 
 class User(Base):
     __tablename__ = "users"
     
     id              : Mapped[int]       = mapped_column(primary_key=True,autoincrement=True)
     tg_id           : Mapped[int]       = mapped_column(postgresql.BIGINT(),unique     =True,nullable=False)
+    uuid            : Mapped[UUID] = mapped_column(UUID(),
+                                                          unique=True,
+                                                          nullable = True)  
     sub_id          : Mapped[str]       = mapped_column(String(36), unique = True,nullable=False)
     invited_by      : Mapped[int | None]= mapped_column(postgresql.BIGINT(),nullable=True )
     referrals       : Mapped[int]       = mapped_column(default = 0)

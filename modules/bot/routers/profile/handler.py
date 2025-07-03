@@ -1,4 +1,7 @@
 import asyncio
+from dataclasses import dataclass
+from datetime import timedelta
+from enum import Enum
 import logging
 
 from aiogram import F, Router
@@ -7,6 +10,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message
 
 from modules.bot.models import ServicesContainer
+from modules.bot.services.vpn import VPNService
 from modules.database.models import User 
 from modules.bot.utils.navigation import NavProfile, NavMain
 from modules.utils.constants import PREVIOUS_CALLBACK_KEY
@@ -18,20 +22,29 @@ from config import Config
 logger = logging.getLogger(__name__)
 router = Router(name=__name__)
 
-async def prepare_message(user: User, client_data,config: Config) ->str:
+async def prepare_message(user: User,vpn_service:VPNService,config: Config) ->str:
     print(config)
     vpn_name        = config.bot.BOT_VPN_NAME
     day_price       = config.shop.DAY_PRICE
-    status          = "|тут будет статус|"
-    balance         = "|тут будет баланс|"
-    remaining_days  = "|тут будут отс. дни|" 
+    status = "not active"
+    
+    remaining_delta = await vpn_service.get_remaining_time(user)
+    expiry          = await vpn_service.get_expire_at(user) 
+
+    if remaining_delta is None:
+        remaining_delta = timedelta()
+
+    if remaining_delta > timedelta():
+        status = "active"
+    
+    balance = remaining_delta.days * day_price
 
     return _("profile:message:main").format(
         vpn_name        = vpn_name,
         status          = status,
         day_price       = day_price,
         balance         = balance,
-        remaining_days  = remaining_days 
+        remaining_days  = remaining_delta.days 
     )
 
 @router.callback_query(F.data == NavProfile.MAIN)
@@ -44,12 +57,10 @@ async def profile(
 ):
     logger.info(f"User {user.tg_id} opened connect page.")
     await state.update_data({PREVIOUS_CALLBACK_KEY: NavMain.MAIN})
-    client_data = None
-
-    text = await prepare_message(user,client_data,config)
+    
+    text = await prepare_message(user,services.vpn,config)
     reply_markup = connect_keyboard() 
 
-    result =  await callback.message.edit_text( text = text,
-                                                reply_markup=reply_markup,)
+    result =  await callback.message.edit_text( text = text,                                                                                        reply_markup=reply_markup,)
     return result
 

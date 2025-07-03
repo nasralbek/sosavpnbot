@@ -4,7 +4,7 @@ from modules.bot.services import (
         #NotificationService,
         PlanService,
         #ServerPoolService,
-        #VPNService,
+        VPNService,
         #ReferralService,
         #SubscriptionService,
         #PaymentStatsService,
@@ -19,7 +19,7 @@ from dataclasses import dataclass
 class ServicesContainer:
     #server_pool: ServerPoolService
     plan: PlanService
-    #vpn: VPNService
+    vpn: VPNService
     #notification: NotificationService
     #referral: ReferralService
     #subscription: SubscriptionService
