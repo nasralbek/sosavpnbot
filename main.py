@@ -79,7 +79,7 @@ async def main():
     I18n.set_current(i18n)
 
 
-    services_container = await services.initialize(config=config, session=db.session, bot=bot)
+    services_container = await services.initialize(config=config, session=db.session, bot=bot,storage = storage)
     # await services_container.server_pool.sync_servers()
     gateway_factory = GatewayFactory()
     gateway_factory.register_gateways(

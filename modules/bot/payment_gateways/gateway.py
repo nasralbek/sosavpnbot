@@ -61,7 +61,7 @@ class PaymentGateway(ABC):
         async with self.session() as session:
             transaction = await Transaction.get_by_id(session = session,payment_id = payment_id)
             days = transaction.days
-            user = await User.get(session = session,tg_id =transaction.tg_id)
+            user = await User.get(session = session,tg_id = transaction.tg_id)
             await Transaction.update(
                 session = session,
                 payment_id=payment_id,
@@ -73,6 +73,8 @@ class PaymentGateway(ABC):
 
 
         #TODO: notify dev
+
+        await self.services.notification.notify_payment_succeeded(user,transaction)
         
         await self.services.vpn.add_days(user,timedelta(days = days))
 

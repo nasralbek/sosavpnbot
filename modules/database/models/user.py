@@ -44,7 +44,6 @@ class User(Base):
         return (
             f"<User(id={self.id}, tg_id={self.tg_id}, sub_id='{self.sub_id}', "
             f"username='{self.username}', registered_at={self.registered_at},"
-            f"expiry_time={self.expiry_time})>"
         )
     @classmethod
     async def get(cls, session: AsyncSession, tg_id: int) -> Self | None:

@@ -4,6 +4,7 @@
 
 from aiogram import Bot
 from aiogram.fsm.context import FSMContext
+from aiogram.fsm.storage.redis import RedisStorage
 from aiogram.utils.i18n import I18n
 from aiohttp.web import Application
 from sqlalchemy.ext.asyncio import async_sessionmaker
@@ -34,7 +35,7 @@ class GatewayFactory:
                             app: Application,
                             config: Config,
                             session: async_sessionmaker,
-                            storage: FSMContext,
+                            storage: RedisStorage,
                             bot: Bot,
                             i18n: I18n,
                             services: ServicesContainer

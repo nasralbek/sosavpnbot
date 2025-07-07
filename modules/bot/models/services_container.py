@@ -1,7 +1,7 @@
 
 
 from modules.bot.services import (
-        #NotificationService,
+        NotificationService,
         PlanService,
         #ServerPoolService,
         VPNService,
@@ -20,7 +20,7 @@ class ServicesContainer:
     #server_pool: ServerPoolService
     plan: PlanService
     vpn: VPNService
-    #notification: NotificationService
+    notification: NotificationService
     #referral: ReferralService
     #subscription: SubscriptionService
     #payment_stats: PaymentStatsService

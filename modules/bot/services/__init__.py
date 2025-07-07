@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from aiogram import Bot
+from aiogram.fsm.storage.redis import RedisStorage
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
 from typing import TYPE_CHECKING
@@ -11,11 +12,13 @@ from config import Config
 
 from .plan import PlanService
 from .vpn import VPNService
+from .notification import NotificationService
 
 async def initialize(
     config: Config,
     session: async_sessionmaker,
     bot: Bot,
+    storage : RedisStorage
 ) -> "ServicesContainer":
     from modules.bot.models import ServicesContainer
     # server_pool = ServerPoolService(config=config,
@@ -26,8 +29,9 @@ async def initialize(
     vpn = VPNService(config=config,
                       session=session,)
     
-    # notification = NotificationService(config=config, 
-    #                                    bot=bot)
+    notification = NotificationService( storage = storage,
+                                        config  = config, 
+                                        bot     = bot)
     
     # referral = ReferralService(config=config, 
     #                            session_factory=session, 
@@ -41,7 +45,7 @@ async def initialize(
         # server_pool=server_pool,
         plan=plan,
         vpn=vpn,
-        # notification=notification,
+        notification=notification,
         # referral=referral,
         # subscription=subscription,
     )

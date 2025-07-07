@@ -79,10 +79,6 @@ class VPNService:
                 expire_at=new_expire_at
             )
         )
-        if not isinstance(response,UsersResponseDto):
-            logger.error("failed to send request, response not UsersResponseDto")
-            logger.error(response)
-            return None
         logger.info(f"added delta to user: {user.tg_id}: {delta}")
         return response
     
