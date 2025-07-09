@@ -46,14 +46,19 @@ class VPNService:
 
     async def register_user(self,user: User) -> UserResponseDto | None:
         
+        inbound_uuids = ['a573b408-a452-4409-850f-9b66a06434b2',
+                        '578ef17e-ef67-4c3a-9f35-9f33a0aab7a6',
+                        '3acf6d7a-4903-4a4b-bf49-7baed581aded',
+                        ]
         try:
             client = await self.r_sdk.users.create_user(
                CreateUserRequestDto(username=str(user.tg_id),
                                     expire_at=datetime.now(tz = UTC),
                                     telegram_id=user.tg_id,
-                                    activate_all_inbounds=True,
+                                    active_user_inbounds=inbound_uuids
                 ) 
             )
+            
             
         except Exception as e:
             logger.exception(f"exception while registering user {user.tg_id}")
@@ -66,6 +71,7 @@ class VPNService:
             return None
         if b:
             return client.response[0]
+        
         return client
 
     async def add_days(self,user: User, delta: timedelta) -> UsersResponseDto | None:
