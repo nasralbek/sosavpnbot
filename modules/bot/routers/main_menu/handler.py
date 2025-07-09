@@ -34,7 +34,7 @@ async def prepare_text( services    : ServicesContainer,
 
     remaining_time = await services.vpn.get_remaining_time(user)
     no_time = timedelta()
-    delta_days = timedelta(days = 0)  
+    delta_days = timedelta(days = 1)  
     if not remaining_time:
         remaining_time=no_time
     if remaining_time<no_time:

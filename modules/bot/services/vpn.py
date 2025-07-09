@@ -49,7 +49,7 @@ class VPNService:
         try:
             client = await self.r_sdk.users.create_user(
                CreateUserRequestDto(username=str(user.tg_id),
-                                    expire_at=datetime.now(),
+                                    expire_at=datetime.now(tz = UTC),
                                     telegram_id=user.tg_id,
                                     activate_all_inbounds=True,
                 ) 
@@ -92,12 +92,19 @@ class VPNService:
         logger.info(f"added delta to user: {user.tg_id}: {delta}")
         return response
     
-    async def get_key(self,user: User) -> str | None:
+    async def get_key(self,user: User) -> str  :
         client = await self.get_client(user)
         if not isinstance(client, UserResponseDto):
             logger.error(f"failed to get user : {user.tg_id} while fetching key")
-            return
-        return str(client.subscription_uuid)
+            return ""
+        return str(client.subscription_url)
+
+    async def get_short_uuid(self,user: User) -> str :
+        client = await self.get_client(user)
+        if not isinstance(client,UserResponseDto):
+            logger.error(f"failder to get user : {user.tg_id} while fetching key")
+            return ""
+        return str(client.short_uuid)
 
     async def get_remaining_time(self,user: User) -> timedelta | None:
         now = datetime.now(tz=UTC)
@@ -117,6 +124,7 @@ class VPNService:
             logger.error(f"failed to get user {user.tg_id}")
             return None
         
+        logger.info(f"{user.tg_id} expires at {client.expire_at}")
         return client.expire_at
                
     async def set_expiry(self,user: User,new_expiry : datetime)-> UserResponseDto | None:
