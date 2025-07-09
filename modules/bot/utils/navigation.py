@@ -21,6 +21,7 @@ class NavSupport(str,Enum):
 class NavAdmin(str,Enum):
     MAIN = "admin"
 
+
 class NavPurshare:
     MAIN = NavProfile.PURSHARE
     CONFIRM = "confirm_purshare"
@@ -33,3 +34,8 @@ class NavInstruction(str,Enum):
     WIDNOWS = f'{MAIN}_windows'
     ANDROID = f'{MAIN}_andorid'
     LINUX   = F'{MAIN}_linux'
+
+
+class NavNotify(str,Enum):
+    MAIN  = "notify"
+    CLOSE = f"{MAIN}_close"

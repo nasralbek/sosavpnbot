@@ -58,6 +58,7 @@ class PaymentGateway(ABC):
 
     async def _on_payment_succeeded(self,payment_id : str):
         logger.info(f"payment succeeded {payment_id}")
+        inviter = None
         async with self.session() as session:
             transaction = await Transaction.get_by_id(session = session,payment_id = payment_id)
             days = transaction.days
@@ -68,15 +69,21 @@ class PaymentGateway(ABC):
                 status = TransactionStatus.COMPLETED
             )
 
-        if self.config.shop.REFERRER_REWARD_ENABLED:
-            pass
+            invited_by_id = user.invited_by
+            if self.config.shop.REFERRER_REWARD_ENABLED and invited_by_id:
+                inviter = await User.get(session = session, tg_id = invited_by_id)
 
-
+        user_time_delta = timedelta(days = days)
+        inviter_time_delta = user_time_delta*0.2
         #TODO: notify dev
 
         await self.services.notification.notify_payment_succeeded(user,transaction)
         
-        await self.services.vpn.add_days(user,timedelta(days = days))
+        await self.services.vpn.add_days(user,user_time_delta)
+        if inviter and self.config.shop.REFERRER_REWARD_ENABLED:
+            await self.services.vpn.add_days(inviter,inviter_time_delta)
+            await self.services.notification.notify_referral_purschared(inviter,inviter_time_delta)
+
 
 
     async def _on_payment_canceled(self,payment_id : str):

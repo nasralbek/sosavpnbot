@@ -1,3 +1,4 @@
+from enum import Enum
 from aiogram.filters.callback_data import CallbackData
 from sqlalchemy.util.typing import de_optionalize_union_types
 
@@ -33,6 +34,18 @@ class how_to_callbacks:
 #   days    : days_count
 #   price   :class SelectMethodCallback(CallbackData,prefix = "method"):
     method  : str
+
+class platformEnum(str,Enum):
+    IOS         = "IOS"
+    ANDROID     = "ANDROID"
+    WINDOWS     = "WINDOWS"
+    MACOS       = "MACOS"
+    ANDROIDTV   = "ANDROIDTV"
+    LINUX       = "LINUX"
+
+
+class HowToCallback(CallbackData, prefix = "how_to"):
+    platform : platformEnum
 
 class SelectPlanCallback (CallbackData, prefix = "select_plan"):
     days    : int

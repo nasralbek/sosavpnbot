@@ -52,8 +52,8 @@ class LogMiddleware(BaseMiddleware):
             "callback"  : callback,
             "text"      : text
         }
-        log = EventLogSchema(**log_data)
-        logger.info(repr(log))
+        #log = EventLogSchema(**log_data)
+        #logger.info(repr(log))
         #logger.info(event)
         return await handler(event, data)
 

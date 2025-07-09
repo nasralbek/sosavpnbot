@@ -4,6 +4,7 @@ import asyncio
 from urllib.parse import urljoin
 
 from aiohttp.web import Application, _run_app
+from remnawave_api import RemnawaveSDK
 from config import load_config, Config, DEFAULT_BOT_HOST,DEFAULT_LOCALES_DIR
 
 from aiogram import Bot, Dispatcher
@@ -15,6 +16,7 @@ from aiogram.fsm.storage.redis import RedisStorage
 from aiogram.utils.i18n import I18n
 
 from modules.bot.payment_gateways.gateway_factory import GatewayFactory
+from modules.bot.remnawebhook.webhook import RemnaWebhook
 from modules.logger import logger,get_start_log_message
 
 import modules.bot.middlewares as middlewares
@@ -79,8 +81,17 @@ async def main():
     I18n.set_current(i18n)
 
 
-    services_container = await services.initialize(config=config, session=db.session, bot=bot,storage = storage)
+    r_sdk = RemnawaveSDK(   base_url  = config.remnawave.PANEL_URL,
+                            token     = config.remnawave.TOKEN)
+
+    services_container = await services.initialize(config   = config, 
+                                                   session  = db.session, 
+                                                   bot      = bot,
+                                                   storage  = storage,
+                                                   r_sdk = r_sdk)
     # await services_container.server_pool.sync_servers()
+
+
     gateway_factory = GatewayFactory()
     gateway_factory.register_gateways(
         app=app,
@@ -91,6 +102,16 @@ async def main():
         i18n=i18n,
         services=services_container,
     )
+    remnawebhook = RemnaWebhook(
+        app         = app,
+        config      = config,
+        storage     = storage,
+        bot         = bot,
+        services    = services_container,
+        r_sdk       = r_sdk,
+        session     = db.session
+    )
+    remnawebhook.register_webhook()
     
     # Create the dispatcher
     dispatcher = Dispatcher(
@@ -105,7 +126,7 @@ async def main():
     dispatcher.startup.register(on_startup)
     dispatcher.shutdown.register(on_shutdown)
 
-    middlewares.MaintenanceMiddleware.set_mode(True)
+    middlewares.MaintenanceMiddleware.set_mode(False)
 
     middlewares.register(dispatcher=dispatcher,
                          i18n=i18n,

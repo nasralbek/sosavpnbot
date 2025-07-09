@@ -21,7 +21,7 @@ router = Router(name=__name__)
 async def prepare_message(days,price,method) ->str:
     return f"you want to buy {days} days by {price}rub with {method}"
 
-@router.callback_query(SelectMethodCallback.filter())
+#@router.callback_query(SelectMethodCallback.filter())
 async def confirm_purshare(   callback    : CallbackQuery,
                         callback_data : SelectMethodCallback,
                     user        : User,

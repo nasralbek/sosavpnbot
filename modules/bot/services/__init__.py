@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from aiogram import Bot
 from aiogram.fsm.storage.redis import RedisStorage
+from remnawave_api import RemnawaveSDK
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
 from typing import TYPE_CHECKING
@@ -18,7 +19,8 @@ async def initialize(
     config: Config,
     session: async_sessionmaker,
     bot: Bot,
-    storage : RedisStorage
+    storage : RedisStorage,
+    r_sdk : RemnawaveSDK
 ) -> "ServicesContainer":
     from modules.bot.models import ServicesContainer
     # server_pool = ServerPoolService(config=config,
@@ -26,8 +28,9 @@ async def initialize(
     
     plan = PlanService()
 
-    vpn = VPNService(config=config,
-                      session=session,)
+    vpn = VPNService(   config  =config,
+                        session =session,
+                        r_sdk   = r_sdk)
     
     notification = NotificationService( storage = storage,
                                         config  = config, 

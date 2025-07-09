@@ -31,14 +31,16 @@ class User(Base):
     uuid            : Mapped[UUID] = mapped_column(UUID(),
                                                           unique=True,
                                                           nullable = True)  
-    sub_id          : Mapped[str]       = mapped_column(String(36), unique = True,nullable=False)
+    #sub_id          : Mapped[str]       = mapped_column(String(36), unique = True,nullable=False)
     invited_by      : Mapped[int | None]= mapped_column(postgresql.BIGINT(),nullable=True )
     referrals       : Mapped[int]       = mapped_column(default = 0)
     username        : Mapped[str]       = mapped_column(String(length=32),default="", nullable = True)
     #expiry_time     : Mapped[datetime]  = mapped_column(default=func.now(), nullable=False)
     registered_at   : Mapped[datetime]  = mapped_column(default=func.now(), nullable=False)
     is_trial_used   : Mapped[bool]      = mapped_column(default=False, nullable=False)
-    transactions    : Mapped[list["Transaction"]] = relationship("Transaction", back_populates="user") 
+    transactions    : Mapped[list["Transaction"]] = relationship("Transaction", back_populates="user")
+    firsttime_used   : Mapped[bool]      = mapped_column(default=False)
+
 
     def __repr__(self) -> str:
         return (

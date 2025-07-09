@@ -2,10 +2,13 @@ from aiogram import Bot, Dispatcher
 from aiohttp.web import Application
 
 from . import (
+    #misc,
+    notification,
     main_menu,
+    instruction_handler,
     #instruction_handler,
     #top_up_handler,
-    profile,
+    connect,
     support,
     invite,
     purshare,
@@ -27,13 +30,15 @@ def include(app: Application, dispatcher: Dispatcher):
 
     dispatcher.include_routers(
         main_menu.handler.router,
-        profile.handler.router,
+        connect.handler.router,
         invite.handler.router,
         purshare.handler.router,
         select_plan.handler.router,
         select_method.handler.router,
         purshare_final.handler.router,
+        instruction_handler.handler.router,
         #instructions.router,
         #topup.router,
         support.handler.router,
+        notification.handler.router
     )

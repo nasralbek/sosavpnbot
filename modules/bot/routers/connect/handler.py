@@ -23,30 +23,7 @@ logger = logging.getLogger(__name__)
 router = Router(name=__name__)
 
 async def prepare_message(user: User,vpn_service:VPNService,config: Config) ->str:
-    print(config)
-    vpn_name        = config.bot.BOT_VPN_NAME
-    day_price       = config.shop.DAY_PRICE
-    status = "not active"
-    
-    remaining_delta = await vpn_service.get_remaining_time(user)
-    logger.info(remaining_delta)
-    expiry          = await vpn_service.get_expire_at(user) 
-
-    if remaining_delta is None:
-        remaining_delta = timedelta()
-
-    if remaining_delta > timedelta():
-        status = "active"
-    
-    balance = remaining_delta.days * day_price
-
-    return _("profile:message:main").format(
-        vpn_name        = vpn_name,
-        status          = status,
-        day_price       = day_price,
-        balance         = balance,
-        remaining_days  = remaining_delta.days 
-    )
+    return _("connect:message:main")
 
 @router.callback_query(F.data == NavProfile.MAIN)
 async def profile(

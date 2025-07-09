@@ -1,14 +1,31 @@
 
+import asyncio
+from datetime import timedelta
 import logging
 from typing import Any, Awaitable, Callable
 from aiogram import BaseMiddleware
 from aiogram.types import TelegramObject
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
+from config import Config
 from modules.bot.models.services_container import ServicesContainer
 from modules.database.models.user import User
 
 logger = logging.getLogger(__name__)
+
+async def procces_pizdaliz(session : AsyncSession,
+                           services: ServicesContainer,
+                           config : Config,
+                           tg_id: int):
+    if not config.shop.PIZDALIZ_REWARD_ENABLED:
+        return
+    logger.info("proccess pizdaliz started")
+    await asyncio.sleep(60*config.shop.PIZDALIZ_REWARD_DELAY)
+    user = await User.get(session = session, tg_id=tg_id) 
+    if user.firsttime_used:
+        return
+    await services.vpn.add_days(user,timedelta(days=config.shop.PIZDALIZ_REWARD_PERIOD))
+    await services.notification.notify_pizdaliz(user)
 
 class RemnawaveRegistrateMiddleware(BaseMiddleware):
     def __init__(self) -> None:
@@ -22,11 +39,16 @@ class RemnawaveRegistrateMiddleware(BaseMiddleware):
         services: ServicesContainer = data["services"]
         session: AsyncSession = data['session']
         user : User = data['user']
+        config : Config = data['config']
 
         if is_new_user:
             logger.info(f"user: {user.tg_id} not registered: Registrating")
             resp = await services.vpn.register_user(user)
             await user.update(session,tg_id = user.tg_id,uuid = resp.uuid )
+            
+            if config.shop.TRIAL_ENABLED:
+                await services.vpn.add_days(user,timedelta(days=config.shop.TRIAL_PERIOD))
+            asyncio.create_task(procces_pizdaliz(session,services,tg_id=user.tg_id,config = config))
 
         logger.debug("db session going to handler")
         return await handler(event, data)

@@ -3,6 +3,7 @@ import logging
 from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery
+from aiogram.utils.i18n import gettext as _
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from config import Config
@@ -23,12 +24,16 @@ from modules.utils.constants import (PREVIOUS_CALLBACK_KEY,
 logger = logging.getLogger(__name__)
 router = Router(name=__name__)
 
-async def prepare_message(days,price,method,url) ->str:
+async def prepare_message(days,price,method) ->str:
+    return _("purschare_final:message:main").format(days   = days,
+                                                    price  = price,
+                                                    method = method)
     return f"you want to buy {days} days by {price}rub with {method},\n\
     your purshare url: {url}"
 
-@router.callback_query(F.data == NavPurshare.CONFIRM)
+@router.callback_query(SelectMethodCallback.filter())
 async def purshare_final(callback       : CallbackQuery,
+                         callback_data  : SelectMethodCallback,
                         user            : User,
                         state           : FSMContext,
                         services        : ServicesContainer,
@@ -36,11 +41,10 @@ async def purshare_final(callback       : CallbackQuery,
                         session         : AsyncSession,
                         gateway_factory : GatewayFactory):
     logger.info(f"User {user.tg_id} opened invite page.")
-
+    method = callback_data.method_key
     try:
         days    = await state.get_value(SELECTED_DAYS_KEY)
         price   = await state.get_value(SELECTED_PRICE_KEY)
-        method  = await state.get_value(SELECTED_METHOD_KEY)
         name    = await state.get_value(SELECTED_PLAN_KEY)
 
         logger.info(f"user {user.tg_id} create payment : \n\
@@ -54,8 +58,8 @@ async def purshare_final(callback       : CallbackQuery,
                                                       days      = days,
                                                       price     = price,
                                                       )) 
-        text = await prepare_message(days,price,method,pay_url)
-        markup = purshare_final_keyboard()
+        text = await prepare_message(days,price,method)
+        markup = purshare_final_keyboard(pay_url = pay_url)
         result =  await callback.message.edit_text(text=text,
                                                reply_markup=markup)
         return result

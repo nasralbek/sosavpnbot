@@ -6,6 +6,8 @@ from pathlib import Path
 import logging
 from logging.handlers import MemoryHandler
 
+from modules.utils.constants import REMNAWAVE_WEBHOOK
+
 DEFAULT_BOT_HOST = "0.0.0.0"
 DEFAULT_BOT_PORT = 2000
 
@@ -34,6 +36,7 @@ class BotConfig:
     PORT        : int
     CHANNEL_TAG : str
     CHAT_TAG    : str
+    SUPPORT_TAG : str
 
 @dataclass
 class ShopConfig:
@@ -55,6 +58,11 @@ class ShopConfig:
     PAYMENT_HELEKET_ENABLED  : bool
     PAYMENT_YOOKASSA_ENABLED : bool
 
+    PIZDALIZ_REWARD_ENABLED  : bool
+    PIZDALIZ_REWARD_PERIOD   : int
+    PIZDALIZ_REWARD_DELAY    : int
+
+
 @dataclass
 class RemnaWaveConfig:
     
@@ -67,6 +75,8 @@ class RemnaWaveConfig:
     
     SUBSCRIPTION_PORT: int
     SUBSCRIPTION_PATH: str
+
+    WEBHOOK_SECRET   : str
 
 @dataclass
 class YooKassaConfig:
@@ -127,6 +137,7 @@ def load_bot_config(env: Env):
         SUPPORT_ID  = env.int ("BOT_SUPPORT_ID")
         DOMAIN      = env.str ("BOT_DOMAIN")
         PORT        = env.int ("BOT_PORT")
+        SUPPORT_TAG = env.str ("BOT_SUPPORT_TAG")
 
     if True: # warn
         if not TOKEN:
@@ -147,6 +158,8 @@ def load_bot_config(env: Env):
             logger.warning("CHANNEL_TAG is not set")
         if not CHAT_TAG:
             logger.warning("CHAT_TAG is not set")
+        if not SUPPORT_TAG:
+            logger.warning("BOT_SUPPORT_TAG is not set")
 
 
     return BotConfig(
@@ -159,6 +172,7 @@ def load_bot_config(env: Env):
         BOT_VPN_NAME= BOT_VPN_NAME,     #TODO: MOVE THAT TO SHOP_CONFIG
         CHANNEL_TAG = CHANNEL_TAG,      #TODO: MOVE THAT TO SHOP_CONFIG
         CHAT_TAG    = CHAT_TAG,         #TODO: MOVE THAT TO SHOP_CONFIG
+        SUPPORT_TAG = SUPPORT_TAG
         )
 
 def load_shop_config(env: Env):
@@ -179,6 +193,10 @@ def load_shop_config(env: Env):
         PAYMENT_HELEKET_ENABLED   = env.bool    ("SHOP_PAYMENT_HELEKET_ENABLED")
         PAYMENT_YOOKASSA_ENABLED  = env.bool    ("SHOP_PAYMENT_YOOKASSA_ENABLED")
         DAY_PRICE                 = 3.33
+        PIZDALIZ_REWARD_PERIOD    = env.int     ("SHOP_PIZDALIZ_REWARD_PERIOD")
+        PIZDALIZ_REWARD_ENABLED   = env.bool    ("SHOP_PIZDALIZ_REWARD_ENABLED")  
+        PIZDALIZ_REWARD_DELAY     = env.int     ("SHOP_PIZDALIZ_REWARD_DELAY")
+
     if True: #warn if not set
         if not DEVICES_COUNT:
             logger.warning("SHOP_DEVICES_COUNT is not set.")
@@ -202,6 +220,12 @@ def load_shop_config(env: Env):
             logger.warning("SHOP_PAYMENT_HELEKET_ENABLED is not set.")
         if not PAYMENT_YOOKASSA_ENABLED:
             logger.warning("SHOP_PAYMENT_YOOKASSA_ENABLED is not set.")
+        if not PIZDALIZ_REWARD_ENABLED:
+            logger.warning("SHOP_PIZDALIZ_REWARD_ENABLED is not set.")
+        if not PIZDALIZ_REWARD_PERIOD:
+            logger.warning("SHOP_PIZDALIZ_REWARD_PERIOD is not set.")
+        if not PIZDALIZ_REWARD_DELAY:
+            logger.warning("SHOP_PIZDALIZ_REWARD_DELAY is not set")
 
     return ShopConfig(  
                         DEVICES_COUNT             = DEVICES_COUNT,
@@ -215,7 +239,10 @@ def load_shop_config(env: Env):
                         PAYMENT_CRYPTOMUS_ENABLED = PAYMENT_CRYPTOMUS_ENABLED,
                         PAYMENT_HELEKET_ENABLED   = PAYMENT_HELEKET_ENABLED,
                         PAYMENT_YOOKASSA_ENABLED  = PAYMENT_YOOKASSA_ENABLED,
-                        DAY_PRICE                 = DAY_PRICE
+                        DAY_PRICE                 = DAY_PRICE,
+                        PIZDALIZ_REWARD_ENABLED   = PIZDALIZ_REWARD_ENABLED,
+                        PIZDALIZ_REWARD_PERIOD    = PIZDALIZ_REWARD_PERIOD,
+                        PIZDALIZ_REWARD_DELAY     = PIZDALIZ_REWARD_DELAY 
                 )
 
 def load_remnawave_config(env: Env):
@@ -226,6 +253,7 @@ def load_remnawave_config(env: Env):
         TOKEN             = env.str("REMNAWAVE_TOKEN")
         SUBSCRIPTION_PORT = env.int("REMNAWAVE_SUBSCRIPTION_PORT")
         SUBSCRIPTION_PATH = env.str("REMNAWAVE_SUBSCRIPTION_PATH")
+        WEBHOOK_SECRET    = env.str("REMNAWAVE_WEBHOOK_SECRET")
     if True: # warn
         if not PANEL_URL:
             logger.warning("REMNAWAVE_PANEL_URL is not set.")
@@ -247,6 +275,7 @@ def load_remnawave_config(env: Env):
                     TOKEN               = TOKEN,
                     SUBSCRIPTION_PORT   = SUBSCRIPTION_PORT,
                     SUBSCRIPTION_PATH   = SUBSCRIPTION_PATH,
+                    WEBHOOK_SECRET      = WEBHOOK_SECRET
                     )
     
 def load_yookassa_config(env: Env):

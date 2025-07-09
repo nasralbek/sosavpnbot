@@ -14,16 +14,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
+#msgid "main_menu:message:main"
+#msgstr "⚡️ Я Ваш личный бот и помощник {vpn_name}!\n"
+#"\n"
+#"Я помогаю с защитой вашей конфиденциальности.\n"
+#"\n"
+#"• До {devices_count} устройств одновременно\n"
+#"• Без ограничений по скорости и трафику\n"
+#"\n"
+#"🔗 Канал: @{channel_tag}\n"
+#"🔗 Чат: @{chat_tag}"
+
 msgid "main_menu:message:main"
-msgstr "⚡️ Я Ваш личный бот и помощник {vpn_name}!\n"
-"\n"
-"Я помогаю с защитой вашей конфиденциальности.\n"
-"\n"
-"• До {devices_count} устройств одновременно\n"
-"• Без ограничений по скорости и трафику\n"
-"\n"
-"🔗 Канал: @{channel_tag}\n"
-"🔗 Чат: @{chat_tag}"
+msgstr "id {id}\n"
+"!!! balance {balance}d\n"
+
+msgid "main_menu:message:new_user"
+msgstr "!!! thx for reg"
+
+msgid "main_menu:message:invited"
+msgstr "!!! you get {bonus_days} bonus days потому что зарегались по рефке"
+
 
 msgid "profile:message:main"
 msgstr "⚙️ Ваша подписка {vpn_name}:\n"
@@ -31,17 +42,17 @@ msgstr "⚙️ Ваша подписка {vpn_name}:\n"
 "├ Тариф: {day_price}₽/день\n"
 "└ Баланс: {balance}₽ ({remaining_days} дней)\n"
 "\n"
-"⚡️ Для подключения к VPN используйте кнопку снизу\n"
+"!!!⚡️ Для подключения к VPN используйте кнопку снизу\n"
 
 msgid "support:message:main"
-msgstr "{vpn_name} использует протокол с открытым исходным кодом, который имеет наилучшую производительность, по сравнению с другими. Все наши сервера оснащены каналом 10 гбит/с."
+msgstr "!!! {vpn_name} использует протокол с открытым исходным кодом, который имеет наилучшую производительность, по сравнению с другими. Все наши сервера оснащены каналом 10 гбит/с."
 "\n"
 "Журнал логов удаляется с наших серверов моментально, мы не храним историю посещений, в отличии от многих бесплатных сервисов. Мы не собираем и не продаём какие либо данные о Вас."
 "\n"
 "Для выдачи доступа к VPN используется Telegram, в связи с этим нас не возможно заблокировать или удалить из App Store и других площадок."
 
 msgid "invite_friend:message:main"
-msgstr "⚡️ Приглашено: {invited_count} чел.\n"
+msgstr "!!!⚡️ Приглашено: {invited_count} чел.\n"
 "💸 Начислено: {reward_amount}₽\n"
 "\n"
 "👥 За каждого приглашенного друга Вы получите {reward_per_firend_balance}₽ ({reward_per_friend_days} дней) на баланс, друг получит {ivnited_reward_balance}₽ ({invited_reward_days} дней).\n"
@@ -52,32 +63,147 @@ msgstr "⚡️ Приглашено: {invited_count} чел.\n"
 
 msgid "maintenance:ntf:try_later"
 msgstr ""
-"🚧 <i>Бот находится в режиме обслуживания. Пожалуйста, попробуйте "
+"🚧 !!!<i>Бот находится в режиме обслуживания. Пожалуйста, попробуйте "
 "позже.</i>"
 
 msgid "main_menu:button:main"
-msgstr "main_menu"
+msgstr "!!! main_menu"
 
 
 
 msgid "main_menu:button:profile"
-msgstr "👤 Подключить vpn"
+msgstr "!!!👤 Подключить vpn"
 
 msgid "main_menu:button:invite_friend"
-msgstr "👤 Пригласить друга"
+msgstr "!!!👤 Пригласить друга"
 
 msgid "main_menu:button:support"
-msgstr "👤 support"
+msgstr "!!!👤 support"
 
 msgid "main_menu:button:admin"
-msgstr "админка228"
+msgstr "!!!админка228"
 
 msgid "main_menu:button:purshare"
-msgstr "купить"
+msgstr "!!!купить"
 
 msgid "purshare:message:main"
-msgstr "Выберите кол-во"
+msgstr "!!!Выберите кол-во"
 
 msgid "confirm:button:main"
-msgstr "Подтвердить"
+msgstr "!!!Подтвердить"
 
+
+
+msgid "connect:message:main"
+msgstr "!!!подкл впн"
+
+msgid "how_to:button:IOS"
+msgstr "!!!ios"
+
+msgid "how_to:button:ANDROID"
+msgstr "!!!android"
+
+msgid "how_to:button:WINDOWS"
+msgstr "!!!windows"
+
+msgid "how_to:button:MACOS"
+msgstr "!!!macos"
+
+msgid "how_to:button:ANDROIDTV"
+msgstr "!!!android tv"
+
+msgid "how_to:button:LINUX"
+msgstr "!!!linux"
+
+
+msgid "how_to:message:IOS"
+msgstr "!!!ios"
+
+msgid "how_to:message:ANDROID"
+msgstr "!!!android"
+
+msgid "how_to:message:WINDOWS"
+msgstr "!!!windows"
+
+msgid "how_to:message:MACOS"
+msgstr "!!!macos"
+
+msgid "how_to:message:ANDROIDTV"
+msgstr "!!!android tv"
+
+msgid "how_to:message:LINUX"
+msgstr "!!!linux"
+
+
+msgid "how_to:button:add"
+msgstr "!!!добавить"
+
+msgid "how_to:button:download"
+msgstr "!!!скачать"
+
+
+msgid "invite:message:main"
+msgstr "!!!invited : {invited_count}\n"
+"invite link : \n"
+"{invite_link}"
+
+
+msgid "select_method:message:main"
+msgstr ""
+"!!!выбрано {days}д\n"
+"цена {price} р\n"
+"способ оплаты."
+
+msgid "purschare_final:message:main"
+msgstr ""
+"!!!выбрано {days}д\n"
+"цена {price} р\n"
+"способ оплаты {method}\n"
+"ваша ссылка для оплаты по кнопке ниже"
+
+msgid "purschare_final:button:pay"
+msgstr "!!!оплатить"
+
+msgid "how_to:platform:message:IOS"
+msgstr "!!IOS INSTRUCT"
+
+msgid "how_to:platform:message:ANDROID"
+msgstr "!android INSTRUCT"
+
+msgid "how_to:platform:message:WINDOWS"
+msgstr "!windows INSTRUCT"
+
+msgid "how_to:platform:message:MACOS"
+msgstr "!macos INSTRUCT"
+
+msgid "how_to:platform:message:ANDROIDTV"
+msgstr "!androidtv INSTRUCT"
+
+msgid "how_to:platform:message:LINUX"
+msgstr "!linux INSTRUCT"
+
+msgid "purchare:message:success"
+msgstr "!!спасибо за покупку\n"
+"!!!баланс увеличен на {days}дн."
+
+msgid "expire:message:expired_day_ago"
+msgstr "!!!баланс истек день назад пополните пж"
+
+msgid "expire:message:expired"
+msgstr "!!!баланс истек пополните пж"
+
+msgid "expire:message:will_expire"
+msgstr "!!!баланс истечет через {days}дн пополните пж"
+
+
+msgid "notify:message:payment_from_ref"
+msgstr "!!! реф пополнил балик, вам начислено {days} дн"
+
+msgid "notify:message:registered_by_ref"
+msgstr "!!по вашей рефке зарегались вам начислено {days}дн"
+
+msgid "notify:message:pizdaliz"
+msgstr "!!!пиздализ меседж days = {days} дн"
+
+msgid "select_plan:button:text"
+msgstr "!!!{days}дн - {price} руб"

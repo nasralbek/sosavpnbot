@@ -16,12 +16,12 @@ class VPNService:
         self,
         config: Config,
         session: async_sessionmaker,
+        r_sdk: RemnawaveSDK
         #server_pool_service: ServerPoolService, TODO: MAKE
     ) -> None:
         self.config = config
         self.session = session
-        self.r_sdk = RemnawaveSDK(base_url  = config.remnawave.PANEL_URL,
-                                  token     = config.remnawave.TOKEN)
+        self.r_sdk = r_sdk
         #self.server_pool_service = server_pool_service
         logger.info("VPN Service initialized.")
 
@@ -46,16 +46,26 @@ class VPNService:
 
     async def register_user(self,user: User) -> UserResponseDto | None:
         
-        client = await self.r_sdk.users.create_user(
-           CreateUserRequestDto(username=str(user.tg_id),
-                                expire_at=datetime.now(),
-                                telegram_id=user.tg_id,
-                                activate_all_inbounds=True,
-            ) 
-        )
-        if not isinstance(client,UserResponseDto):
+        try:
+            client = await self.r_sdk.users.create_user(
+               CreateUserRequestDto(username=str(user.tg_id),
+                                    expire_at=datetime.now(),
+                                    telegram_id=user.tg_id,
+                                    activate_all_inbounds=True,
+                ) 
+            )
+            
+        except Exception as e:
+            logger.exception(f"exception while registering user {user.tg_id}")
+            logger.info(f"trying to get user {user.tg_id} from remna")
+            client  = await self.r_sdk.users.get_users_by_telegram_id(telegram_id = str(user.tg_id))
+        a = isinstance(client,UserResponseDto)
+        b = isinstance(client, TelegramUserResponseDto)
+        if not (a or b): 
             logger.error(f"failed to register user : {user.tg_id}")
             return None
+        if b:
+            return client.response[0]
         return client
 
     async def add_days(self,user: User, delta: timedelta) -> UsersResponseDto | None:

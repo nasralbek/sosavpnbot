@@ -26,21 +26,15 @@ def gen_invite_link(bot_name:str,user:User):
 
 async def prepare_message(config: Config,bot_name:str,user:User) ->str:
     invited_count               = user.referrals
-    rewarded                    = invited_count * config.shop.DAY_PRICE
-    reward_per_firend_balance   = config.shop.REFERRER_REWARD_PERIOD * config.shop.DAY_PRICE
-    reward_per_friend_days      = config.shop.REFERRER_REWARD_PERIOD
-    ivnited_reward_balance      = config.shop.REFERRED_TRIAL_PERIOD  * config.shop.DAY_PRICE
-    invited_reward_days         = config.shop.REFERRED_TRIAL_PERIOD
-    referral_url                = gen_invite_link(bot_name,user)
+    #rewarded                    = invited_count * config.shop.DAY_PRICE
+    #reward_per_firend_balance   = config.shop.REFERRER_REWARD_PERIOD * config.shop.DAY_PRICE
+    #reward_per_friend_days      = config.shop.REFERRER_REWARD_PERIOD
+    #ivnited_reward_balance      = config.shop.REFERRED_TRIAL_PERIOD  * config.shop.DAY_PRICE
+    #invited_reward_days         = config.shop.REFERRED_TRIAL_PERIOD
+    invite_link                = gen_invite_link(bot_name,user)
 
-    return _("invite_friend:message:main").format(  invited_count             = invited_count ,
-                                                    reward_amount             = rewarded ,
-                                                    reward_per_firend_balance = reward_per_firend_balance, 
-                                                    reward_per_friend_days    = reward_per_friend_days ,
-                                                    ivnited_reward_balance    = ivnited_reward_balance ,
-                                                    invited_reward_days       = invited_reward_days ,
-                                                    referral_url              = referral_url
-)
+    return _("invite:message:main").format(invite_link = invite_link,
+                                           invited_count = invited_count) 
 
 
 @router.callback_query(F.data == NavInvite.MAIN)

@@ -14,11 +14,12 @@ def purshare_keyboard(plans : list[Plan])-> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
 
     for p in plans:
+        text = _("select_plan:button:text").format(days = p.days, price = p.price)
         callback_data = SelectPlanCallback(days     = p.days,
                                            price    = p.price,
                                            name     = p.name).pack()
         builder.row(
-            InlineKeyboardButton(text=p.name,callback_data = callback_data)
+            InlineKeyboardButton(text=text,callback_data = callback_data)
         )
     builder.row(InlineKeyboardButton(text=_("main_menu:button:main"), callback_data=NavMain.MAIN))
 

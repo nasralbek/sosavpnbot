@@ -21,7 +21,8 @@ logger = logging.getLogger(__name__)
 router = Router(name=__name__)
 
 async def prepare_message(days,price) ->str:
-    return f"{days} - {price}, select method"
+    return _("select_method:message:main").format(days = days,
+                                                  price = price)
 
 @router.callback_query(SelectPlanCallback.filter())
 async def select_method(   callback    : CallbackQuery,
