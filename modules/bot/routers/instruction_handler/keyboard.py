@@ -24,7 +24,7 @@ downloads: dict[platformEnum,str] = {
 
 sub_route: dict[platformEnum,str] = {
     platformEnum.IOS        : "v2raytun",
-    platformEnum.ANDROID    : "happ",
+    platformEnum.ANDROID    : "v2raytun",
     platformEnum.WINDOWS    : "happ",
     platformEnum.MACOS      : "happ",
     platformEnum.ANDROIDTV  : "v2raytun",

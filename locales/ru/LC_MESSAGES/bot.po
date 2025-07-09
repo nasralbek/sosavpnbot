@@ -207,3 +207,7 @@ msgstr "!!!пиздализ меседж days = {days} дн"
 
 msgid "select_plan:button:text"
 msgstr "!!!{days}дн - {price} руб"
+
+
+msgid "notify:message:first_connected"
+msgstr "!!!поздр вы подключились"

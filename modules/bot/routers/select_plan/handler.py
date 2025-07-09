@@ -47,7 +47,7 @@ async def select_method(   callback    : CallbackQuery,
     await state.update_data({PREVIOUS_CALLBACK_KEY: NavPurshare.MAIN})
     text = await prepare_message(days,price)
     markup = select_method_keyboard(config)
-    result =  await callback.message.edit_text(text=text,
+    result =  await callback.message.edit_caption(caption=text,
                                                reply_markup=markup)
     return result
 

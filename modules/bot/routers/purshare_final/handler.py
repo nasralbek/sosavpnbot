@@ -60,7 +60,7 @@ async def purshare_final(callback       : CallbackQuery,
                                                       )) 
         text = await prepare_message(days,price,method)
         markup = purshare_final_keyboard(pay_url = pay_url)
-        result =  await callback.message.edit_text(text=text,
+        result =  await callback.message.edit_caption(caption=text,
                                                reply_markup=markup)
         return result
     except Exception as e:

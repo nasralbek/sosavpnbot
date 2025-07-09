@@ -29,6 +29,7 @@ from modules.utils.constants import(
 from modules.bot import services,routers,filters
 from modules.bot.utils import commands
 from modules.bot.models import ServicesContainer
+from tools.image_container import ImageContainer, load_images
 
 
 async def on_shutdown(db: DataBase, 
@@ -84,11 +85,13 @@ async def main():
     r_sdk = RemnawaveSDK(   base_url  = config.remnawave.PANEL_URL,
                             token     = config.remnawave.TOKEN)
 
+    images : ImageContainer = load_images()
     services_container = await services.initialize(config   = config, 
                                                    session  = db.session, 
                                                    bot      = bot,
                                                    storage  = storage,
-                                                   r_sdk = r_sdk)
+                                                   r_sdk = r_sdk,
+                                                   images = images)
     # await services_container.server_pool.sync_servers()
 
 
@@ -121,6 +124,7 @@ async def main():
         bot=bot,
         services=services_container,
         gateway_factory=gateway_factory,
+        images = images
     )
 
     dispatcher.startup.register(on_startup)

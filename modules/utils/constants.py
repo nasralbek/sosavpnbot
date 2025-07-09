@@ -31,3 +31,18 @@ SELECTED_PLAN_KEY       = "selected_plan"
 
 DEFAULT_LANGUAGE    = "ru"
 I18N_DOMAIN         = "bot"
+
+
+class REACTS_IDS(Enum):
+    fire    =  "5104841245755180586"
+    like    =  "5107584321108051014"
+    dislike =  "5104858069142078462"
+    heart   =  "5044134455711629726"
+    gratz   =  "5046509860389126442"
+    poop    =  "5046589136895476101"
+
+
+
+
+
+

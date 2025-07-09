@@ -41,7 +41,7 @@ async def confirm_purshare(   callback    : CallbackQuery,
 
     text = await prepare_message(days,price,method)
     markup = confirm_keyboard()
-    result =  await callback.message.edit_text(text=text,
+    result =  await callback.message.edit_caption(caption=text,
                                                reply_markup=markup)
     return result
 

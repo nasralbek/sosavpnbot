@@ -6,6 +6,8 @@ from remnawave_api import RemnawaveSDK
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
 from typing import TYPE_CHECKING
+
+from tools.image_container import ImageContainer
 if TYPE_CHECKING:
     from modules.bot.models import ServicesContainer
 
@@ -20,7 +22,8 @@ async def initialize(
     session: async_sessionmaker,
     bot: Bot,
     storage : RedisStorage,
-    r_sdk : RemnawaveSDK
+    r_sdk : RemnawaveSDK,
+    images : ImageContainer
 ) -> "ServicesContainer":
     from modules.bot.models import ServicesContainer
     # server_pool = ServerPoolService(config=config,
@@ -34,7 +37,8 @@ async def initialize(
     
     notification = NotificationService( storage = storage,
                                         config  = config, 
-                                        bot     = bot)
+                                        bot     = bot,
+                                        images = images)
     
     # referral = ReferralService(config=config, 
     #                            session_factory=session, 

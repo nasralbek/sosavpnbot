@@ -2,6 +2,7 @@ from datetime import timedelta
 import logging
 import asyncio
 
+from aiogram.filters import callback_data
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.storage.base import StorageKey
 from aiogram.fsm.storage.redis import RedisStorage
@@ -15,6 +16,7 @@ from aiogram import Bot
 
 from aiogram.types import (
     CallbackQuery,
+    FSInputFile,
     ForceReply,
     InlineKeyboardButton,
     InlineKeyboardMarkup,
@@ -30,8 +32,9 @@ from aiogram.types import (
 #from modules.bot.routers.misc.keyboard import close_notification_keyboard
 from modules.database.models.transaction import Transaction
 from modules.database.models.user import User
-from modules.utils.constants import MAIN_MESSAGE_ID_KEY, PREVIOUS_MESSAGE_ID_KEY
-from modules.bot.utils.navigation import NavMain,NavNotify
+from modules.utils.constants import MAIN_MESSAGE_ID_KEY, PREVIOUS_MESSAGE_ID_KEY, REACTS_IDS
+from modules.bot.utils.navigation import NavMain,NavNotify, NavProfile, NavPurshare
+from tools.image_container import ImageContainer
 
 logger = logging.getLogger(__name__)
 
@@ -50,6 +53,27 @@ def back_to_main_menu_keyboard():
     builder.row(button)
     return builder.as_markup()
 
+def expire_event_keyboard():
+    builder = InlineKeyboardBuilder()
+    
+    purchare = InlineKeyboardButton(text = _("main_menu:button:purshare"),
+                                    callback_data = NavPurshare.MAIN)
+    main_menu = InlineKeyboardButton(text = _("main_menu:button:main"),
+                                     callback_data = NavMain.MAIN)
+    builder.row(purchare)
+    builder.row(main_menu)
+    return builder.as_markup()
+
+def pizdaliz_keyboard():
+    builder = InlineKeyboardBuilder()
+    
+    connect = InlineKeyboardButton(text = _("main_menu:button:profile"),
+                                   callback_data=NavProfile.MAIN)
+    main_menu = InlineKeyboardButton(text = _("main_menu:button:main"),
+                                     callback_data = NavMain.MAIN)
+    builder.row(connect)
+    builder.row(main_menu)
+    return builder.as_markup()
 
 
 async def auto_delete(notification,duration):    
@@ -63,10 +87,12 @@ class NotificationService:
     def __init__(self,
                  config: Config,
                  bot : Bot,
-                 storage : RedisStorage):
+                 storage : RedisStorage,
+                 images : ImageContainer):
         self.config = config
         self.bot = bot
         self.storage = storage
+        self.images = images
         logger.info("Notification Service initialized")
     
 
@@ -105,6 +131,7 @@ class NotificationService:
         chat_id:            int         | None  = None,
         reply_markup:       ReplyMarkupType     = None,
         document:           InputFile   | None  = None,
+        photo:              FSInputFile | None  = None,
         bot:                Bot         | None  = None,
         message_effect_id:  str         | None  = None
     ) -> Message | None:
@@ -120,9 +147,18 @@ class NotificationService:
         if duration == 0 and reply_markup is None:
             reply_markup = close_notification_keyboard()
 
-        send_method = bot.send_document if document else bot.send_message
-        args = {"document": document, "caption": text} if document else {"text": text}
-        if message_effect_id: args["message_effect_id"] = message_effect_id
+        if photo:
+            send_method = bot.send_photo
+            args = {"photo": photo, "caption": text}
+        elif document:
+            send_method = bot.send_document
+            args = {"document" : document, "caption": text}
+        else:
+            send_method = bot.send_message
+            args = {"text" : text}
+
+        if message_effect_id: 
+            args["message_effect_id"] = message_effect_id
         
         try:
             notification = await send_method(chat_id=chat_id, reply_markup=reply_markup, **args)
@@ -146,6 +182,7 @@ class NotificationService:
         chat_id:            int         | None  = None,
         reply_markup:       ReplyMarkupType     = None,
         document:           InputFile   | None  = None,
+        photo:              FSInputFile | None  = None,
         bot:                Bot         | None  = None,
         message_effect_id:  str         | None  = None
     ):        
@@ -171,6 +208,7 @@ class NotificationService:
             reply_markup=reply_markup,
             document = document,
             bot = bot,
+            photo = photo,
             message_effect_id=message_effect_id
         )
         if isinstance(res,Message):
@@ -261,11 +299,17 @@ class NotificationService:
             if isinstance(user_tg_id,str):
                 user_tg_id = int(user_tg_id)
             bot = self.bot
-            await NotificationService._notify_replace_previous_message(text     = text,
-                                                                           duration = 0,
-                                                                           bot      = bot,
-                                                                           chat_id  = user_tg_id,
-                                                                           storage  = self.storage)
+            reply_markup = expire_event_keyboard()
+            await NotificationService._notify_replace_previous_message(
+                text     = text,
+                duration = 0,
+                bot      = bot,
+                chat_id  = user_tg_id,
+                storage  = self.storage,
+                reply_markup = reply_markup,
+                photo = self.images.notify,
+                message_effect_id=REACTS_IDS.poop.value
+                                                                       )
             return True
         except Exception as e:
             logger.error(f"{e}")
@@ -285,6 +329,8 @@ class NotificationService:
             chat_id     = chat_id,
             bot         = bot,
             storage = self.storage,
+            photo = self.images.purschare_success,
+            message_effect_id= REACTS_IDS.gratz.value
         )
         return result
         
@@ -296,7 +342,9 @@ class NotificationService:
             text = text,
             chat_id = User.tg_id,
             bot = self.bot,
-            storage = self.storage
+            storage = self.storage,
+            photo = self.images.purschare_success,
+            message_effect_id=REACTS_IDS.gratz.value
         )
         return result
     
@@ -304,10 +352,13 @@ class NotificationService:
     async def notify_pizdaliz(self,user):
         
         text = _("notify:message:pizdaliz").format(days = self.config.shop.PIZDALIZ_REWARD_PERIOD) 
+        reply_markup = pizdaliz_keyboard()
         await NotificationService._notify_replace_previous_message(text         = text,
                                                                     chat_id     = user.tg_id,
                                                                     bot         = self.bot,
-                                                                    storage     = self.storage)
+                                                                    storage     = self.storage,
+                                                                   photo = self.images.purschare_success,
+                                                                   reply_markup = reply_markup)
 
     async def notify_referred(self,user : User):
         text = "referred"
@@ -322,9 +373,19 @@ class NotificationService:
         await NotificationService._notify_replace_previous_message(text         = text,
                                                                     chat_id     = user.tg_id,
                                                                     bot         = self.bot,
-                                                                    storage     = self.storage
+                                                                    storage     = self.storage,
+                                                                   photo = self.images.purschare_success,
+                                                                   message_effect_id=REACTS_IDS.fire.value
         )
 
+    async def notify_user_first_connected(self,tg_id: int):
+        text = _("notify:message:first_connected")
+        await NotificationService._notify_replace_previous_message(text     = text,
+                                                                   chat_id  = tg_id,
+                                                                   bot      = self.bot,
+                                                                   storage  = self.storage,
+                                                                   photo    = self.images.notify,
+                                                                   message_effect_id=REACTS_IDS.gratz.value)
 
 
 

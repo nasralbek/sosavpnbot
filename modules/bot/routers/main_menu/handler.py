@@ -6,7 +6,7 @@ from aiogram.fsm.storage.base import StorageKey
 from aiogram.fsm.storage.redis import RedisStorage
 from aiogram.utils.i18n import gettext as _
 from aiogram.fsm.context import FSMContext
-from aiogram.types import CallbackQuery, Message
+from aiogram.types import CallbackQuery, InputMediaPhoto, Message
 from aiogram.filters import Command, CommandObject
 from sqlalchemy.ext.asyncio import AsyncSession
 from modules.bot.models import ServicesContainer
@@ -21,6 +21,7 @@ from modules.bot.filters import ReplyButtonFilter
 from modules.bot.filters import IsAdmin
 
 from config import Config
+from tools.image_container import ImageContainer
 from .keyboard import main_menu_keyboard
 
 logger = logging.getLogger(__name__)
@@ -56,10 +57,11 @@ async def redirect_to_main_menu(
     user            : User,
     services        : ServicesContainer,
     config          : Config,
+    images          : ImageContainer ,
     storage         : RedisStorage  | None  = None,
     state           : FSMContext    | None  = None,
     is_new_user     : bool                  = False,
-    is_invited      : bool                  = False
+    is_invited      : bool                  = False,
 ) -> Message | None:
     logger.info(f"user {user.tg_id} redirected to main menu")
     if not state:
@@ -82,9 +84,11 @@ async def redirect_to_main_menu(
                                             is_admin,
                                           is_refferal_avaible=config.shop.REFERRER_REWARD_ENABLED)
 
-        result = await bot.send_message(chat_id=chat_id,
-                               text = text,
+        result = await bot.send_photo(chat_id=chat_id,
+                               caption = text,
+                                photo = images.main_menu,
                                reply_markup=reply_markup)
+        logger.info("editing media")
         await state.update_data({MAIN_MESSAGE_ID_KEY: result.message_id})
         if main_message_id:
             await bot.delete_message(chat_id = chat_id, message_id = main_message_id)
@@ -133,7 +137,8 @@ async def command_main_menu(
                     config      : Config,
                     session     : AsyncSession,
                     command     : CommandObject,
-                    is_new_user : bool):
+                    is_new_user : bool,
+                    images : ImageContainer):
     is_invited = False
     if is_new_user and command.args:
         if command.args.isdigit():
@@ -164,7 +169,8 @@ async def command_main_menu(
             config = config,
             state = state,
             is_new_user = is_new_user,
-            is_invited = is_invited)
+            is_invited = is_invited,
+            images = images)
 
     return response
 
@@ -175,7 +181,8 @@ async def callback_main_menu(
                     state       : FSMContext,
                     services    : ServicesContainer,
                     config      : Config,
-                    session     : AsyncSession):
+                    session     : AsyncSession,
+                    images      : ImageContainer):
     
    
     response = await redirect_to_main_menu(
@@ -183,7 +190,8 @@ async def callback_main_menu(
             user = user,
             services = services,
             config = config,
-            state = state)
+            state = state,
+            images = images)
                                            
     return response
 

@@ -48,6 +48,7 @@ class RemnaWebhook():
         async with self.session() as session:
             try:
                 await User.update(session,int(tg_id), firsttime_used = True)
+                await self.services.notification.notify_user_first_connected(tg_id)
                 return True
             except Exception as e:
                 logger.error(f"failed to set mark firsttime_used to user: {tg_id} {e}")

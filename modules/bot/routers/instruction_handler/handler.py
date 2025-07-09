@@ -35,7 +35,7 @@ async def handle_how_to(callback: CallbackQuery,
     text = prepare_text(callback_data.platform)
     key = await services.vpn.get_short_uuid(user)
     markup = how_to_keyboard(callback_data.platform,key = key,config = config)
-    result =  await callback.message.edit_text(text=text,
+    result =  await callback.message.edit_caption(caption=text,
                                                reply_markup=markup)
  
     return result
