@@ -20,7 +20,7 @@ def register(dispatcher: Dispatcher,i18n:I18n,session: async_sessionmaker) -> No
         SimpleI18nMiddleware(i18n),
         MaintenanceMiddleware(),
         DBSessionMiddleware(session),
-        RemnawaveRegistrateMiddleware(),
+        RemnawaveRegistrateMiddleware(session),
         
 #        RemoveMiddleware()
     ]

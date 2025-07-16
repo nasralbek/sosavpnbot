@@ -21,8 +21,7 @@ class RemoveMiddleware(BaseMiddleware):
         self,
         handler: Callable[[TelegramObject, dict[str, Any]], Awaitable[Any]],
         event: TelegramObject,
-        data: dict[str, Any],
-    ) -> Any:
+        data: dict[str, Any]) -> Any:
         response =  await handler(event,data)
 
         state = data['state']

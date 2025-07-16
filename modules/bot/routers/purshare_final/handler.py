@@ -27,7 +27,7 @@ router = Router(name=__name__)
 async def prepare_message(days,price,method) ->str:
     return _("purschare_final:message:main").format(days   = days,
                                                     price  = price,
-                                                    method = method)
+                                                    method = "Банковская карта/СБП")
     return f"you want to buy {days} days by {price}rub with {method},\n\
     your purshare url: {url}"
 

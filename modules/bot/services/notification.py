@@ -211,10 +211,13 @@ class NotificationService:
             photo = photo,
             message_effect_id=message_effect_id
         )
-        if isinstance(res,Message):
-            await state.update_data({MAIN_MESSAGE_ID_KEY : res.message_id})
-            logger.info(f"{previous_msg_id}")
-            await bot.delete_message(chat_id = chat_id, message_id=previous_msg_id)
+        try:
+            if isinstance(res,Message):
+                await state.update_data({MAIN_MESSAGE_ID_KEY : res.message_id})
+                logger.info(f"{previous_msg_id}")
+                await bot.delete_message(chat_id = chat_id, message_id=previous_msg_id)
+        except Exception as e:
+            logger.exception(e)
 
 
     @staticmethod

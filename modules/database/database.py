@@ -54,6 +54,8 @@ class DataBase:
         self.engine = create_async_engine(
             url=config.url(),
             pool_pre_ping=True,
+            pool_size = 20,
+            max_overflow = 30,
         )
         self.session = async_sessionmaker(
             bind=self.engine,

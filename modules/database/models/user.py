@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Any, Self
 
 from pydantic_core.core_schema import uuid_schema
-from sqlalchemy import func 
+from sqlalchemy import func,text
 from sqlalchemy import String,Null
 from sqlalchemy import select,update
 from sqlalchemy.orm import Mapped, mapped_column ,relationship,selectinload
@@ -69,9 +69,10 @@ class User(Base):
     
     @classmethod
     async def get_all(cls, session: AsyncSession) -> list[Self]:
-        query = await session.execute(select(User).options(selectinload(User.server)))
-        return query.scalars().all()
-    
+        res = await session.execute(text("select * from users"))
+        all = res.fetchall()
+
+        return all    
     @classmethod
     async def create(cls, session: AsyncSession, tg_id: int, **kwargs: Any) -> Self | None:
         user = await User.get(session=session, tg_id=tg_id)

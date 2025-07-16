@@ -48,8 +48,8 @@ async def prepare_text( services    : ServicesContainer,
                                               balance = balance)
     if is_new_user:
         text += _("main_menu:message:new_user")
-    if is_invited:
-        text += _("main_menu:message:invited")
+    #if is_invited:
+        #text += _("main_menu:message:invited")
     return text
 
 async def redirect_to_main_menu(

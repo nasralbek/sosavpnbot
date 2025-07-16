@@ -3,17 +3,28 @@
         {
             "name":"30 days",
             "days":30,
-            "price":100
+            "price":150
         },
         {
             "name":"60 days",
             "days":60,
-            "price":200
+            "price":300
         },
         {
             "name":"90 days",
             "days":90,
-            "price":300
+            "price":450
+        },
+        {
+            "name":"180 days",
+            "days":180,
+            "price":900
+        },
+        {
+            "name":"360 days",
+            "days":360,
+            "price":1800
         }
+
     ]
 }

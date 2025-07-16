@@ -10,7 +10,7 @@ from modules.bot.utils.navigation import NavMain, NavPurshare
 
 def select_method_keyboard(config : Config) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
-    yooKassaButton = InlineKeyboardButton(text="yookassa",
+    yooKassaButton = InlineKeyboardButton(text="Банковская карта/СБП",
                     callback_data = SelectMethodCallback(
                                           method_key=NavPurshare.PAY_YOOKASSA
                                           ).pack())

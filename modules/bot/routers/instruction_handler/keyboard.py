@@ -14,22 +14,23 @@ from modules.bot.utils.navigation import NavInstruction, NavMain
 # invite_button       = KeyboardButton(text=NavMain.INVITE,       )  
 
 downloads: dict[platformEnum,str] = {
-    platformEnum.IOS        : "https://url.com",
-    platformEnum.ANDROID    : "https://url.com",
-    platformEnum.WINDOWS    : "https://url.com",
-    platformEnum.MACOS      : "https://url.com",
+    platformEnum.IOS        : "https://apps.apple.com/us/app/v2raytun/id6476628951",
+    platformEnum.ANDROID    : "https://play.google.com/store/apps/details?id=com.v2raytun.android",
+    platformEnum.WINDOWS    : "https://github.com/Happ-proxy/happ-desktop/releases/download/0.1.2_alpha/setup-Happ.x86.exe",
+    platformEnum.MACOS      : "https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973",
     platformEnum.ANDROIDTV  : "https://url.com",
-    platformEnum.LINUX      : "https://url.com",
+    platformEnum.LINUX      : "https://github.com/hiddify/hiddify-next/releases/download/v2.5.7/Hiddify-Linux-x64.AppImage",
 }
 
 sub_route: dict[platformEnum,str] = {
-    platformEnum.IOS        : "v2raytun",
-    platformEnum.ANDROID    : "v2raytun",
-    platformEnum.WINDOWS    : "happ",
-    platformEnum.MACOS      : "happ",
-    platformEnum.ANDROIDTV  : "v2raytun",
-    platformEnum.LINUX      : "happ",
+    platformEnum.IOS        : "v2raytun://import",
+    platformEnum.ANDROID    : "v2raytun://import",
+    platformEnum.WINDOWS    : "happ://add",
+    platformEnum.MACOS      : "happ://add",
+    platformEnum.ANDROIDTV  : "v2raytun://import",
+    platformEnum.LINUX      : "happ://add",
 }
+
 
 
 logger = logging.getLogger(__name__)
@@ -44,7 +45,7 @@ def get_add_button(platform : platformEnum,
                    sub_path:str):
     text = _("how_to:button:add")
     sub_id = "sub_id"
-    url = f"{sub_path}{sub_route[platform]}/{key}"
+    url = f"{sub_path}?url={sub_route[platform]}/{sub_path}sub/{key}"
     logger.info(url)
     return InlineKeyboardButton(text = text, url = url )
 
@@ -54,7 +55,7 @@ def how_to_keyboard(platform : platformEnum,config: Config, key = "") -> InlineK
     builder.row(get_download_button(platform))
     sub_path = config.remnawave.SUBSCRIPTION_PATH
     builder.row(get_add_button(platform,key = key,sub_path = sub_path))
-
-    builder.row(InlineKeyboardButton(text = "main_menu",callback_data = NavMain.MAIN))
+    text = _("main_menu:button:main")
+    builder.row(InlineKeyboardButton(text = text,callback_data = NavMain.MAIN))
     return builder.as_markup()
 
