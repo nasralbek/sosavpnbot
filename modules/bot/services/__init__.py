@@ -38,7 +38,8 @@ async def initialize(
     notification = NotificationService( storage = storage,
                                         config  = config, 
                                         bot     = bot,
-                                        images = images)
+                                        images  = images,
+                                        session = session)
     
     # referral = ReferralService(config=config, 
     #                            session_factory=session, 

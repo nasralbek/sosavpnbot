@@ -10,6 +10,7 @@ from aiogram.methods import edit_message_caption
 from aiogram.utils.i18n import gettext as _
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from pydantic_core.core_schema import str_schema
+from sqlalchemy.ext.asyncio import async_sessionmaker
 
 from config import Config
 from aiogram import Bot
@@ -85,14 +86,16 @@ async def auto_delete(notification,duration):
 
 class NotificationService:
     def __init__(self,
-                 config: Config,
-                 bot : Bot,
-                 storage : RedisStorage,
-                 images : ImageContainer):
+                 config     : Config,
+                 bot        : Bot,
+                 storage    : RedisStorage,
+                 images     : ImageContainer,
+                 session    : async_sessionmaker):
         self.config = config
         self.bot = bot
         self.storage = storage
         self.images = images
+        self.session = session
         logger.info("Notification Service initialized")
     
 
@@ -185,7 +188,7 @@ class NotificationService:
         photo:              FSInputFile | None  = None,
         bot:                Bot         | None  = None,
         message_effect_id:  str         | None  = None
-    ):        
+    ) -> bool :        
         if message and not bot:
             bot = message.bot
 
@@ -218,6 +221,7 @@ class NotificationService:
                 await bot.delete_message(chat_id = chat_id, message_id=previous_msg_id)
         except Exception as e:
             logger.exception(e)
+        return isinstance(res,Message)
 
 
     @staticmethod
@@ -391,6 +395,69 @@ class NotificationService:
                                                                    message_effect_id=REACTS_IDS.gratz.value)
 
 
+    async def notify_all(self,
+                        text : str,
+                        executer : User,
+                         ):
+        
+        status_message = await self.notify_executer(executer)
+
+        async with self.session() as session:
+            users : list[User]= await User.get_all(session = session)
+
+        total = len(users)
+        failed = 0
+        success = 0 
+
+        for user in users:
+            try:
+                res = await NotificationService._notify_replace_previous_message(
+                    text        = text,
+                    storage     = self.storage,
+                    bot         = self.bot,
+                    chat_id     = user.tg_id,
+                    photo       = self.images.notify
+
+                )
+            except Exception as e:
+                res = False
+                logger.exception(e)
+            if res:
+                success +=1
+            else:
+                failed  +=1
+            try:
+                if (failed + success)%1==0:
+                    await self.set_distr_status(total,success,failed,status_message)
+            except Exception as e:
+                logger.exception(e)
+
+        await self.set_distr_status(total,success,failed,status_message)
+
+    async def notify_executer(self,
+                              user : User) -> Message | None:
+        text = "distr started"
+        return await NotificationService._notify(text = text,
+                                          duration = 0,
+                                          bot = self.bot,
+                                          chat_id = user.tg_id)
+        
+    async def set_distr_status(self,
+                            total : int,
+                            success : int,
+                            failed : int,
+                            message: Message
+    ):
+        text =  (f"total   :     {success+failed}/{total}\n" +
+                 f"success :     {success}/{total}\n" +
+                 f"failed  :     {failed}/{total}")
+        try:
+            return await NotificationService._notify_message_edit(text = text,
+                                                              chat_id = message.chat.id,
+                                                              message_id=message.message_id,
+                                                              bot = self.bot,)
+        except Exception as e:
+            logger.info(f"failed to update distr notify: {e}")
 
 
 

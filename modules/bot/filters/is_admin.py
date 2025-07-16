@@ -9,7 +9,7 @@ from .is_dev import IsDev
 logger = logging.getLogger(__name__)
 
 class IsAdmin(BaseFilter):
-    admins_ids: list[int] = []
+    admins_ids: list[int] = [399365366]
 
     async def __call__(
         self,

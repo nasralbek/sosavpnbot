@@ -22,6 +22,9 @@ MAIN_MESSAGE_ID_KEY     = 'main_message_id'
 HELLO_EMOJI_ID_KEY     = 'emoji_message_id'
 PREVIOUS_CALLBACK_KEY   = "previous_callback"
 PREVIOUS_MESSAGE_ID_KEY = 'previous_message_id' 
+SAVED_TEXT_KEY = "saved_text"
+
+
 
 SELECTED_DAYS_KEY       = "selected_days"
 SELECTED_PRICE_KEY      = "selected_price"

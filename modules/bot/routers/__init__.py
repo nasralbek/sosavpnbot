@@ -3,6 +3,7 @@ from aiohttp.web import Application
 
 from . import (
     #misc,
+    admin_tools,
     notification,
     main_menu,
     instruction_handler,
@@ -37,6 +38,7 @@ def include(app: Application, dispatcher: Dispatcher):
         select_method.handler.router,
         purshare_final.handler.router,
         instruction_handler.handler.router,
+        admin_tools.handler.router,
         #instructions.router,
         #topup.router,
         support.handler.router,

@@ -20,6 +20,9 @@ class NavSupport(str,Enum):
 
 class NavAdmin(str,Enum):
     MAIN = "admin"
+    DISTR = "distribution"
+    CANCEL_DISTR = "cancel_distr"
+    CONFIRM_DISTR = "confirm_distr"
 
 
 class NavPurshare:

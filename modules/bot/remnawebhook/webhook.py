@@ -105,8 +105,6 @@ class RemnaWebhook():
 
             webhook_secret = self.config.remnawave.WEBHOOK_SECRET
 
-            logger.info(f"body text : {body_text}")
-            logger.info(f"body : {body}")
 
 
             if not self.r_sdk.webhook_utility.validate_webhook( body_text,
