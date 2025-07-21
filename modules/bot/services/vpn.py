@@ -49,6 +49,7 @@ class VPNService:
         inbound_uuids = ['a573b408-a452-4409-850f-9b66a06434b2',
                         '578ef17e-ef67-4c3a-9f35-9f33a0aab7a6',
                         '3acf6d7a-4903-4a4b-bf49-7baed581aded',
+                         'd6745845-802a-4f53-9fa0-23641f664098',
                         ]
         try:
             client = await self.r_sdk.users.create_user(
