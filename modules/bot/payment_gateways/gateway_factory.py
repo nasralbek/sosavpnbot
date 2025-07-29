@@ -11,6 +11,7 @@ from sqlalchemy.ext.asyncio import async_sessionmaker
 from config import Config
 from modules.bot.models.services_container import ServicesContainer
 from modules.bot.payment_gateways.gateway import PaymentGateway
+from modules.bot.payment_gateways.heleket import HeleketGateway
 from modules.bot.payment_gateways.yookassa import Yookassa
 
 
@@ -44,6 +45,7 @@ class GatewayFactory:
 
         gateways = [
             (config.shop.PAYMENT_YOOKASSA_ENABLED,Yookassa),
+            (config.shop.PAYMENT_HELEKET_ENABLED,HeleketGateway)
             #todo: add other
         ]
 

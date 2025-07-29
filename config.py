@@ -6,7 +6,6 @@ from pathlib import Path
 import logging
 from logging.handlers import MemoryHandler
 
-from modules.utils.constants import REMNAWAVE_WEBHOOK
 
 DEFAULT_BOT_HOST = "0.0.0.0"
 DEFAULT_BOT_PORT = 2000
@@ -84,6 +83,12 @@ class YooKassaConfig:
     SHOP_ID: int | None
 
 @dataclass
+class HeleketConfig:
+    MERCHANT_UUID: str | None
+    PAYMENT_API_KEY: str | None
+
+
+@dataclass
 class DatabaseConfig:
     HOST    : str | None
     PORT    : int | None
@@ -124,6 +129,7 @@ class Config:
     database    : DatabaseConfig
     redis       : RedisConfig
     logging     : LoggingConfig
+    heleket     : HeleketConfig
 
 
 def load_bot_config(env: Env):
@@ -278,6 +284,18 @@ def load_remnawave_config(env: Env):
                     WEBHOOK_SECRET      = WEBHOOK_SECRET
                     )
     
+
+def load_heleket_config(env: Env):
+    MERCHANT_ID     = env.str("HELEKET_MERCHANT_ID")
+    PAYMENT_API_KEY = env.str("HELEKET_PAYMENT_API_KEY")
+
+
+    return HeleketConfig(
+        MERCHANT_UUID = MERCHANT_ID,
+        PAYMENT_API_KEY=PAYMENT_API_KEY
+
+    )
+
 def load_yookassa_config(env: Env):
     TOKEN   = env.str("YOOKASSA_TOKEN")
     SHOP_ID = env.str("YOOKASSA_SHOP_ID")
@@ -367,6 +385,7 @@ def load_config()-> Config:
     database        = load_database_config  (env)
     redis           = load_redis_config     (env)
     logging         = load_logging_config   (env)
+    heleket         = load_heleket_config   (env)
 
     return Config(
         bot             = bot ,
@@ -376,4 +395,5 @@ def load_config()-> Config:
         database        = database ,
         redis           = redis ,
         logging         = logging ,
+        heleket         = heleket
     )

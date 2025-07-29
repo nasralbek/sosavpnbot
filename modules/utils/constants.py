@@ -2,9 +2,10 @@ from enum import Enum
 
 
 
-TELEGRAM_WEBHOOK = "/webhook"
-YOOKASSA_WEBHOOK = "/yookassa"
-REMNAWAVE_WEBHOOK = "/remna"
+TELEGRAM_WEBHOOK    = "/webhook"
+YOOKASSA_WEBHOOK    = "/yookassa"
+REMNAWAVE_WEBHOOK   = "/remna"
+HELEKET_WEBHOOK     = "/heleket"
 
 LOG_ZIP_ARCHIVE_FORMAT = "zip"
 LOG_GZ_ARCHIVE_FORMAT = "gz"

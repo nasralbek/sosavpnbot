@@ -194,3 +194,10 @@ msgstr "{days} дней - {price}₽"
 
 msgid "notify:message:first_connected"
 msgstr "<b>Вы успешно подключили VPN, приятного использования!</>"
+
+
+msgid "purschare:method:pay_yookassa"
+msgstr "Банковская карта/СБП"
+
+msgid "purschare:method:pay_heleket"
+msgstr "Heleket"

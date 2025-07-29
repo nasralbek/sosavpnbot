@@ -55,6 +55,20 @@ class PaymentGateway(ABC):
     async def handle_payment_canceled(self,payment_id : str):
         pass
 
+    async def _on_create_payment(self,
+                session     ,
+                tg_id       ,
+                payment_id  ,
+                days        , 
+                                 ):
+        async with self.session() as session:
+            await Transaction.create(
+                session     = session,
+                tg_id       = tg_id,
+                payment_id  = payment_id,
+                days        = days, 
+                status      = TransactionStatus.PENDING 
+            )
 
     async def _on_payment_succeeded(self,payment_id : str):
         logger.info(f"payment succeeded {payment_id}")

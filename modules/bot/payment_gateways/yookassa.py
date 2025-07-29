@@ -61,14 +61,16 @@ class Yookassa(PaymentGateway):
 
         response = Payment.create(request)
 
-        async with self.session() as session:
-            await Transaction.create(
-                session     = session,
+
+        await self._on_create_payment(
+                session     = self.session,
                 tg_id       = purschare_data.user_id,
                 payment_id  = response.id,
                 days        = purschare_data.days, 
-                status      = TransactionStatus.PENDING 
+
             )
+
+        
         pay_url = response.confirmation["confirmation_url"]
         logger.info(f"payment link created for user : {purschare_data.user_id} : {pay_url}")
         return pay_url 
