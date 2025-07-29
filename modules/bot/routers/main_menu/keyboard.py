@@ -24,11 +24,13 @@ def main_menu_keyboard(     config              : Config,
     polite_button   = InlineKeyboardButton(text=polite_text,callback_data = NavPolite.MAIN) 
         
     admin_button    = InlineKeyboardButton(text='adm'       ,callback_data=NavAdmin.MAIN)
+    #rules_button    = InlineKeyboardButton(text='📝 О сервисе', url='https://telegra.ph/Usloviya-servisa-Sosa-VPN-07-29')
 
     builder.row(connect_button)
     builder.row(purshare_button)
     builder.row(*([invite_button] if is_refferal_avaible else []),support_button)
     builder.row(polite_button)
+    builder.row(rules_button)
     
     if is_admin:
         builder.row(admin_button)

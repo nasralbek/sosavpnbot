@@ -3,22 +3,22 @@
         {
             "name":"30 days",
             "days":30,
-            "price":250
+            "price":299
         },
         {
             "name":"90 days",
             "days":90,
-            "price":750
+            "price":799
         },
         {
             "name":"180 days",
             "days":180,
-            "price":1500
+            "price":1499
         },
         {
             "name":"360 days",
             "days":360,
-            "price":3000
+            "price":2799
         }
 
     ]
