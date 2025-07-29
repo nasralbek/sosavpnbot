@@ -36,6 +36,8 @@ class BotConfig:
     CHANNEL_TAG : str
     CHAT_TAG    : str
     SUPPORT_TAG : str
+    POLITE_URL  : str
+    RULES_URL   : str
 
 @dataclass
 class ShopConfig:
@@ -144,6 +146,8 @@ def load_bot_config(env: Env):
         DOMAIN      = env.str ("BOT_DOMAIN")
         PORT        = env.int ("BOT_PORT")
         SUPPORT_TAG = env.str ("BOT_SUPPORT_TAG")
+        POLITE_URL  = env.str("BOT_POLITE_URL")  
+        RULES_URL   = env.str("BOT_RULES_URL")  
 
     if True: # warn
         if not TOKEN:
@@ -166,6 +170,11 @@ def load_bot_config(env: Env):
             logger.warning("CHAT_TAG is not set")
         if not SUPPORT_TAG:
             logger.warning("BOT_SUPPORT_TAG is not set")
+        if not POLITE_URL:
+            logger.warning("BOT_POLITE_URL is not set")
+        if not RULES_URL:
+            logger.warning("BOT_RULES_URL is not set")
+
 
 
     return BotConfig(
@@ -178,7 +187,9 @@ def load_bot_config(env: Env):
         BOT_VPN_NAME= BOT_VPN_NAME,     #TODO: MOVE THAT TO SHOP_CONFIG
         CHANNEL_TAG = CHANNEL_TAG,      #TODO: MOVE THAT TO SHOP_CONFIG
         CHAT_TAG    = CHAT_TAG,         #TODO: MOVE THAT TO SHOP_CONFIG
-        SUPPORT_TAG = SUPPORT_TAG
+        SUPPORT_TAG = SUPPORT_TAG,
+        POLITE_URL  = POLITE_URL,
+        RULES_URL   = RULES_URL
         )
 
 def load_shop_config(env: Env):

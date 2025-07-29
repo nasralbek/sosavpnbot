@@ -17,7 +17,8 @@ msgstr ""
 
 msgid "main_menu:message:main"
 msgstr "▫️ <b>ID:</b> <code>{id}</code>\n"
-"▫️ <b>Баланс:</b> <code>{balance} дней</code>\n\n"
+"▫️ <b>Баланс:</b> <code>{balance} дней</code>\n"
+"▫️ подписка : <b>{status}</b>"
 
 msgid "main_menu:message:new_user"
 msgstr "<b>🎁 В честь первого визита, подарили вам 7 дней использования!</b>"
@@ -49,6 +50,9 @@ msgstr "!!!админка228"
 
 msgid "main_menu:button:purshare"
 msgstr "💸 Пополнить баланс"
+
+msgid "main_menu:button:polite"
+msgstr "!!!политика"
 
 msgid "purshare:message:main"
 msgstr "<b>⚡️ Выберите количество дней:</b>"
@@ -201,3 +205,18 @@ msgstr "Банковская карта/СБП"
 
 msgid "purschare:method:pay_heleket"
 msgstr "Heleket"
+
+msgid "polite:button:polite"
+msgstr "!!!политика конф"
+
+msgid "polite:button:rules"
+msgstr "!!!правила"
+
+msgid "polite:message:main"
+msgstr "!!!политика и правила"
+
+msgid "main_menu:status:active"
+msgstr "!!!active"
+
+msgid "main_menu:status:inactive"
+msgstr "!!!inactive"

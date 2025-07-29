@@ -6,6 +6,7 @@ class NavMain(str,Enum):
     INVITE              = 'invite'
     PROFILE             = 'profile'
     SUPPORT             = 'support'
+    POLITE              = 'polite'
     CLOSE_NOTIFICATION  =  'close_notification'
 
 class NavInvite(str,Enum):
@@ -30,6 +31,9 @@ class NavPurshare:
     CONFIRM = "confirm_purshare"
     PAY_YOOKASSA = "pay_yookassa"
     PAY_HELEKET  =  "pay_heleket"  
+
+class NavPolite(str,Enum):
+    MAIN = NavMain.POLITE
 
 class NavInstruction(str,Enum):
     MAIN    = 'how_to'

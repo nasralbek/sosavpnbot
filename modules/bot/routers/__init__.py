@@ -15,7 +15,8 @@ from . import (
     purshare,
     select_plan,
     select_method,
-    purshare_final
+    purshare_final,
+    polite
 )
 
 def include(app: Application, dispatcher: Dispatcher): 
@@ -42,5 +43,6 @@ def include(app: Application, dispatcher: Dispatcher):
         #instructions.router,
         #topup.router,
         support.handler.router,
-        notification.handler.router
+        notification.handler.router,
+        polite.handler.router
     )

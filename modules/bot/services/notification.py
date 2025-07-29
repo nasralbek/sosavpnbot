@@ -426,6 +426,9 @@ class NotificationService:
                 success +=1
             else:
                 failed  +=1
+            await asyncio.sleep(1)
+            if (failed + success)%100==0:
+                await asyncio.sleep(10)
             try:
                 if (failed + success)%1==0:
                     await self.set_distr_status(total,success,failed,status_message)

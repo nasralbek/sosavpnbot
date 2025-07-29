@@ -44,8 +44,14 @@ async def prepare_text( services    : ServicesContainer,
 
     remaining_days = (remaining_time+delta_days).days
     balance = f'{remaining_days}'
+    if remaining_time > timedelta():
+        status = "active"
+    else:
+        status = "inactive"
+
     text = _("main_menu:message:main").format(id = user.tg_id,
-                                              balance = balance)
+                                              balance = balance,
+                                              status = _(f"main_menu:status:{status}"))
     if is_new_user:
         text += _("main_menu:message:new_user")
     #if is_invited:
