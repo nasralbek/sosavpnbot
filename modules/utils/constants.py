@@ -6,6 +6,7 @@ TELEGRAM_WEBHOOK    = "/webhook"
 YOOKASSA_WEBHOOK    = "/yookassa"
 REMNAWAVE_WEBHOOK   = "/remna"
 HELEKET_WEBHOOK     = "/heleket"
+PALLY_WEBHOOK       = "/pally"
 
 LOG_ZIP_ARCHIVE_FORMAT = "zip"
 LOG_GZ_ARCHIVE_FORMAT = "gz"

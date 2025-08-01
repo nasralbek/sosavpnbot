@@ -1,7 +1,4 @@
 
-
-
-
 from aiogram import Bot
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.storage.redis import RedisStorage
@@ -12,6 +9,7 @@ from config import Config
 from modules.bot.models.services_container import ServicesContainer
 from modules.bot.payment_gateways.gateway import PaymentGateway
 from modules.bot.payment_gateways.heleket import HeleketGateway
+from modules.bot.payment_gateways.pally import PallyGateway
 from modules.bot.payment_gateways.yookassa import Yookassa
 
 
@@ -45,7 +43,8 @@ class GatewayFactory:
 
         gateways = [
             (config.shop.PAYMENT_YOOKASSA_ENABLED,Yookassa),
-            (config.shop.PAYMENT_HELEKET_ENABLED,HeleketGateway)
+            (config.shop.PAYMENT_HELEKET_ENABLED,HeleketGateway),
+            (config.shop.PAYMENT_PALLY_ENABLED, PallyGateway)
             #todo: add other
         ]
 

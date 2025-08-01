@@ -27,10 +27,11 @@ class NavAdmin(str,Enum):
 
 
 class NavPurshare:
-    MAIN = NavProfile.PURSHARE
-    CONFIRM = "confirm_purshare"
-    PAY_YOOKASSA = "pay_yookassa"
-    PAY_HELEKET  =  "pay_heleket"  
+    MAIN            = NavProfile.PURSHARE
+    CONFIRM         = "confirm_purshare"
+    PAY_YOOKASSA    = "pay_yookassa"
+    PAY_HELEKET     = "pay_heleket"  
+    PAY_PALLY       = "pay_pally"    
 
 class NavPolite(str,Enum):
     MAIN = NavMain.POLITE

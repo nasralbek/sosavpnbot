@@ -58,6 +58,7 @@ class ShopConfig:
     PAYMENT_CRYPTOMUS_ENABLED: bool
     PAYMENT_HELEKET_ENABLED  : bool
     PAYMENT_YOOKASSA_ENABLED : bool
+    PAYMENT_PALLY_ENABLED    : bool
 
     PIZDALIZ_REWARD_ENABLED  : bool
     PIZDALIZ_REWARD_PERIOD   : int
@@ -86,8 +87,13 @@ class YooKassaConfig:
 
 @dataclass
 class HeleketConfig:
-    MERCHANT_UUID: str | None
-    PAYMENT_API_KEY: str | None
+    MERCHANT_UUID   : str | None
+    PAYMENT_API_KEY : str | None
+
+@dataclass 
+class PallyConfig:
+    API_TOKEN   : str | None
+    SHOP_ID     : str | None
 
 
 @dataclass
@@ -132,6 +138,7 @@ class Config:
     redis       : RedisConfig
     logging     : LoggingConfig
     heleket     : HeleketConfig
+    pally       : PallyConfig
 
 
 def load_bot_config(env: Env):
@@ -209,6 +216,8 @@ def load_shop_config(env: Env):
         PAYMENT_CRYPTOMUS_ENABLED = env.bool    ("SHOP_PAYMENT_CRYPTOMUS_ENABLED")
         PAYMENT_HELEKET_ENABLED   = env.bool    ("SHOP_PAYMENT_HELEKET_ENABLED")
         PAYMENT_YOOKASSA_ENABLED  = env.bool    ("SHOP_PAYMENT_YOOKASSA_ENABLED")
+        PAYMENT_PALLY_ENABLED     = env.bool    ("SHOP_PAYMENT_PALLY_ENABLED") 
+
         DAY_PRICE                 = 3.33
         PIZDALIZ_REWARD_PERIOD    = env.int     ("SHOP_PIZDALIZ_REWARD_PERIOD")
         PIZDALIZ_REWARD_ENABLED   = env.bool    ("SHOP_PIZDALIZ_REWARD_ENABLED")  
@@ -256,6 +265,7 @@ def load_shop_config(env: Env):
                         PAYMENT_CRYPTOMUS_ENABLED = PAYMENT_CRYPTOMUS_ENABLED,
                         PAYMENT_HELEKET_ENABLED   = PAYMENT_HELEKET_ENABLED,
                         PAYMENT_YOOKASSA_ENABLED  = PAYMENT_YOOKASSA_ENABLED,
+                        PAYMENT_PALLY_ENABLED     = PAYMENT_PALLY_ENABLED    ,
                         DAY_PRICE                 = DAY_PRICE,
                         PIZDALIZ_REWARD_ENABLED   = PIZDALIZ_REWARD_ENABLED,
                         PIZDALIZ_REWARD_PERIOD    = PIZDALIZ_REWARD_PERIOD,
@@ -385,6 +395,17 @@ def load_logging_config(env: Env):
                          FORMAT = FORMAT,
                          ARCHIVE_FORMAT=ARCHIVE_FORMAT)
 
+def load_pally_config(env : Env):
+    API_TOKEN   = env.str("PALLY_API_TOKEN")
+    SHOP_ID     = env.str("PALLY_SHOP_ID")
+
+    if not API_TOKEN:
+        logger.warning("PALLY_API_TOKEN is not set")
+    if not SHOP_ID:
+        logger.warning("PALLY_SHOP_ID is not set")
+    return PallyConfig(API_TOKEN    = API_TOKEN,
+                       SHOP_ID      = SHOP_ID)
+
 def load_config()-> Config:
     env = Env()
     env.read_env()
@@ -397,6 +418,7 @@ def load_config()-> Config:
     redis           = load_redis_config     (env)
     logging         = load_logging_config   (env)
     heleket         = load_heleket_config   (env)
+    pally           = load_pally_config     (env)
 
     return Config(
         bot             = bot ,
@@ -406,5 +428,6 @@ def load_config()-> Config:
         database        = database ,
         redis           = redis ,
         logging         = logging ,
-        heleket         = heleket
+        heleket         = heleket,
+        pally           = pally
     )

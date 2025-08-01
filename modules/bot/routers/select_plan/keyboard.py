@@ -12,17 +12,26 @@ def select_method_keyboard(config : Config) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     yooKassaButton = InlineKeyboardButton(text=_("purschare:method:pay_yookassa"),
                     callback_data = SelectMethodCallback(
-                                          method_key=NavPurshare.PAY_YOOKASSA
+                                            method_key=NavPurshare.PAY_YOOKASSA
                                           ).pack())
     heleketButton = InlineKeyboardButton(text = _("purschare:method:pay_heleket"),
                                          callback_data = SelectMethodCallback(
-                                         method_key=NavPurshare.PAY_HELEKET).pack())
+                                            method_key=NavPurshare.PAY_HELEKET
+                                         ).pack())
+    pallyButton = InlineKeyboardButton(text = _("purschare:method:pay_pally"),
+                                       callback_data= SelectMethodCallback(
+                                            method_key = NavPurshare.PAY_PALLY
+                                       ).pack())
+
+
     main_menu_button = InlineKeyboardButton(text=_("main_menu:button:main"),callback_data=NavMain.MAIN)
 
     if config.shop.PAYMENT_YOOKASSA_ENABLED:
         builder.row(yooKassaButton)
     if config.shop.PAYMENT_HELEKET_ENABLED:
         builder.row(heleketButton)
+    if config.shop.PAYMENT_PALLY_ENABLED:
+        builder.row(pallyButton)
 
     builder.row(main_menu_button)
 

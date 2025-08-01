@@ -124,7 +124,7 @@ class HeleketGateway(PaymentGateway):
                     return Response(status = 400)
 
         except Exception as e:
-            logger.exception(f"error procceesing yookassa webhook : {e}")
+            logger.exception(f"error procceesing heleket webhook : {e}")
             return Response(status=400)
         return Response(status=400)
 
