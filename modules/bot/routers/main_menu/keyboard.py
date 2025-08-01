@@ -30,7 +30,7 @@ def main_menu_keyboard(     config              : Config,
     builder.row(purshare_button)
     builder.row(*([invite_button] if is_refferal_avaible else []),support_button)
     builder.row(polite_button)
-    builder.row(rules_button)
+    #builder.row(rules_button)
     
     if is_admin:
         builder.row(admin_button)
