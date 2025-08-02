@@ -18,6 +18,8 @@ class ImageContainer():
     main_menu           : FSInputFile
     purschare           : FSInputFile
     purschare_success   : FSInputFile
+    service             : FSInputFile
+    support             : FSInputFile
 
 def load_images() -> ImageContainer:
 
@@ -27,6 +29,8 @@ def load_images() -> ImageContainer:
     main_menu                       = FSInputFile("src/main_menu.JPEG")
     purschare                       = FSInputFile("src/purschare.JPEG")
     purschare_success               = FSInputFile("src/purschare_success.JPEG")
+    service                         = FSInputFile("src/service.JPEG")
+    support                         = FSInputFile("src/support.JPEG")
     
     logger.info("images loaded")
     return ImageContainer(
@@ -35,6 +39,8 @@ def load_images() -> ImageContainer:
         notify              = notify,
         main_menu           = main_menu,
         purschare           = purschare ,
-        purschare_success   = purschare_success
+        purschare_success   = purschare_success,
+        service             = service,
+        support             = support
 
     )

@@ -44,7 +44,7 @@ class PallyGateway(PaymentGateway):
             "order_id"  : transaction_uuid,    
 
         }
-        headers = {"Authorization": f"Bearer: {self.API_TOKEN}"}
+        headers = {"Authorization": f"Bearer {self.API_TOKEN}"}
         response = requests.post(url = url,
                                 headers= headers,
                                 json = data,
