@@ -37,6 +37,7 @@ class PallyGateway(PaymentGateway):
     async def create_payment(self, purschare_data : PurchaseData) -> str:
         transaction_uuid = str(uuid4())
 
+
         url = f"{self.API_URL_BASE}/api/v1/bill/create"
         data = {
             "amount"    : str(purschare_data.price),
@@ -83,8 +84,12 @@ class PallyGateway(PaymentGateway):
 
         
     async def webhook_handler(self, request : Request) -> Response:
+        logger.info("pally webhook")
+        logger.info(request)
         try:
-            event_json  = await request.json()
+            form_data = await request.post()
+            event_json = dict(form_data)
+
             logger.info(event_json)
             logger.info(await request.read())
             if not await self.validate_request(event_json):

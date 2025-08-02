@@ -3,7 +3,7 @@ import logging
 from aiogram import F, Router
 from aiogram.utils.i18n import gettext as _
 from aiogram.fsm.context import FSMContext
-from aiogram.types import CallbackQuery, Message
+from aiogram.types import CallbackQuery, InputMediaPhoto, Message
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -13,6 +13,7 @@ from modules.bot.utils.navigation import NavMain, NavSupport
 from modules.utils.constants import PREVIOUS_CALLBACK_KEY
 from modules.bot.filters import ReplyButtonFilter
 from config import Config
+from tools.image_container import ImageContainer
 
 from .keyboard import invite_keyboard
 
@@ -30,12 +31,19 @@ async def invite(   callback    : CallbackQuery,
                     state       : FSMContext,
                     services    : ServicesContainer,
                     config      : Config,
-                    session     : AsyncSession):
+                    session     : AsyncSession,
+                    images      : ImageContainer):
     logger.info(f"User {user.tg_id} opened invite page.")
     await state.update_data({PREVIOUS_CALLBACK_KEY: NavSupport.MAIN})
     text = await prepare_message(config)
-    markup = invite_keyboard()
-    result =  await callback.message.edit_text(text=text,
+    markup = invite_keyboard(config)
+
+    result =  await callback.message.edit_media(media = InputMediaPhoto(media    = images.support,
+                                                                       caption  = text),
+                                                text=text,
                                                reply_markup=markup)
+ 
+
+
     return result
 

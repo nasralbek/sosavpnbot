@@ -20,7 +20,7 @@ def main_menu_keyboard(     config              : Config,
     connect_button  = InlineKeyboardButton(text=connect_text,callback_data=NavProfile.MAIN)
     purshare_button = InlineKeyboardButton(text=purshare_text,callback_data=NavPurshare.MAIN)
     invite_button   = InlineKeyboardButton(text=invite_text ,callback_data=NavInvite.MAIN)
-    support_button  = InlineKeyboardButton(text=support_text,url = f"t.me/{config.bot.SUPPORT_TAG}") 
+    support_button  = InlineKeyboardButton(text=support_text,callback_data = NavSupport.MAIN) 
     polite_button   = InlineKeyboardButton(text=polite_text,callback_data = NavPolite.MAIN) 
         
     admin_button    = InlineKeyboardButton(text='adm'       ,callback_data=NavAdmin.MAIN)
