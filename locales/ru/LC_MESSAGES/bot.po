@@ -200,8 +200,8 @@ msgid "notify:message:first_connected"
 msgstr "<b>Вы успешно подключили VPN, приятного использования!</>"
 
 
-msgid "purschare:method:pay_yookassa"
-msgstr "Банковская карта/СБП"
+msgid "purschare:method:pay_pally"
+msgstr "Банковская карта"
 
 msgid "purschare:method:pay_heleket"
 msgstr "Криптовалюта"
@@ -222,3 +222,9 @@ msgstr "Активна"
 
 msgid "main_menu:status:inactive"
 msgstr "Истекла ⚠️"
+
+msgid "support:message:main"
+msgstr "fuck"
+
+msgid "support:button:get_support"
+msgstr "👋 Связаться"
