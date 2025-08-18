@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bot-config
+data:
+  BOT_VPN_NAME: "example_name"
+  BOT_ADMINS: "399365366,495527160"
+  BOT_CHANNEL_TAG : "@example"
+  BOT_CHAT_TAG: "@example"
+  BOT_DEV_ID: "0"
+  BOT_SUPPORT_ID: "0"
+  BOT_PORT: "2224"
+  BOT_SUPPORT_TAG: "example"
+  BOT_POLITE_URL: "https://example.com"
+  BOT_RULES_URL: "https://example.com" 
+
+  SHOP_DEVICES_COUNT: "5"
+  SHOP_TRIAL_ENABLED: "true"
+  SHOP_TRIAL_PERIOD: "7"
+  SHOP_REFERRED_TRIAL_ENABLED: "false"
+  SHOP_REFERRED_TRIAL_PERIOD: "7"
+  SHOP_REFERRER_REWARD_ENABLED: "true"
+  SHOP_REFERRER_REWARD_PERIOD: "1"
+  SHOP_PAYMENT_STARS_ENABLED: "false"
+  SHOP_PAYMENT_CRYPTOMUS_ENABLED: "false"
+  SHOP_PAYMENT_HELEKET_ENABLED: "true"
+  SHOP_PAYMENT_YOOKASSA_ENABLED: "true" 
+  SHOP_PAYMENT_PALLY_ENABLED: "true"
+  SHOP_PIZDALIZ_REWARD_ENABLED: "true"
+  SHOP_PIZDALIZ_REWARD_PERIOD: "7"
+  SHOP_PIZDALIZ_REWARD_DELAY: "1"
+
+
+  LOG_LEVEL: "" 
+  LOG_FORMAT: "[%(levelname)-8s] : [%(asctime)s] : [%(funcName)s @ %(filename)s:%(lineno)d] %(message)s" 
+  LOG_ARCHIVE_FORMAT: "zip" 
+
+
+

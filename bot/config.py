@@ -330,22 +330,22 @@ def load_yookassa_config(env: Env):
                           SHOP_ID=SHOP_ID)
 
 def load_database_config(env: Env):
-    HOST     = env.str("DATABASE_HOST")        
-    PORT     = env.int("DATABASE_PORT")        
-    NAME     = env.str("DATABASE_NAME")        
-    USERNAME = env.str("DATABASE_USERNAME")
-    PASSWORD = env.str("DATABASE_PASSWORD")
+    HOST     = env.str("POSTGRES_HOST")        
+    PORT     = env.int("POSTGRES_PORT")        
+    NAME     = env.str("POSTGRES_DB")        
+    USERNAME = env.str("POSTGRES_USER")
+    PASSWORD = env.str("POSTGRES_PASSWORD")
 
     if not HOST:
-        logger.warning("DATABASE_HOST is not set.")
+        logger.warning("POSTGRES_HOSis not set.")
     if not PORT:
-        logger.warning("DATABASE_PORT is not set.")
+        logger.warning("POSTGRES_PORT is not set.")
     if not NAME:
-        logger.warning("DATABASE_NAME is not set.")
+        logger.warning("POSTGRES_NAME is not set.")
     if not USERNAME:
-        logger.warning("DATABASE_USERNAME is not set.")
+        logger.warning("POSTGRES_USERNAME is not set.")
     if not PASSWORD:
-        logger.warning("DATABASE_PASSWORD is not set.")
+        logger.warning("POSTGRES_PASSWORD is not set.")
     
     return DatabaseConfig(
                         HOST = HOST,
@@ -359,7 +359,7 @@ def load_redis_config(env: Env):
     HOST     = env.str("REDIS_HOST")
     PORT     = env.int("REDIS_PORT")
     DB_NAME  = env.str("REDIS_DB_NAME")
-    USERNAME = env.str("REDIS_USERNAME")
+    USERNAME = env.str("REDIS_USER")
     PASSWORD = env.str("REDIS_PASSWORD")
     
     if not HOST:

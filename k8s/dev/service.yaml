@@ -1,0 +1,15 @@
+# bot-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: sosabot-service
+spec:
+  type: NodePort
+  selector:
+    app: sosabot
+  ports:
+    - protocol: TCP
+      port: 32225
+      targetPort: 2224
+
+

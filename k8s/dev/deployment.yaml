@@ -1,0 +1,35 @@
+# bot-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sosabot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sosabot
+  template:
+    metadata:
+      labels:
+        app: sosabot
+    spec:
+      containers:
+        - name: sosabot
+          image: sosabot:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 2224  # если бот слушает порт
+          envFrom:
+            - configMapRef:
+                name: bot-env
+            - configMapRef:
+                name: bot-config 
+          command:
+            - sh
+            - -c
+            - |
+              mkdir -p /usr/local/etc/redis && \
+              echo "bind 0.0.0.0" > /usr/local/etc/redis/redis.conf && \
+              echo "appendonly yes" >> /usr/local/etc/redis/redis.conf && \
+              echo "user ${REDIS_USER} on >${REDIS_USER_PASSWORD} ~* +@all" > /usr/local/etc/redis/users.acl && \
+              redis-server /usr/local/etc/redis/redis.conf --aclfile /usr/local/etc/redis/users.acl

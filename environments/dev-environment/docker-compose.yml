@@ -1,0 +1,36 @@
+services:
+  bot:
+    container_name: sosavpn_bot
+    build:
+      context: ../../bot
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env
+    networks:
+      - remnawave-network
+
+  kafka:
+    extends:
+      file: ../../infra/kafka/docker-compose.yml
+      service: kafka
+  
+  redis:
+    extends:
+      file: ../../infra/redis/docker-compose.yml
+      service: redis
+  
+  postgres:
+    extends:
+      file: ../../infra/postgres/docker-compose.yml
+      service: postgres
+
+  #networks:
+  #  remnawave-network:
+  #    external: true
+
+volumes:
+  postgres_data: 
+  redis_data:    
+  pgadmin_data:
+

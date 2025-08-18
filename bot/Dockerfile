@@ -9,7 +9,7 @@ WORKDIR /app
 COPY requierments.txt .
 RUN pip install --no-cache-dir -r requierments.txt
 
-COPY .env .
+#COPY .env .
 
 # Копируем весь остальной код вашего бота в контейнер
 # Предполагается, что main.py находится прямо в /opt/bot/sosavpnbot/
