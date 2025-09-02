@@ -16,12 +16,11 @@ msgstr ""
 
 
 msgid "main_menu:message:main"
-msgstr "<blockquote><b>⚙️ Ваша подписка ⚙️</b></blockquote>\n"
-"▫️ <b>Cтатус:</b> <code>{status}</code>\n"
-"▫️ <b>Действует:</b> <code>{balance} дней</code>\n\n"
+msgstr "▫️ <b>Подписка:</b> <code>{status}</code>\n"
+"▫️ <b>До:</b> <code>{balance}</code>\n\n"
 
 msgid "main_menu:message:new_user"
-msgstr "<b>🎁 В честь первого визита, подарили вам 7 дней использования!</b>"
+msgstr "<b>🎁 Активировали вам пробную подписку на 3 дня!</b>"
 
 msgid "main_menu:message:invited"
 msgstr ""
@@ -57,11 +56,6 @@ msgstr "🌑 О сервисе"
 msgid "purshare:message:main"
 msgstr "<b>⚡️ Выберите срок продления:</b>"
 
-msgid "confirm:button:main"
-msgstr "!!!Подтвердить"
-
-
-
 msgid "connect:message:main"
 msgstr "<b>⚡️ Выберите ваше устройство:</b>"
 
@@ -75,7 +69,7 @@ msgid "how_to:button:WINDOWS"
 msgstr "Windows"
 
 msgid "how_to:button:MACOS"
-msgstr "Mac OS"
+msgstr "macOS"
 
 msgid "how_to:button:ANDROIDTV"
 msgstr "Android TV"
@@ -83,32 +77,17 @@ msgstr "Android TV"
 msgid "how_to:button:LINUX"
 msgstr "Linux"
 
-
-msgid "how_to:message:IOS"
-msgstr "!!!ios"
-
-msgid "how_to:message:ANDROID"
-msgstr "!!!android"
-
-msgid "how_to:message:WINDOWS"
-msgstr "!!!windows"
-
-msgid "how_to:message:MACOS"
-msgstr "!!!macos"
-
-msgid "how_to:message:ANDROIDTV"
-msgstr "!!!android tv"
-
-msgid "how_to:message:LINUX"
-msgstr "!!!linux"
-
-
 msgid "how_to:button:add"
 msgstr "⚙️ Добавить"
 
 msgid "how_to:button:download"
 msgstr "☁️ Скачать"
 
+msgid "how_to:button:download_apple"
+msgstr "☁️ Скачать [RU]"
+
+msgid "how_to:button:download_apple_alt"
+msgstr "☁️ Скачать [GLOBAL]"
 
 msgid "invite:message:main"
 msgstr "<b>▫️ 1 день —</b> за каждого приглашённого\n"
@@ -150,7 +129,7 @@ msgstr "<b>📖 Для подключения VPN на Windows:</b>\n\n"
 "<b>2.</b> Нажмите кнопку <b>«⚙️ Добавить»</b>, чтобы добавить конфигурацию в приложение."
 
 msgid "how_to:platform:message:MACOS"
-msgstr "<b>📖 Для подключения VPN на Mac OS:</b>\n\n"
+msgstr "<b>📖 Для подключения VPN на macOS:</b>\n\n"
 "<b>1.</b> Нажмите кнопку <b>«☁️ Скачать»</b>, чтобы скачать приложение из App Store.\n\n"
 "<b>2.</b> Нажмите кнопку <b>«⚙️ Добавить»</b>, чтобы добавить конфигурацию в приложение."
 
@@ -197,14 +176,15 @@ msgstr "{days} дней — {price}₽"
 
 
 msgid "notify:message:first_connected"
-msgstr "<b>Вы успешно подключили VPN, приятного использования!</>"
+msgstr "<b>Вы успешно подключили VPN, приятного использования!</b>\n\n"
+"Управление подпиской и подключение других устройств доступно через главное меню по кнопке ниже."
 
 
 msgid "purschare:method:pay_pally"
-msgstr "Банковская карта"
+msgstr "🇷🇺 Банковская карта"
 
 msgid "purschare:method:pay_heleket"
-msgstr "Криптовалюта"
+msgstr "🌍 Криптовалюта"
 
 msgid "polite:button:polite"
 msgstr "Политика конфиденциальности"
@@ -218,13 +198,53 @@ msgstr "Sosa VPN использует протокол с открытым ис�
 "Для выдачи доступа к VPN используется Telegram, в связи с этим нас невозможно заблокировать или удалить из App Store и других площадок."
 
 msgid "main_menu:status:active"
-msgstr "Активна"
+msgstr "Активна ⚡️"
 
 msgid "main_menu:status:inactive"
 msgstr "Истекла ⚠️"
 
 msgid "support:message:main"
-msgstr "fuck"
+msgstr "<b>У вас есть вопросы или вам нужна помощь?</b>\n\n"
+"Ознакомьтесь с нашей <a href="https://telegra.ph/Baza-znanij-09-02">базой знаний</a>, скорее всего там есть решение вашей проблемы, или воспользуйтесь кнопкой ниже, чтобы связаться с нами."
 
 msgid "support:button:get_support"
-msgstr "👋 Связаться"
+msgstr "👋 Связаться с нами"
+
+msgid "date_format:full"
+msgstr "{day} {month} {year}"
+
+msgid "month:january"
+msgstr "января"
+
+msgid "month:february"
+msgstr "февраля"
+
+msgid "month:march"
+msgstr "марта"
+
+msgid "month:april"
+msgstr "апреля"
+
+msgid "month:may"
+msgstr "мая"
+
+msgid "month:june"
+msgstr "июня"
+
+msgid "month:july"
+msgstr "июля"
+
+msgid "month:august"
+msgstr "августа"
+
+msgid "month:september"
+msgstr "сентября"
+
+msgid "month:october"
+msgstr "октября"
+
+msgid "month:november"
+msgstr "ноября"
+
+msgid "month:december"
+msgstr "декабря"

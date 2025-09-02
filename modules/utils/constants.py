@@ -34,7 +34,7 @@ SELECTED_METHOD_KEY     = "selected_method"
 SELECTED_PLAN_KEY       = "selected_plan"
 
 
-DEFAULT_LANGUAGE    = "ru"
+DEFAULT_LANGUAGE    = "en"
 I18N_DOMAIN         = "bot"
 
 

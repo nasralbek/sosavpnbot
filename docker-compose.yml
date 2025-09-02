@@ -9,6 +9,8 @@ services:
       - .env
     networks:
       - remnawave-network
+    #ports:
+    #  - 2225:2225
 
   redis:
     image: redis:latest
@@ -58,6 +60,8 @@ services:
       POSTGRES_PASSWORD: raufartem777
       POSTGRES_DB: postgres 
       PGDATA: /var/lib/postgresql/data 
+    ports:
+      - 5432:5432
     volumes:
        - postgres_data:/var/lib/postgresql/data 
     networks:
@@ -68,7 +72,7 @@ services:
     image: dpage/pgadmin4
     restart: unless-stopped
     environment:
-      PGADMIN_DEFAULT_EMAIL: artyomborisov11@gmail.com
+      PGADMIN_DEFAULT_EMAIL: HOLYHOLYHOLYWOOD@TUTAMAIL.COM
       PGADMIN_DEFAULT_PASSWORD: raufartem777
       PGADMIN_CONFIG_SERVER_MODE: 'False'
     volumes:

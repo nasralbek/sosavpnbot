@@ -5,9 +5,10 @@ from remnawave_api.exceptions import NotFoundError
 from sqlalchemy.ext.asyncio import async_sessionmaker
 from config import Config
 from modules.database.models.user import User
-
+from typing import Optional 
 from remnawave_api import RemnawaveSDK
 from remnawave_api.models import CreateUserRequestDto, TelegramUserResponseDto, UpdateUserRequestDto, UsersResponseDto, UserResponseDto
+from aiogram.utils.i18n import gettext as _
 
 logger = logging.getLogger(__name__)
 
@@ -46,10 +47,7 @@ class VPNService:
 
     async def register_user(self,user: User) -> UserResponseDto | None:
         
-        inbound_uuids = ['a573b408-a452-4409-850f-9b66a06434b2',
-                        '578ef17e-ef67-4c3a-9f35-9f33a0aab7a6',
-                        '3acf6d7a-4903-4a4b-bf49-7baed581aded',
-                         'd6745845-802a-4f53-9fa0-23641f664098',
+        inbound_uuids = ['362e5c53-0a28-43f2-b32a-e665e44ed0e1',
                         ]
         try:
             client = await self.r_sdk.users.create_user(
@@ -113,13 +111,26 @@ class VPNService:
             return ""
         return str(client.short_uuid)
 
-    async def get_remaining_time(self,user: User) -> timedelta | None:
+    async def get_remaining_time_og(self,user: User) -> timedelta | None:
         now = datetime.now(tz=UTC)
         expiry = await self.get_expire_at(user)
         if not isinstance(expiry,datetime):
             return
         remaining_time = expiry - now
         return remaining_time
+
+    async def get_remaining_time(self, user: User) -> Optional[str]:
+        expiry = await self.get_expire_at(user)
+        if not isinstance(expiry, datetime):
+            return None
+        month_key = f"month:{expiry.strftime('%B').lower()}"
+        translated_month = _(month_key)
+        date_format = _("date_format:full")
+        return date_format.format(
+        day=expiry.day,
+        month=translated_month,
+        year=expiry.year
+        )
 
     async def get_expire_at(self,user: User)-> datetime | None:
         client = await self.get_client(user)

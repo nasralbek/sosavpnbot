@@ -1,0 +1,248 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: bot 0.1\n"
+"Report-Msgid-Bugs-To: helloworld@gmail.com\n"
+"POT-Creation-Date: 2025-04-01 00:01+0500\n"
+"PO-Revision-Date: 2025-08-29 21:55+0300\n"
+"Last-Translator: Gemini Assistant <gemini@google.com>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+
+msgid "main_menu:message:main"
+msgstr "▫️ <b>Subscription:</b> <code>{status}</code>\n"
+"▫️ <b>Until:</b> <code>{balance}</code>\n\n"
+
+msgid "main_menu:message:new_user"
+msgstr "<b>🎁 Your 3-day free trial has been activated!</b>"
+
+msgid "main_menu:message:invited"
+msgstr ""
+
+msgid "maintenance:ntf:try_later"
+msgstr ""
+"🚧 <i>The bot is currently under maintenance. Please try again later.</i>"
+
+msgid "main_menu:button:main"
+msgstr "🏠 Main Menu"
+
+
+
+msgid "main_menu:button:profile"
+msgstr "⚙️ Connect VPN"
+
+msgid "main_menu:button:invite_friend"
+msgstr "👥 Invite"
+
+msgid "main_menu:button:support"
+msgstr "👩‍💻 Support"
+
+msgid "main_menu:button:admin"
+msgstr "🛠️ Admin Panel"
+
+msgid "main_menu:button:purshare"
+msgstr "💸 Extend Subscription"
+
+msgid "main_menu:button:polite"
+msgstr "🌑 About Us"
+
+msgid "purshare:message:main"
+msgstr "<b>⚡️ Select a renewal period:</b>"
+
+msgid "connect:message:main"
+msgstr "<b>⚡️ Select your device:</b>"
+
+msgid "how_to:button:IOS"
+msgstr "iOS"
+
+msgid "how_to:button:ANDROID"
+msgstr "Android"
+
+msgid "how_to:button:WINDOWS"
+msgstr "Windows"
+
+msgid "how_to:button:MACOS"
+msgstr "macOS"
+
+msgid "how_to:button:ANDROIDTV"
+msgstr "Android TV"
+
+msgid "how_to:button:LINUX"
+msgstr "Linux"
+
+msgid "how_to:button:add"
+msgstr "⚙️ Add Config"
+
+msgid "how_to:button:download"
+msgstr "☁️ Download"
+
+msgid "how_to:button:download_apple"
+msgstr "☁️ Download [RU]"
+
+msgid "how_to:button:download_apple_alt"
+msgstr "☁️ Download [GLOBAL]"
+
+msgid "invite:message:main"
+msgstr "<b>▫️ Get 1 day</b> for every friend you invite\n"
+"<b>▫️ Get 20%</b> of your friends' payments\n\n"
+"<b>👥 Invited:</b> <code>{invited_count} people</code>\n"
+"<b>🔗 Your referral link:</b> <code>{invite_link}</code>"
+
+
+msgid "select_method:message:main"
+msgstr ""
+"<b>⏱️ Period:</b> <code>{days} days</code>\n"
+"<b>💸 Price:</b> <code>{price}₽</code>\n\n"
+"<b>⚡️ Select a payment method:</b>"
+
+msgid "purschare_final:message:main"
+msgstr ""
+"<b>⏱️ Period:</b> <code>{days} days</code>\n"
+"<b>💸 Price:</b> <code>{price}₽</code>\n"
+"<b>💳 Payment Method:</b> <code>{method}</code>\n\n"
+"<b>⚡️ Proceed to payment using the button below:</b>"
+
+
+msgid "purschare_final:button:pay"
+msgstr "🔗 Proceed to Payment"
+
+msgid "how_to:platform:message:IOS"
+msgstr "<b>📖 To connect to the VPN on iOS:</b>\n\n"
+"<b>1.</b> Press the <b>'☁️ Download'</b> button to get the app from the App Store.\n\n"
+"<b>2.</b> Press the <b>'⚙️ Add Config'</b> button to add the configuration to the app."
+
+msgid "how_to:platform:message:ANDROID"
+msgstr "<b>📖 To connect to the VPN on Android:</b>\n\n"
+"<b>1.</b> Press the <b>'☁️ Download'</b> button to get the app from Google Play.\n\n"
+"<b>2.</b> Press the <b>'⚙️ Add Config'</b> button to add the configuration to the app."
+
+msgid "how_to:platform:message:WINDOWS"
+msgstr "<b>📖 To connect to the VPN on Windows:</b>\n\n"
+"<b>1.</b> Click the <b>'☁️ Download'</b> button to get the app.\n\n"
+"<b>2.</b> Click the <b>'⚙️ Add Config'</b> button to add the configuration to the app."
+
+msgid "how_to:platform:message:MACOS"
+msgstr "<b>📖 To connect to the VPN on macOS:</b>\n\n"
+"<b>1.</b> Click the <b>'☁️ Download'</b> button to get the app from the App Store.\n\n"
+"<b>2.</b> Click the <b>'⚙️ Add Config'</b> button to add the configuration to the app."
+
+msgid "how_to:platform:message:ANDROIDTV"
+msgstr "<b>📖 To connect to the VPN on Android TV:</b>\n\n"
+"<b>1.</b> Press the <b>'☁️ Download'</b> button to get the app from Google Play.\n\n"
+"<b>2.</b> Press the <b>'⚙️ Add Config'</b> button to add the configuration to the app."
+
+msgid "how_to:platform:message:LINUX"
+msgstr "<b>📖 To connect to the VPN on Linux:</b>\n\n"
+"<b>1.</b> Click the <b>'☁️ Download'</b> button to get the app.\n\n"
+"<b>2.</b> Click the <b>'⚙️ Add Config'</b> button to add the configuration to the app."
+
+msgid "purchare:message:success"
+msgstr "<b>⚡️ Your subscription has been extended by</b> <code>{days} days</code>."
+
+msgid "expire:message:expired_day_ago"
+msgstr "<b>⚠️ Your subscription expired yesterday.</b>\n\n"
+"To get the VPN working again, please extend your subscription using the button below."
+
+msgid "expire:message:expired"
+msgstr "<b>⚠️ Your subscription has expired.</b>\n\n"
+"To get the VPN working again, please extend your subscription using the button below."
+
+msgid "expire:message:will_expire"
+msgstr "<b>⚠️ Your subscription will expire in</b> <code>{days} days</code>.\n\n"
+"To maintain access to the VPN, please extend your subscription using the button below."
+
+
+msgid "notify:message:payment_from_ref"
+msgstr "<b>⚡️ Your subscription has been extended by</b> <code>{days} days</code> <b>thanks to your friend's payment.</b>"
+
+
+msgid "notify:message:registered_by_ref"
+msgstr "<b>⚡️ Your subscription has been extended by</b> <code>{days} day</code> <b>for your friend's registration.</b>"
+
+
+msgid "notify:message:pizdaliz"
+msgstr "<b>⚡️ Your subscription has been extended by</b> <code>{days} days</code> <b>as a bonus!</b>"
+
+
+msgid "select_plan:button:text"
+msgstr "{days} days - {price}₽"
+
+
+msgid "notify:message:first_connected"
+msgstr "<b>You have successfully connected to the VPN. Enjoy!</b>\n\n"
+"You can manage your subscription and connect other devices from the main menu using the button below."
+
+
+msgid "purschare:method:pay_pally"
+msgstr "🇷🇺 Bank Card"
+
+msgid "purschare:method:pay_heleket"
+msgstr "🌍 Cryptocurrency"
+
+msgid "polite:button:polite"
+msgstr "Privacy Policy"
+
+msgid "polite:button:rules"
+msgstr "Terms of Service"
+
+msgid "polite:message:main"
+msgstr "Sosa VPN uses an open-source protocol that offers superior performance compared to others. All our servers are equipped with 10 Gbps channels.\n\n"
+"Logs are instantly deleted from our servers; we do not store your browsing history, unlike many free services. We do not collect or sell any of your personal data.\n\n"
+"Access to the VPN is managed via Telegram, which means our service cannot be blocked or removed from the App Store or other platforms."
+
+msgid "main_menu:status:active"
+msgstr "Active ⚡️"
+
+msgid "main_menu:status:inactive"
+msgstr "Expired ⚠️"
+
+msgid "support:message:main"
+msgstr "<b>Do you have any questions or need assistance?</b>\n\n"
+"Check out our <a href="https://telegra.ph/Knowledge-Base-09-02">knowledge base</a>, where you will likely find a solution to your problem, or use the button below to contact us."
+
+msgid "support:button:get_support"
+msgstr "👋 Contact Us"
+
+msgid "date_format:full"
+msgstr "{day} {month} {year}"
+
+msgid "month:january"
+msgstr "January"
+
+msgid "month:february"
+msgstr "February"
+
+msgid "month:march"
+msgstr "March"
+
+msgid "month:april"
+msgstr "April"
+
+msgid "month:may"
+msgstr "May"
+
+msgid "month:june"
+msgstr "June"
+
+msgid "month:july"
+msgstr "July"
+
+msgid "month:august"
+msgstr "August"
+
+msgid "month:september"
+msgstr "September"
+
+msgid "month:october"
+msgstr "October"
+
+msgid "month:november"
+msgstr "November"
+
+msgid "month:december"
+msgstr "December"

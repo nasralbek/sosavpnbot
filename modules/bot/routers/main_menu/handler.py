@@ -33,7 +33,8 @@ async def prepare_text( services    : ServicesContainer,
                         is_new_user : bool = False,
                         is_invited  : bool = False,) -> str:
 
-    remaining_time = await services.vpn.get_remaining_time(user)
+    remaining_time = await services.vpn.get_remaining_time_og(user)
+    expiry = await services.vpn.get_remaining_time(user)
     no_time = timedelta()
     delta_days = timedelta(days = 1)  
     if not remaining_time:
@@ -43,7 +44,7 @@ async def prepare_text( services    : ServicesContainer,
         remaining_time = no_time
 
     remaining_days = (remaining_time+delta_days).days
-    balance = f'{remaining_days}'
+    balance = f'{expiry}'
     if remaining_time > timedelta():
         status = "active"
     else:
