@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sosaapi
+  labels:
+    app: sosaapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sosaapi
+  template:
+    metadata:
+      labels:
+        app: sosaapi
+    spec:
+      containers:
+        - name: sosaapi
+          image: sosaapi/fastapi:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8000
+          env:
+            - name: FASTAPI_RELOAD
+              value: "true"  # для dev, для prod ставьте "false"
+          envFrom:
+            - configMapRef:
+                name: bot-env
+            - configMapRef:
+                name: bot-config
+      terminationGracePeriodSeconds: 15
+          #volumeMounts:
+          #  - name: code
+          #    mountPath: /app
+      #volumes:
+      #  - name: code
+      #    hostPath:
+      #      path: /mnt/api   # путь внутри Minikube VM, монтируйте локальную папку через minikube mount
+      #      type: Directory
+

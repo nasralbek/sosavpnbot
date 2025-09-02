@@ -16,7 +16,7 @@ RUN pip install --no-cache-dir -r requierments.txt
 COPY . .
 
 # Указываем, что приложение внутри контейнера будет слушать на порту 2225
-EXPOSE 2225
+EXPOSE 2224
 
 # Команда, которая запускается при старте контейнера
 CMD ["python", "main.py"]

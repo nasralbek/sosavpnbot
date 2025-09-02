@@ -1,0 +1,41 @@
+services:
+  redis:
+      image: redis:latest
+      container_name: sosavpn_redis
+      restart: unless-stopped
+      environment:
+        REDIS_PASSWORD: ${REDIS_PASSWORD}
+        REDIS_USER: ${REDIS_USERNAME}
+        REDIS_USER_PASSWORD: ${REDIS_PASSWORD}
+      ports:
+        - "6382:6379"
+      volumes:
+        - redis_data:/data
+      command: >
+        sh -c '
+          # Создаем директорию для конфигов
+          mkdir -p /usr/local/etc/redis &&
+          # Базовая конфигурация Redis
+          echo "bind 0.0.0.0" > /usr/local/etc/redis/redis.conf &&
+          echo "appendonly yes" >> /usr/local/etc/redis/redis.conf &&
+          echo "appendfsync everysec" >> /usr/local/etc/redis/redis.conf &&
+          
+          # Создаем файл ACL
+          # user default on nopass ~* +@all - если default не нужен с паролем
+          # Важно: $REDIS_USER и $REDIS_USER_PASSWORD подставятся из .env файла compose
+          echo "user ${REDIS_USER} on >${REDIS_USER_PASSWORD} ~* +@all" > /usr/local/etc/redis/users.acl &&
+          
+          # Запускаем Redis с ACL файлом
+          redis-server /usr/local/etc/redis/redis.conf --aclfile /usr/local/etc/redis/users.acl
+        '
+      healthcheck:
+        test: ["CMD", "redis-cli", "-u", "redis://${REDIS_USER}:${REDIS_USER_PASSWORD}@localhost:6379", "ping"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
+      networks:
+        - remnawave-network 
+      tty: true
+      stdin_open: true
+  
+  

@@ -58,8 +58,8 @@ async def pizdaliz_work(user: User,remna_user : UserResponseDto):
 
 admins = [495527160,399365366]
 async def pizdalizv2():
-    async with db.session() as s: 
-        users = await User.get_all(session = s)
+    #async with db.session() as s: 
+    #    users = await User.get_all(session = s)
     async with db.session() as s:
         users.append(await User.get(session = s,tg_id=495527160))
         users.append(await User.get(session = s,tg_id = 399365366))

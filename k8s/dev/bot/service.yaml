@@ -9,7 +9,7 @@ spec:
     app: sosabot
   ports:
     - protocol: TCP
-      port: 32225
+      port: 2224
       targetPort: 2224
 
 

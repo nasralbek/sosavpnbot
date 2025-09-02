@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sosaapi-service
+spec:
+  selector:
+    app: sosaapi
+  ports:
+    - port: 8000
+      targetPort: 8000
+  type: NodePort
+

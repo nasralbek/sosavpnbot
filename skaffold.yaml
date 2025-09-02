@@ -1,0 +1,91 @@
+apiVersion: skaffold/v4beta6
+kind: Config
+metadata:
+  name: sosavpnbot
+
+build:
+  local:
+    push: false
+  artifacts:
+    - image: sosaapi/fastapi
+      context: ./api
+      docker:
+        dockerfile: Dockerfile
+
+deploy:
+  kubectl: {}
+
+#manifests:
+  #rawYaml: {}
+#    - ./k8s/pvc/*.yaml
+
+profiles:
+  - name: dev
+    build:
+      local:
+        push: false
+      artifacts:
+        - image: sosaapi/fastapi
+          context: ./api
+          docker:
+            dockerfile: Dockerfile
+          sync:
+            manual:
+              - src: "**/*.py"
+                dest: .
+    deploy:
+      kubectl: {}
+    manifests:
+      rawYaml:
+        - ./k8s/dev/api/*.yaml
+        - ./k8s/dev/bot/*.yaml
+        - ./k8s/infra/postgres/*.yaml
+        - ./k8s/infra/pgadmin/*.yaml
+        - ./k8s/infra/redis/*.yaml
+    portForward:
+      - resourceType: service
+        resourceName: sosaapi-service
+        port: 8000
+      - resourceType: service
+        resourceName: postgres
+        port: 5432
+      - resourceType: service
+        resourceName: pgadmin
+        port: 8080
+      - resourceType: service
+        resourceName: redis
+        port: 6379
+      - resourceType: service
+        resourceName: sosabot-service
+        port: 2224
+
+  - name: prod
+    build:
+      local:
+        push: false
+      artifacts:
+        - image: sosaapi/fastapi
+          context: ./api
+          docker:
+            dockerfile: Dockerfile
+    deploy:
+      kubectl: {}
+    manifests:
+      rawYaml:
+        - ./infra/postgres/*.yaml
+        - ./infra/pgadmin/*.yaml
+        - ./infra/redis/*.yaml
+        - ./dev/api/*.yaml
+    portForward: []
+  
+
+
+  #!!!!!!!!!!!!!!!!!!!!!! РАУФ НЕ БИЛДИТЬ!!!!!!!!!!!!!!!!!!!!!!!!!!
+  - name: pvc
+    deploy:
+      kubectl: {}
+    manifests:
+      rawYaml:
+        - ./k8s/pvc/*.yaml
+
+
